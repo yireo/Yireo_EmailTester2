@@ -1,0 +1,29 @@
+{
+    "name": "yireo/yireo_emailtester2",
+    "license": "OSL-3.0",
+    "type": "magento2-module",
+    "homepage": "https://www.yireo.com/software/magento-extensions/emailtester",
+    "description": "Preview transactional emails and test send them in your backend",
+    "keywords":[ "composer-installer", "magento"],
+    "authors": [
+        {
+            "name": "Jisse Reitsma (Yireo)",
+            "email": "jisse@yireo.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.0"
+    },
+    "require-dev":{
+        "phpunit/phpunit":"*",
+        "composer/composer":"*@dev"
+    },
+    "extra":{
+        "map": [
+            [
+                "source/*",
+                "Yireo/EmailTester2"
+            ]
+        ]
+    }
+}

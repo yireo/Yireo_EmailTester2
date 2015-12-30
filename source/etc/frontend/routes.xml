@@ -1,0 +1,7 @@
+<config>
+    <router id="standard">
+        <route id="emailtester" frontName="emailtester">
+            <module name="Yireo_EmailTester2" />
+        </route>
+    </router>
+</config>
