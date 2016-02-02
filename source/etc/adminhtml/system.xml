@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * EmailTester plugin for Magento 2
+ *
+ * @package     Yireo_EmailTester2
+ * @author      Yireo
+ * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
+ * @license     Open Source License
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="emailtester2" translate="label" sortOrder="342" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Yireo EmailTester</label>
+            <tab>advanced</tab>
+            <resource>Yireo_EmailTester2::config</resource>
+            <group id="settings" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Settings</label>
+
+                <field id="default_email" translate="label" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Default Email Target</label>
+                </field>
+                <field id="default_transactional" type="select" translate="label" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Default Transactional Email</label>
+                    <source_model>Yireo\EmailTester2\Model\Backend\Source\Email</source_model>
+                </field>
+                <field id="default_product" translate="label" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Default Product</label>
+                    <comment><![CDATA[Numerical ID of product entity]]></comment>
+                </field>
+                <field id="default_customer" translate="label" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Default Customer</label>
+                    <comment><![CDATA[Numerical ID of customer entity]]></comment>
+                </field>
+                <field id="default_order" translate="label" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Default Sales Order</label>
+                    <comment><![CDATA[Numerical ID of sales order entity]]></comment>
+                </field>
+
+                <field id="limit_product" translate="label" sortOrder="11" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Limit Product List</label>
+                    <comment><![CDATA[Set list size; Use 0 for unlimited]]></comment>
+                </field>
+                <field id="limit_customer" translate="label" sortOrder="12" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Limit Customer List</label>
+                    <comment><![CDATA[Set list size; Use 0 for unlimited]]></comment>
+                </field>
+                <field id="limit_order" translate="label" sortOrder="13" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Limit Sales Order List</label>
+                    <comment><![CDATA[Set list size; Use 0 for unlimited]]></comment>
+                </field>
+
+                <field id="custom_product" type="textarea" translate="label" sortOrder="21" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Custom Product List</label>
+                    <comment><![CDATA[CSV-list of entity IDs]]></comment>
+                </field>
+                <field id="custom_customer" type="textarea" translate="label" sortOrder="22" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Custom Customer List</label>
+                    <comment><![CDATA[CSV-list of entity IDs]]></comment>
+                </field>
+                <field id="custom_order" type="textarea" translate="label" sortOrder="23" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Custom Sales Order List</label>
+                    <comment><![CDATA[CSV-list of entity IDs]]></comment>
+                </field>
+
+                <field id="enable_jquery" type="select" translate="label" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable jQuery core</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Disable if jQuery is already loaded]]></comment>
+                </field>
+                <field id="enable_jqueryui" type="select" translate="label" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable jQuery UI</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Disable if jQuery UI is already loaded]]></comment>
+                </field>
+                <field id="debug" type="select" translate="label" sortOrder="33" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Debug</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
