@@ -17,13 +17,13 @@ use \Magento\Backend\App\Action;
  *
  * @package Yireo\EmailTester2\Controller\Ajax
  */
-class Customer extends Action
+class Product extends Action
 {
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
 
     /**
      * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
+     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
      * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
@@ -31,14 +31,14 @@ class Customer extends Action
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
-        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
+        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Framework\App\Request\Http $request,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Framework\Api\FilterBuilder $filterBuilder,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
     ) {
         parent::__construct($context);
-        $this->customerRepository = $customerRepository;
+        $this->productRepository = $productRepository;
         $this->request = $request;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
@@ -52,19 +52,19 @@ class Customer extends Action
      */
     public function execute()
     {
-        $customerData = array();
-        $searchResults = $this->customerRepository->getList($this->loadSearchCriteria());
+        $productData = array();
+        $searchResults = $this->productRepository->getList($this->loadSearchCriteria());
 
-        foreach ($searchResults->getItems() as $customer) {
-            /** @var $customer \Magento\Customer\Model\Customer */
-            $customerData[] = array(
-                'value' => $customer->getId(),
-                'label' => $this->getCustomerLabel($customer),
+        foreach ($searchResults->getItems() as $product) {
+            /** @var $product \Magento\Catalog\Api\Data\ProductInterface */
+            $productData[] = array(
+                'value' => $product->getId(),
+                'label' => $this->getProductLabel($product),
             );
         }
 
         return $this->resultJsonFactory->create()->setData(
-            $customerData
+            $productData
         );
     }
 
@@ -74,9 +74,9 @@ class Customer extends Action
         return $search;
     }
 
-    protected function getCustomerLabel($customer)
+    protected function getProductLabel(\Magento\Catalog\Api\Data\ProductInterface $product)
     {
-        return $customer->getFirstname() . ' ' . $customer->getLastname() . ' ['.$customer->getEmail().']';
+        return $product->getName() . ' ['.$product->getSku().']';
     }
 
     protected function loadSearchCriteria()
@@ -84,7 +84,7 @@ class Customer extends Action
         $this->searchCriteriaBuilder->setCurrentPage(0);
         $this->searchCriteriaBuilder->setPageSize(10);
 
-        $searchFields = ['firstname', 'lastname', 'email'];
+        $searchFields = ['name', 'sku'];
         $filters = [];
         foreach ($searchFields as $field) {
             $filters[] = $this->filterBuilder

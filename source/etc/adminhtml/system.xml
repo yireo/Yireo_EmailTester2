@@ -20,6 +20,7 @@
 
                 <field id="default_email" translate="label" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Default Email Target</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Email\Address</backend_model>
                 </field>
                 <field id="default_transactional" type="select" translate="label" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Default Transactional Email</label>
@@ -64,11 +65,6 @@
                     <comment><![CDATA[CSV-list of entity IDs]]></comment>
                 </field>
 
-                <field id="enable_jquery" type="select" translate="label" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable jQuery core</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment><![CDATA[Disable if jQuery is already loaded]]></comment>
-                </field>
                 <field id="enable_jqueryui" type="select" translate="label" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable jQuery UI</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
