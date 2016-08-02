@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Yireo EmailTester for Magento
+ *
+ * @package     Yireo_EmailTester
+ * @author      Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
+ * @license     Open Source License (OSL v3)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Yireo\EmailTester2\Model\Mailer">
+        <arguments>
+            <argument name="transportBuilder" xsi:type="object">Yireo\EmailTester2\Model\TransportBuilder</argument>
+        </arguments>
+    </type>
+</config>

@@ -42,58 +42,6 @@ class Overview extends Template
     }
 
     /**
-     * Create add button and grid blocks
-     *
-     * @return \Magento\Framework\View\Element\AbstractBlock
-     */
-    protected function _prepareLayout()
-    {
-        $this->buttonList->add(
-            'send',
-            [
-                'label' => __('Send Email'),
-                'onclick' => "window.location='" . $this->getSendUrl() . "'",
-                'class' => 'send primary'
-            ]
-        );
-
-        $this->buttonList->add(
-            'preview',
-            [
-                'label' => __('Preview Email'),
-                'onclick' => "window.location='" . $this->getPreviewUrl() . "'",
-                'class' => 'preview primary'
-            ]
-        );
-
-        $this->toolbar->pushButtons($this, $this->buttonList);
-
-        $this->addChild('form', 'Yireo\EmailTester2\Block\Adminhtml\Overview\Form');
-
-        return parent::_prepareLayout();
-    }
-
-    /**
-     * Return the URL to send the mail
-     *
-     * @return string
-     */
-    public function getSendUrl()
-    {
-        return $this->getUrl('*/*/send');
-    }
-
-    /**
-     * Return the URL to output the mail
-     *
-     * @return string
-     */
-    public function getPreviewUrl()
-    {
-        return $this->getUrl('*/*/preview');
-    }
-
-    /**
      * Return form block HTML
      *
      * @return string
@@ -109,5 +57,64 @@ class Overview extends Template
     public function canRender(\Magento\Backend\Block\Widget\Button\Item $item)
     {
         return !$item->isDeleted();
+    }
+
+    /**
+     * Create add button and grid blocks
+     *
+     * @return \Magento\Framework\View\Element\AbstractBlock
+     */
+    protected function _prepareLayout()
+    {
+        $this->addButtons();
+        $this->addChild('form', 'Yireo\EmailTester2\Block\Adminhtml\Overview\Form');
+
+        return parent::_prepareLayout();
+    }
+
+    /**
+     * Add the buttons
+     */
+    protected function addButtons()
+    {
+        $this->buttonList->add(
+            'send',
+            [
+                'label' => __('Send Email'),
+                'onclick' => "submitEmailTesterFormToUrl('emailtester_form', '" . $this->getSendUrl() . "')",
+                'class' => 'send primary'
+            ]
+        );
+
+        $this->buttonList->add(
+            'preview',
+            [
+                'label' => __('Preview Email'),
+                'class' => 'preview primary',
+                'onclick' => "submitEmailTesterFormToUrl('emailtester_form', '" . $this->getPreviewUrl() . "')",
+            ]
+        );
+
+        $this->toolbar->pushButtons($this, $this->buttonList);
+    }
+
+    /**
+     * Return the URL to send the mail
+     *
+     * @return string
+     */
+    protected function getSendUrl()
+    {
+        return $this->getUrl('*/*/send');
+    }
+
+    /**
+     * Return the URL to output the mail
+     *
+     * @return string
+     */
+    protected function getPreviewUrl()
+    {
+        return $this->getUrl('*/*/preview');
     }
 }

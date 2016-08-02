@@ -10,10 +10,22 @@
 
 /** @var $block Yireo\EmailTester2\Block\Adminhtml\Script */
 ?>
-<script>
-    var emailtester_customer_ajax_url = '<?php echo $block->getUrl('*/ajax/customer'); ?>?form_key=' + window.FORM_KEY;
-    var emailtester_product_ajax_url = '<?php echo $block->getUrl('*/ajax/product'); ?>?form_key=' + window.FORM_KEY;
-    var emailtester_order_ajax_url = '<?php echo $block->getUrl('*/ajax/order'); ?>?form_key=' + window.FORM_KEY;
-    require(['jquery','Yireo_EmailTester2/js/emailtester'],function($){});
+<script type="text/x-magento-init">
+{
+    "*": {
+        "emailtester" : {
+            "customer_ajax_url": "<?= $block->getUrl('*/ajax/customer') ?>",
+            "product_ajax_url": "<?= $block->getUrl('*/ajax/product') ?>",
+            "order_ajax_url": "<?= $block->getUrl('*/ajax/order') ?>"
+        }
+    }
+}
 </script>
-<a href="<?php echo $block->getUrl('*/ajax/customer'); ?>">test</a>
+
+<script>
+    function submitEmailTesterFormToUrl(formId, url) {
+        var form = jQuery('#' + formId);
+        form.attr('action', url);
+        form.submit();
+    }
+</script>

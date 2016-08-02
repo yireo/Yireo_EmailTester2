@@ -10,8 +10,18 @@
 
 namespace Yireo\EmailTester2\Block\Adminhtml\Overview;
 
+/**
+ * Class Form
+ *
+ * @package Yireo\EmailTester2\Block\Adminhtml\Overview
+ */
 class Form extends \Magento\Backend\Block\Widget\Form\Generic
 {
+    /**
+     * @var \Yireo\EmailTester2\Helper\Form
+     */
+    protected $formHelper;
+
     /**
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Framework\Registry $registry
@@ -67,9 +77,10 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
             ['legend' => __('Customer Value'), 'class' => 'fieldset-wide']
         );
 
+        $customerFieldset->addType('id', '\Yireo\EmailTester2\Form\Element\Id');
         $customerFieldset->addField(
             'customer_id',
-            'text',
+            'id',
             ['name' => 'customer_id', 'label' => __('Customer ID'), 'placeholder' => 'Numeric ID', 'required' => false]
         );
 
@@ -127,6 +138,6 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
      */
     protected function getFormValues()
     {
-        return array();
+        return $this->formHelper->getFormData();
     }
 }
