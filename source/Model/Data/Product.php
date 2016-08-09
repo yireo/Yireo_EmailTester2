@@ -14,9 +14,9 @@ use Magento\Framework\Api\Filter;
 use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 
 /**
- * Class Yireo_EmailTester_Model_Data_Product
+ * Class Product
  */
-class Yireo_EmailTester_Model_Data_Product extends Generic
+class Product extends Generic
 {
     /**
      * @var \Magento\Backend\Model\Auth\Session

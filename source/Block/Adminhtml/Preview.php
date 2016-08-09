@@ -18,11 +18,6 @@ namespace Yireo\EmailTester2\Block\Adminhtml;
 class Preview extends \Magento\Framework\View\Element\Text
 {
     /**
-     * @var \Magento\Backend\Model\Session
-     */
-    protected $adminSession;
-
-    /**
      * @var \Yireo\EmailTester2\Model\Mailer
      */
     protected $mailer;
@@ -30,17 +25,14 @@ class Preview extends \Magento\Framework\View\Element\Text
     /**
      * @param \Yireo\EmailTester2\Model\Mailer $mailer
      * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Backend\Model\Session $adminSession
      * @param array $data
      */
     public function __construct(
         \Yireo\EmailTester2\Model\Mailer $mailer,
         \Magento\Backend\Block\Template\Context $context,
-        \Magento\Backend\Model\Session $adminSession,
         array $data = []
     )
     {
-        $this->adminSession = $adminSession;
         $this->mailer = $mailer;
         parent::__construct($context, $data);
 
@@ -79,6 +71,6 @@ class Preview extends \Magento\Framework\View\Element\Text
      */
     protected function saveToSession($data)
     {
-        $this->adminSession->setEmailtesterValues($data);
+        $this->_session->setEmailtesterValues($data);
     }
 }

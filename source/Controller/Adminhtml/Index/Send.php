@@ -10,51 +10,80 @@
 
 namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
 
-use \Magento\Backend\App\Action;
-use \Magento\Backend\App\Action\Context;
-use \Magento\Framework\View\Result\PageFactory;
-
 /**
  * Class Index
  *
  * @package Yireo\EmailTester2\Controller\Index
  */
-class Send extends Action
+class Send extends \Magento\Backend\App\Action
 {
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
 
     /**
-     * @var PageFactory
+     * @var \Magento\Framework\Controller\Result\RedirectFactory
      */
-    protected $resultPageFactory;
+    protected $redirectFactory;
 
     /**
-     * @param Context $context
-     * @param PageFactory $resultPageFactory
+     * @var \Yireo\EmailTester2\Model\Mailer
+     */
+    protected $mailer;
+
+    /**
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory
+     * @param \Yireo\EmailTester2\Model\Mailer $mailer
      */
     public function __construct(
-        Context $context,
-        PageFactory $resultPageFactory
+        \Magento\Backend\App\Action\Context $context,
+        \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory,
+
+        \Yireo\EmailTester2\Model\Mailer $mailer
     ) {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
+        $this->redirectFactory = $redirectFactory;
+        $this->mailer = $mailer;
     }
 
     /**
      * Index action
      *
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return \Magento\Framework\Controller\Result\Redirect
      */
     public function execute()
     {
-        die('send');
+        $data = $this->getRequestData();
+        $this->saveToSession($data);
 
-        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
-        $resultPage = $this->resultPageFactory->create();
-        $resultPage->setActiveMenu('Yireo_EmailTester2::index');
-        $resultPage->addBreadcrumb(__('Yireo Email Tester'), __('Yireo Email Tester'));
-        $resultPage->getConfig()->getTitle()->prepend(__('Yireo Email Tester'));
+        $this->mailer->setData($data);
+        $this->mailer->send();
 
-        return $resultPage;
+        $redirect = $this->redirectFactory->create();
+        $redirect->setPath('*/*/index');
+
+        return $redirect;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getRequestData()
+    {
+        $data = array();
+        $data['customer_id'] = $this->_request->getParam('customer_id');
+        $data['product_id'] = $this->_request->getParam('product_id');
+        $data['order_id'] = $this->_request->getParam('order_id');
+        $data['template'] = $this->_request->getParam('template');
+        $data['email'] = $this->_request->getParam('email');
+
+        return $data;
+    }
+
+    /**
+     * @param $data
+     */
+    protected function saveToSession($data)
+    {
+        $this->_session->setEmailtesterValues($data);
     }
 }
