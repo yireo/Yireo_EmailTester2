@@ -50,10 +50,10 @@ class Product
      */
     public function getVariable()
     {
-        $product = $this->productRepository->getById($this->productId);
+        $product = $this->getProductById($this->productId);
 
         // Load the first product instead
-        if (!$product->getId() > 0) {
+        if ($product === false) {
             $this->searchCriteriaBuilder->setPageSize(1);
             $searchCriteria = $this->searchCriteriaBuilder->create();
             $products = $this->productRepository->getList($searchCriteria)->getItems();
@@ -61,6 +61,32 @@ class Product
             if (count($products) > 0) {
                 $product = array_shift($products);
             }
+        }
+
+        return $product;
+    }
+
+    /**
+     * @param $productId
+     *
+     * @return bool|\Magento\Catalog\Api\Data\ProductInterface
+     */
+    private function getProductById($productId)
+    {
+        $productId = (int)$productId;
+
+        if (empty($productId)) {
+            return false;
+        }
+
+        try {
+            $product = $this->productRepository->getById($this->productId);
+        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+            return false;
+        }
+
+        if (!$product->getId() > 0) {
+            return false;
         }
 
         return $product;

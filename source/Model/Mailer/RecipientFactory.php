@@ -75,7 +75,11 @@ class RecipientFactory
         }
 
         /** @var  $customer \Magento\Customer\Api\Data\CustomerInterface */
-        $customer = $this->customerRepository->getById($data['customer_id']);
+        try {
+            $customer = $this->customerRepository->getById($data['customer_id']);
+        } catch(\Magento\Framework\Exception\NoSuchEntityException $exception) {
+            return false;
+        }
 
         if (!$customer->getId() > 0) {
             return false;
