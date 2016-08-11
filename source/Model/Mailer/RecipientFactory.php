@@ -70,13 +70,19 @@ class RecipientFactory
      */
     protected function addCustomerData(&$recipient, $data)
     {
-        if (empty($data['customer_id'])) {
+        if (!isset($data['customer_id'])) {
+            return false;
+        }
+
+        $customerId = (int) $data['customer_id'];
+
+        if (empty($customerId)) {
             return false;
         }
 
         /** @var  $customer \Magento\Customer\Api\Data\CustomerInterface */
         try {
-            $customer = $this->customerRepository->getById($data['customer_id']);
+            $customer = $this->customerRepository->getById($customerId);
         } catch(\Magento\Framework\Exception\NoSuchEntityException $exception) {
             return false;
         }

@@ -62,11 +62,15 @@ class Order extends Generic
     /**
      * @param int $orderId
      *
-     * @return \Magento\Sales\Model\Order
+     * @return false|\Magento\Sales\Model\Order
      */
     public function getOrder($orderId)
     {
-        return $this->orderRepository->get($orderId);
+        try {
+            return $this->orderRepository->get($orderId);
+        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+            return false;
+        }
     }
 
     /**
@@ -171,15 +175,20 @@ class Order extends Generic
             return $storeIds;
         }
 
-        /** @var $store \Magento\Store\Api\Data\StoreInterface */
-        $store = $this->storeRepository->getById($storeId);
+        try {
+            /** @var $store \Magento\Store\Api\Data\StoreInterface */
+            $store = $this->storeRepository->getById($storeId);
+        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+            return $storeIds;
+        }
+
         $website = $store->getWebsite();
 
         foreach ($website->getStores() as $store) {
             /** @var $store \Magento\Store\Api\Data\StoreInterface */
             $storeIds[] = $store->getId();
         }
-        
+
         return $storeIds;
     }
 
@@ -193,8 +202,13 @@ class Order extends Generic
         $orderId = $this->getOrderId();
 
         if ($this->isValidId($orderId)) {
-            /** @var \Magento\Sales\Model\Order $order */
-            $order = $this->orderRepository->get($orderId);
+            try {
+                /** @var \Magento\Sales\Model\Order $order */
+                $order = $this->orderRepository->get($orderId);
+            } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+                return '';
+            }
+
             return $this->outputHelper->getOrderOutput($order);
         }
 

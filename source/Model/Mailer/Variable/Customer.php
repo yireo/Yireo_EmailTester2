@@ -79,9 +79,9 @@ class Customer
     public function getVariable()
     {
         if (!empty($this->order) && $this->order->getCustomerId() > 0 && $this->customerId == 0) {
-            $customer = $this->customerRepository->getById($this->order->getCustomerId());
+            $customer = $this->getCustomerById($this->order->getCustomerId());
         } elseif ($this->customerId) {
-            $customer = $this->customerRepository->getById($this->customerId);
+            $customer = $this->getCustomerById($this->customerId);
         }
 
         // Load the first customer instead
@@ -103,6 +103,26 @@ class Customer
         $mergedCustomerData->setData('name', $this->customerViewHelper->getCustomerName($customer));
 
         return $mergedCustomerData;
+    }
+
+    /**
+     * @param int $customerId
+     *
+     * @return false|\Magento\Customer\Api\Data\CustomerInterface
+     */
+    public function getCustomerById($customerId)
+    {
+        $customerId = (int)$customerId;
+
+        if (empty($customerId)) {
+            return false;
+        }
+
+        try {
+            return $this->customerRepository->getById($customerId);
+        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+            return false;
+        }
     }
     
     /**

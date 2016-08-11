@@ -16,7 +16,7 @@ namespace Yireo\EmailTester2\Model\Data;
  */
 class Template
 {
-    /** @var Mage_Core_Model_Email_Template */
+    /** @var */
     protected $templateModel;
 
     /**
@@ -24,7 +24,7 @@ class Template
      */
     public function __construct()
     {
-        $this->templateModel = Mage::getModel('core/email_template');
+        $this->templateModel = null;
     }
 
     /**
@@ -49,7 +49,7 @@ class Template
         $templateCollection = $this->getEmailTemplateCollection();
 
         if (!empty($templateCollection)) {
-            /** @var Mage_Core_Model_Email_Template $template */
+            /** @var $template */
             foreach ($templateCollection as $template) {
                 $templateCode = $template->getTemplateCode();
                 if (empty($templateCode)) {
@@ -86,7 +86,7 @@ class Template
     }
 
     /**
-     * @return Varien_Data_Collection_Db
+     * @return
      */
     protected function getEmailTemplateCollection()
     {

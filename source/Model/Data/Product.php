@@ -27,7 +27,7 @@ class Product extends Generic
      * @var \Magento\Framework\App\RequestInterface
      */
     protected $request;
-    
+
     /**
      * @var \Magento\Catalog\Api\ProductRepositoryInterface
      */
@@ -37,7 +37,7 @@ class Product extends Generic
      * @var \Magento\Framework\Api\Search\SearchCriteriaBuilder
      */
     protected $searchCriteriaBuilder;
-    
+
     /**
      * Constructor method
      */
@@ -63,11 +63,15 @@ class Product extends Generic
     /**
      * @param int $productId
      *
-     * @return \Magento\Catalog\Model\Product
+     * @return false|\Magento\Catalog\Model\Product
      */
     public function getProduct($productId)
     {
-        return $this->productRepository->getById($productId);
+        try {
+            return $this->productRepository->getById($productId);
+        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+            return false;
+        }
     }
 
     /**
@@ -85,7 +89,7 @@ class Product extends Generic
         $userData = $this->session->getData();
         $productId = (isset($userData['emailtester.product_id'])) ? (int)$userData['emailtester.product_id'] : null;
 
-        if(!empty($productId)) {
+        if (!empty($productId)) {
             return $productId;
         }
 
@@ -105,10 +109,10 @@ class Product extends Generic
         $currentValue = $this->getProductId();
         $products = $this->getProductCollection();
 
-        foreach($products as $product) {
+        foreach ($products as $product) {
             /** @var \Magento\Catalog\Model\Product $product */
             $value = $product->getId();
-            $label = '['.$product->getId().'] '.$this->outputHelper->getProductOutput($product);
+            $label = '[' . $product->getId() . '] ' . $this->outputHelper->getProductOutput($product);
             $current = ($product->getId() == $currentValue) ? true : false;
             $options[] = array('value' => $value, 'label' => $label, 'current' => $current);
         }
@@ -159,14 +163,19 @@ class Product extends Generic
         $productId = $this->getProductId();
 
         if ($this->isValidId($productId)) {
-            /** @var \Magento\Catalog\Model\Product $product */
-            $product = $this->productRepository->getById($productId);
+            try {
+                /** @var \Magento\Catalog\Model\Product $product */
+                $product = $this->productRepository->getById($productId);
+            } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+                return false;
+            }
+
             return $this->outputHelper->getProductOutput($product);
         }
 
         return '';
     }
-    
+
     /**
      * @return null|string
      */

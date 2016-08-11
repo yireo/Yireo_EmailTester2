@@ -60,18 +60,22 @@ class Customer extends Generic
         $this->customerRepository = $customerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->request = $request;
-        
+
         parent::__construct($outputHelper, $session, $storeRepository, $request, $config);
     }
 
     /**
      * @param int $customerId
      *
-     * @return \Magento\Customer\Api\Data\CustomerInterface
+     * @return false|\Magento\Customer\Api\Data\CustomerInterface
      */
     public function getCustomer($customerId)
     {
-        return $this->customerRepository->getById($customerId);
+        try {
+            return $this->customerRepository->getById($customerId);
+        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+            return false;
+        }
     }
 
     /**
@@ -128,13 +132,18 @@ class Customer extends Generic
     {
         $customerId = $this->getCustomerId();
 
-        if ($this->isValidId($customerId)) {
-            /** @var \Magento\Customer\Model\Customer $customer */
-            $customer = $this->customerRepository->getById($customerId);
-            return $this->outputHelper->getCustomerOutput($customer);
+        if (!$this->isValidId($customerId)) {
+            return '';
         }
 
-        return '';
+        /** @var \Magento\Customer\Model\Customer $customer */
+        try {
+            $customer = $this->customerRepository->getById($customerId);
+        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+            return '';
+        }
+
+        return $this->outputHelper->getCustomerOutput($customer);
     }
 
     /**

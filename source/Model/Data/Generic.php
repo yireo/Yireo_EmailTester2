@@ -140,7 +140,13 @@ class Generic
     {
         $storeId = $this->getStoreId();
         if ($storeId > 0) {
-            $store = $this->storeRepository->getById($storeId);
+
+            try {
+                $store = $this->storeRepository->getById($storeId);
+            } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+                return 0;
+            }
+
             return $store->getWebsiteId();
         }
 

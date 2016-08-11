@@ -40,11 +40,16 @@ class Store
     }
 
     /**
-     * @return \Magento\Store\Model\Store
+     * @return false|\Magento\Store\Model\Store
      */
     public function getVariable()
     {
-        return $this->storeRepository->getById($this->storeId);
+        try {
+            return $this->storeRepository->getById($this->storeId);
+        }catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+            return false;
+        }
+
     }
 
     /**

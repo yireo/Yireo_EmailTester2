@@ -38,13 +38,25 @@ class Quote
     }
     
     /**
-     * @return \Magento\Quote\Model\Quote
+     * @return false|\Magento\Quote\Model\Quote
      */
     public function getVariable()
     {
-        $quote = $this->quoteRepository->get($this->order->getQuoteId());
+        if (empty($this->order)) {
+            return false;
+        }
 
-        return $quote;
+        $quoteId = (int) $this->order->getQuoteId();
+
+        if (empty($quoteId)) {
+            return false;
+        }
+
+        try {
+            return $this->quoteRepository->get($quoteId);
+        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+            return false;
+        }
     }
 
     /**
