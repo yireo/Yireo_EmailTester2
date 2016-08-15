@@ -19,12 +19,12 @@
         "phpunit/phpunit":"*",
         "composer/composer":"*@dev"
     },
-    "extra":{
-        "map": [
-            [
-                "source/*",
-                "Yireo/EmailTester2"
-            ]
+    "autoload": {
+        "psr-4": {
+            "Yireo\\EmailTester2\\": "source"
+        },        
+        "files": [
+            "source/registration.php"
         ]
     }
 }
