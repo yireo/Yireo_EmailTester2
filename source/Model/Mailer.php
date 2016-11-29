@@ -214,6 +214,11 @@ class Mailer extends \Magento\Framework\DataObject
         $storeId = $this->getStoreId();
         $variables = $this->collectVariables();
 
+        if (preg_match('/^([^\/]+)\/(.*)$/', $templateId, $match)) {
+            $templateId = $match[1];
+            $theme = $match[2];
+        }
+
         $this->transportBuilder->setTemplateIdentifier($templateId)
             ->setTemplateOptions(['area' => \Magento\Framework\App\Area::AREA_FRONTEND, 'store' => $storeId])
             ->setTemplateVars($variables)
