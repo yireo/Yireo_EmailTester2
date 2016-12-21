@@ -12,19 +12,19 @@
         }
     ],
     "require": {
-        "magento/framework": "100.0.*",
+        "magento/framework": "100.*",
         "php": ">=5.6.0"
     },
     "require-dev":{
         "phpunit/phpunit":"*",
         "composer/composer":"*@dev"
     },
-    "extra":{
-        "map": [
-            [
-                "source/*",
-                "Yireo/EmailTester2"
-            ]
+    "autoload": {
+        "psr-4": {
+            "Yireo\\EmailTester2\\": "source"
+        },        
+        "files": [
+            "source/registration.php"
         ]
     }
 }
