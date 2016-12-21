@@ -40,9 +40,10 @@ class Send extends \Magento\Backend\App\Action
 
         \Yireo\EmailTester2\Model\Mailer $mailer
     ) {
-        parent::__construct($context);
         $this->redirectFactory = $redirectFactory;
         $this->mailer = $mailer;
+
+        parent::__construct($context);
     }
 
     /**

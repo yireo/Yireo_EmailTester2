@@ -39,7 +39,15 @@ class Order extends Generic
     protected $searchCriteriaBuilder;
 
     /**
-     * Constructor method
+     * Order constructor.
+     *
+     * @param \Magento\Backend\Model\Auth\Session $session
+     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
+     * @param \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param \Magento\Framework\App\RequestInterface $request
+     * @param \Yireo\EmailTester2\Helper\Output $outputHelper
+     * @param \Magento\Store\Api\StoreRepositoryInterface $storeRepository
+     * @param \Magento\Backend\App\ConfigInterface $config
      */
     public function __construct(
         \Magento\Backend\Model\Auth\Session $session,

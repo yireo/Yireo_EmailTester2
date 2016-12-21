@@ -14,9 +14,9 @@
 {
     "*": {
         "emailtester" : {
-            "customer_ajax_url": "<?= $block->getUrl('*/ajax/customer') ?>",
-            "product_ajax_url": "<?= $block->getUrl('*/ajax/product') ?>",
-            "order_ajax_url": "<?= $block->getUrl('*/ajax/order') ?>"
+            "customer_ajax_url": "<?= $block->escapeUrl($block->getUrl('*/ajax/customer')) ?>",
+            "product_ajax_url": "<?= $block->escapeUrl($block->getUrl('*/ajax/product')) ?>",
+            "order_ajax_url": "<?= $block->escapeUrl($block->getUrl('*/ajax/order')) ?>"
         }
     }
 }
