@@ -147,7 +147,16 @@ class Mailer extends \Magento\Framework\DataObject
         /** @var \Zend_Mime_Part $body */
         $message = $this->transportBuilder->getMessage();
         $body = $message->getBody();
-        return $body->getRawContent();
+
+        if (is_string($body)) {
+            return $body;
+        }
+
+        if (method_exists($body, 'getRawContent')) {
+            return $body->getRawContent();
+        }
+        
+        throw \Exception('Unexpected body type');
     }
 
     /**
