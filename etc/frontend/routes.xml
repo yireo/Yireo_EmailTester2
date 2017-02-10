@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * EmailTester plugin for Magento 2
+ *
+ * @package     Yireo_EmailTester2
+ * @author      Yireo
+ * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
+ * @license     Open Source License
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="standard">
+        <route id="emailtester" frontName="emailtester">
+            <module name="Yireo_EmailTester2" />
+        </route>
+    </router>
+</config>

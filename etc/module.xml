@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Yireo EmailTester2 for Magento 
+ *
+ * @package     Yireo_EmailTester2
+ * @author      Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2016 Yireo (https://www.yireo.com/)
+ * @license     Open Source License (OSL v3)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Yireo_EmailTester2" setup_version="0.2.0">
+        <sequence>
+            <module name="Magento_Core"/>
+            <module name="Magento_Store"/>
+        </sequence>
+    </module>
+</config>
