@@ -71,6 +71,7 @@ class Send extends \Magento\Backend\App\Action
     protected function getRequestData()
     {
         $data = array();
+        $data['store_id'] = $this->_request->getParam('store_id');
         $data['customer_id'] = $this->_request->getParam('customer_id');
         $data['product_id'] = $this->_request->getParam('product_id');
         $data['order_id'] = $this->_request->getParam('order_id');

@@ -58,12 +58,22 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
             ['legend' => __('Generic Options'), 'class' => 'fieldset-wide']
         );
 
+        // Store switcher
+        $options = $this->formHelper->getStoreOptions();
+        $genericFieldset->addField(
+            'store_id',
+            'select',
+            ['name' => 'store_id', 'label' => __('Store Scope'), 'values' => $options]
+        );
+
+        // Email field
         $genericFieldset->addField(
             'email',
             'text',
             ['name' => 'email', 'label' => __('Mail To'), 'required' => true]
         );
 
+        // Template options
         $options = $this->formHelper->getTemplateOptions();
         $genericFieldset->addField(
             'template',

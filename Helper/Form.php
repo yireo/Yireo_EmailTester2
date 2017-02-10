@@ -21,22 +21,38 @@ class Form extends Data
     protected $emailSource;
 
     /**
+     * @var \Magento\Store\Ui\Component\Listing\Column\Store\Options
+     */
+    protected $storeSource;
+
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
      * @var \Magento\Backend\Model\Session
      */
     protected $session;
 
     /**
      * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Yireo\EmailTester2\Model\Backend\Source\Email $emailSource
+     * @param \Magento\Store\Ui\Component\Listing\Column\Store\Options $storeSource
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Backend\Model\Session $session
+     * @param \Yireo\EmailTester2\Model\Backend\Source\Email $emailSource
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        \Yireo\EmailTester2\Model\Backend\Source\Email $emailSource,
-        \Magento\Backend\Model\Session $session
+        \Magento\Store\Ui\Component\Listing\Column\Store\Options $storeSource,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Backend\Model\Session $session,
+        \Yireo\EmailTester2\Model\Backend\Source\Email $emailSource
     )
     {
         $this->emailSource = $emailSource;
+        $this->storeSource = $storeSource;
+        $this->storeManager = $storeManager;
         $this->session = $session;
 
         parent::__construct($context);
@@ -51,11 +67,20 @@ class Form extends Data
     }
 
     /**
+     * @return mixed
+     */
+    public function getStoreOptions()
+    {
+        return $this->storeSource->toOptionArray();
+    }
+
+    /**
      * @return array
      */
     public function getFormData()
     {
         $data = array(
+            'store_id' => $this->getDefaultStoreId(),
             'email' => $this->getConfigValue('default_email'),
             'template' => $this->getConfigValue('default_transactional'),
             'customer_id' => $this->getConfigValue('default_customer'),
@@ -82,5 +107,13 @@ class Form extends Data
     protected function getDataFromSession()
     {
         return $this->session->getData('emailtester_values');
+    }
+
+    /**
+     * @return int
+     */
+    protected function getDefaultStoreId()
+    {
+        return $this->storeManager->getDefaultStoreView()->getId();
     }
 }
