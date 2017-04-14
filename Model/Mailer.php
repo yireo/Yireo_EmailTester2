@@ -56,6 +56,11 @@ class Mailer extends \Magento\Framework\DataObject
     protected $inlineTranslation;
 
     /**
+     * @var \Magento\Framework\Event\ManagerInterface
+     */
+    protected $eventManager;
+
+    /**
      * @var int
      */
     protected $storeId;
@@ -85,6 +90,7 @@ class Mailer extends \Magento\Framework\DataObject
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Framework\Translate\Inline\StateInterface $inlineTranslation,
+        \Magento\Framework\Event\ManagerInterface $eventManager,
         array $data = []
     )
     {
@@ -95,6 +101,7 @@ class Mailer extends \Magento\Framework\DataObject
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
         $this->inlineTranslation = $inlineTranslation;
+        $this->eventManager = $eventManager;
 
         parent::__construct($data);
     }
@@ -227,6 +234,15 @@ class Mailer extends \Magento\Framework\DataObject
             $templateId = $match[1];
             $theme = $match[2];
         }
+
+        $this->eventManager->dispatch(
+            'email_order_set_template_vars_before',
+            ['sender' => $sender, 'transport' => $variables]
+        );
+
+        $this->eventManager->dispatch(
+            'emailtester_variables', ['variables' => &$variables]
+        );
 
         $this->transportBuilder->setTemplateIdentifier($templateId)
             ->setTemplateOptions(['area' => \Magento\Framework\App\Area::AREA_FRONTEND, 'store' => $storeId])

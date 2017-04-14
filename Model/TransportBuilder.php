@@ -23,6 +23,7 @@ class TransportBuilder extends \Magento\Framework\Mail\Template\TransportBuilder
     public function getMessage()
     {
         $this->prepareMessage();
+
         return $this->message;
     }
 }
