@@ -36,6 +36,7 @@ class DataTest extends \PHPUnit_Framework_TestCase
     {
         $this->objectManagerHelper = new ObjectManagerHelper($this);
 
+        /** @var \Magento\Framework\App\Helper\Context $context */
         $context = $this->_getContextStub();
         $this->targetHelper = new \Yireo\EmailTester2\Helper\Data($context);
     }

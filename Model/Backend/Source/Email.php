@@ -37,8 +37,12 @@ class Email
         if(!empty($collection)) {
             foreach($collection as $template) {
                 /** @var \Magento\Email\Model\Template $templateCode */
-                $templateCode = $template->getTemplateCode();
-                if(empty($templateCode)) $templateCode = $template->getData('orig_template_code');
+                $templateCode = (string) $template->getTemplateCode();
+                if(empty($templateCode)) {
+                    $templateCode = (string) $template->getData('orig_template_code');
+                }
+
+                $options[$templateCode] = [];
                 $options[$templateCode]['value'] = $template->getTemplateId();
                 $options[$templateCode]['label'] = $templateCode;
             }
@@ -47,7 +51,10 @@ class Email
 
         $defaultOptions = $this->emailConfig->getAvailableTemplates();
         foreach($defaultOptions as $group => $option) {
-            if(empty($option['value'])) continue;
+            if(empty($option['value'])) {
+                continue;
+            }
+
             if(!empty($collection)) {
                 $option['label'] = '['.$option['group'].'] '.$option['label'];
             }

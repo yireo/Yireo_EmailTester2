@@ -10,5 +10,7 @@
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-blank" xsi:noNamespaceSchemaLocation="urn:magento:module:View/Layout:etc/page_configuration.xsd">
-    <referenceContainer name="menu.wrapper" remove="true"/>
+    <body>
+        <referenceContainer name="menu.wrapper" remove="true"/>
+    </body>
 </page>

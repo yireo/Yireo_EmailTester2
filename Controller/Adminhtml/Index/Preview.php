@@ -49,9 +49,13 @@ class Preview extends Action
     {
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
-        $resultPage->getLayout()->getUpdate()->addHandle('emailtester_index_preview');
 
-        $previewBlock = $resultPage->getLayout()->createBlock('\Yireo\EmailTester2\Block\Adminhtml\Preview');
+        $layout = $resultPage->getLayout();
+        $update = $layout->getUpdate();
+        $update->removeHandle('default');
+        $update->addHandle('emailtester_index_preview');
+
+        $previewBlock = $layout->createBlock('\Yireo\EmailTester2\Block\Adminhtml\Preview');
         $resultPage->addContent($previewBlock);
 
         return $resultPage;
