@@ -42,9 +42,9 @@ class Preview extends \Magento\Framework\View\Element\Text
     }
 
     /**
-     * @param $data
+     * @param array $data
      */
-    protected function setMailerOutput($data)
+    protected function setMailerOutput(array $data)
     {
         $this->mailer->setData($data);
         $text = $this->mailer->getHtml();
@@ -54,7 +54,7 @@ class Preview extends \Magento\Framework\View\Element\Text
     /**
      * @return array
      */
-    protected function getRequestData()
+    protected function getRequestData() : array
     {
         $data = array();
         $data['store_id'] = $this->_request->getParam('store_id');
@@ -68,9 +68,9 @@ class Preview extends \Magento\Framework\View\Element\Text
     }
 
     /**
-     * @param $data
+     * @param array $data
      */
-    protected function saveToSession($data)
+    protected function saveToSession(array $data)
     {
         $this->_session->setEmailtesterValues($data);
     }

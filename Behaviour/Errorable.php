@@ -25,23 +25,23 @@ trait Errorable
     /**
      * @param array $errors
      */
-    public function setErrors($errors)
+    public function setErrors(array $errors)
     {
         $this->errors = $errors;
     }
 
     /**
-     * @return array
+     * @return bool
      */
-    public function hasErrors()
+    public function hasErrors() : bool
     {
-        return empty($this->errors);
+        return (bool) empty($this->errors);
     }
 
     /**
      * @return array
      */
-    public function getErrors()
+    public function getErrors() : array
     {
         return $this->errors;
     }
@@ -50,15 +50,15 @@ trait Errorable
      *
      * @return string
      */
-    public function getErrorString($delimiter = '')
+    public function getErrorString(string $delimiter = '; ')
     {
-        return implode('; ', $this->errors);
+        return implode($delimiter . '', $this->errors);
     }
 
     /**
-     * @param $error string
+     * @param string $error
      */
-    protected function addError($error)
+    protected function addError(string $error)
     {
         $this->errors[] = $error;
     }

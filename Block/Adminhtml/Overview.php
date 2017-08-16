@@ -46,7 +46,7 @@ class Overview extends Template
      *
      * @return string
      */
-    public function getFormHtml()
+    public function getFormHtml() : string
     {
         return $this->getChildHtml('form');
     }
@@ -54,7 +54,7 @@ class Overview extends Template
     /**
      * {@inheritdoc}
      */
-    public function canRender(\Magento\Backend\Block\Widget\Button\Item $item)
+    public function canRender(\Magento\Backend\Block\Widget\Button\Item $item) : bool
     {
         return !$item->isDeleted();
     }

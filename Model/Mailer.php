@@ -111,7 +111,7 @@ class Mailer extends \Magento\Framework\DataObject
      *
      * @return string
      */
-    public function getHtml()
+    public function getHtml() : string
     {
         $this->prepare();
 
@@ -125,7 +125,7 @@ class Mailer extends \Magento\Framework\DataObject
      *
      * @return bool
      */
-    public function send()
+    public function send() : bool
     {
         $this->prepare();
         $transport = $this->transportBuilder->getTransport();
@@ -149,7 +149,7 @@ class Mailer extends \Magento\Framework\DataObject
     /**
      * @return string
      */
-    protected function getRawContentFromTransportBuilder()
+    protected function getRawContentFromTransportBuilder() : string
     {
         /** @var \Zend_Mime_Part $body */
         $message = $this->transportBuilder->getMessage();
