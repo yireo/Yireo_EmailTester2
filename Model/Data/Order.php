@@ -8,9 +8,11 @@
  * @license     Open Source License
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Data;
 
-use Magento\Framework\Api\Filter;
+use Magento\Framework\Api\FilterBuilder;
 use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 
 /**
@@ -21,48 +23,55 @@ class Order extends Generic
     /**
      * @var \Magento\Backend\Model\Auth\Session
      */
-    protected $session;
+    private $session;
 
     /**
      * @var \Magento\Framework\App\RequestInterface
      */
-    protected $request;
+    private $request;
 
     /**
      * @var \Magento\Sales\Api\OrderRepositoryInterface
      */
-    protected $orderRepository;
+    private $orderRepository;
 
     /**
      * @var \Magento\Framework\Api\Search\SearchCriteriaBuilder
      */
-    protected $searchCriteriaBuilder;
+    private $searchCriteriaBuilder;
+
+    /**
+     * @var FilterBuilder
+     */
+    private $filterBuilder;
 
     /**
      * Order constructor.
      *
-     * @param \Magento\Backend\Model\Auth\Session $session
+     * @param \Magento\Backend\Model\Auth\Session\Proxy $session
      * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
      * @param \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\Framework\App\RequestInterface $request
+     * @param FilterBuilder $filterBuilder
      * @param \Yireo\EmailTester2\Helper\Output $outputHelper
      * @param \Magento\Store\Api\StoreRepositoryInterface $storeRepository
      * @param \Magento\Backend\App\ConfigInterface $config
      */
     public function __construct(
-        \Magento\Backend\Model\Auth\Session $session,
+        \Magento\Backend\Model\Auth\Session\Proxy $session,
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Framework\App\RequestInterface $request,
+        FilterBuilder $filterBuilder,
         \Yireo\EmailTester2\Helper\Output $outputHelper,
         \Magento\Store\Api\StoreRepositoryInterface $storeRepository,
         \Magento\Backend\App\ConfigInterface $config
-    )
-    {
+    ) {
         $this->session = $session;
         $this->orderRepository = $orderRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->request = $request;
+        $this->filterBuilder = $filterBuilder;
 
         parent::__construct($outputHelper, $session, $storeRepository, $request, $config);
     }
@@ -70,9 +79,9 @@ class Order extends Generic
     /**
      * @param int $orderId
      *
-     * @return false|\Magento\Sales\Model\Order
+     * @return false|\Magento\Sales\Api\Data\OrderInterface
      */
-    public function getOrder($orderId)
+    public function getOrder(int $orderId)
     {
         try {
             return $this->orderRepository->get($orderId);
@@ -86,21 +95,21 @@ class Order extends Generic
      *
      * @return int
      */
-    public function getOrderId()
+    public function getOrderId(): int
     {
         $orderId = $this->request->getParam('order_id');
         if (!empty($orderId)) {
-            return $orderId;
+            return (int)$orderId;
         }
 
         $userData = $this->session->getData();
         $orderId = (isset($userData['emailtester.order_id'])) ? (int)$userData['emailtester.order_id'] : null;
 
         if (!empty($orderId)) {
-            return $orderId;
+            return (int)$orderId;
         }
 
-        $orderId = $this->getStoreConfig('emailtester/settings/default_order');
+        $orderId = (int)$this->getStoreConfig('emailtester/settings/default_order');
         return $orderId;
     }
 
@@ -109,10 +118,10 @@ class Order extends Generic
      *
      * @return array
      */
-    public function getOrderOptions()
+    public function getOrderOptions(): array
     {
-        $options = array();
-        $options[] = array('value' => '', 'label' => '', 'current' => null);
+        $options = [];
+        $options[] = ['value' => '', 'label' => '', 'current' => ''];
         $currentValue = $this->getOrderId();
         $orders = $this->getOrderCollection();
 
@@ -121,39 +130,61 @@ class Order extends Generic
             $value = $order->getId();
             $label = '[' . $order->getId() . '] ' . $this->outputHelper->getOrderOutput($order);
             $current = ($order->getId() == $currentValue) ? true : false;
-            $options[] = array('value' => $value, 'label' => $label, 'current' => $current);
+            $options[] = ['value' => $value, 'label' => $label, 'current' => $current];
         }
 
         return $options;
     }
 
     /**
+     * Get current order result
+     *
+     * @return string
+     */
+    public function getOrderSearch(): string
+    {
+        $orderId = $this->getOrderId();
+
+        if ($this->isValidId($orderId)) {
+            try {
+                /** @var \Magento\Sales\Model\Order $order */
+                $order = $this->orderRepository->get($orderId);
+            } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+                return '';
+            }
+
+            return (string)$this->outputHelper->getOrderOutput($order);
+        }
+
+        return '';
+    }
+
+    /**
      * @return \Magento\Sales\Api\Data\OrderSearchResultInterface
      */
-    protected function getOrderCollection()
+    private function getOrderCollection()
     {
         $searchCriteriaBuilder = $this->searchCriteriaBuilder;
         $searchCriteriaBuilder->addSortOrder('entity_id', AbstractCollection::SORT_ORDER_DESC);
 
         $customOptions = $this->getCustomOptions('order');
         if (!empty($customOptions)) {
-            $searchCriteriaBuilder->addFilter(
-                new Filter([
-                    Filter::KEY_FIELD => 'entity_id',
-                    Filter::KEY_CONDITION_TYPE => 'in',
-                    Filter::KEY_VALUE => $customOptions
-                ]));
+            $filter = $this->filterBuilder
+                ->setField('entity_id')
+                ->setConditionType('in')
+                ->setValue($customOptions)
+                ->create();
+            $searchCriteriaBuilder->addFilter($filter);
         }
 
         $storeIds = $this->getStoreIds();
         if (!empty($storeIds)) {
-            $searchCriteriaBuilder->addFilter(
-                new Filter([
-                    Filter::KEY_FIELD => 'store_id',
-                    Filter::KEY_CONDITION_TYPE => 'in',
-                    Filter::KEY_VALUE => $storeIds
-                ])
-            );
+            $filter = $this->filterBuilder
+                ->setField('store_id')
+                ->setConditionType('in')
+                ->setValue($storeIds)
+                ->create();
+            $searchCriteriaBuilder->addFilter($filter);
         }
 
         $searchCriteria = $searchCriteriaBuilder->create();
@@ -174,9 +205,9 @@ class Order extends Generic
     /**
      * @return array
      */
-    protected function getStoreIds()
+    private function getStoreIds(): array
     {
-        $storeIds = array();
+        $storeIds = [];
 
         $storeId = $this->getStoreId();
         if (empty($storeId)) {
@@ -201,32 +232,9 @@ class Order extends Generic
     }
 
     /**
-     * Get current order result
-     *
-     * @return string
-     */
-    public function getOrderSearch()
-    {
-        $orderId = $this->getOrderId();
-
-        if ($this->isValidId($orderId)) {
-            try {
-                /** @var \Magento\Sales\Model\Order $order */
-                $order = $this->orderRepository->get($orderId);
-            } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
-                return '';
-            }
-
-            return $this->outputHelper->getOrderOutput($order);
-        }
-
-        return '';
-    }
-
-    /**
      * @return null|string
      */
-    protected function getOrderCollectionLimit()
+    private function getOrderCollectionLimit()
     {
         return $this->getStoreConfig('emailtester/settings/limit_order');
     }

@@ -13,9 +13,7 @@
     <head>
         <title>EmailTester Overview</title>
         <css src="Yireo_EmailTester2/css/emailtester.css" />
-        <css src="Yireo_EmailTester2/css/jquery-ui.min.css" />
-        <!--<css src="Yireo_EmailTester2/css/jquery-ui.structure.min.css" />
-        <css src="Yireo_EmailTester2/css/jquery-ui.theme.min.css" />-->
+        <css src="Yireo_EmailTester2/css/jquery-ui.css" />
     </head>
     <body>
         <referenceContainer name="content">

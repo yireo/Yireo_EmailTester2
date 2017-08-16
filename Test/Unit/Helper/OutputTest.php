@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Test\Unit\Helper;
 
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
@@ -22,12 +24,12 @@ class OutputTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \Yireo\EmailTester2\Helper\Output
      */
-    protected $targetHelper;
+    private $targetHelper;
 
     /**
      * @var ObjectManagerHelper
      */
-    protected $objectManagerHelper;
+    private $objectManagerHelper;
 
     /**
      * Setup method
@@ -57,7 +59,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getCustomerStub($data)
+    private function getCustomerStub($data)
     {
         // @todo: Rewrite to getMockObject()
         $customerStub = $this->getMock(
@@ -87,7 +89,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function _getContextStub()
+    private function _getContextStub()
     {
         $scopeConfig = $this->_getScopeConfigStub();
 
@@ -114,7 +116,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function _getScopeConfigStub()
+    private function _getScopeConfigStub()
     {
         $scopeConfig = $this->getMock('Magento\Framework\App\Config\ScopeConfigInterface');
 

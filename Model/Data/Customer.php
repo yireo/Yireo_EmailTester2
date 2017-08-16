@@ -8,9 +8,11 @@
  * @license     Open Source License
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Data;
 
-use Magento\Framework\Api\Filter;
+use Magento\Framework\Api\FilterBuilder;
 use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 
 /**
@@ -21,45 +23,52 @@ class Customer extends Generic
     /**
      * @var \Magento\Backend\Model\Auth\Session
      */
-    protected $session;
+    private $session;
 
     /**
      * @var \Magento\Framework\App\RequestInterface
      */
-    protected $request;
+    private $request;
 
     /**
      * @var \Magento\Customer\Api\CustomerRepositoryInterface
      */
-    protected $customerRepository;
+    private $customerRepository;
 
     /**
      * @var \Magento\Framework\Api\Search\SearchCriteriaBuilder
      */
-    protected $searchCriteriaBuilder;
+    private $searchCriteriaBuilder;
+
+    /**
+     * @var FilterBuilder
+     */
+    private $filterBuilder;
 
     /**
      * Customer constructor.
      *
-     * @param \Magento\Backend\Model\Auth\Session $session
+     * @param \Magento\Backend\Model\Auth\Session\Proxy $session
      * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      * @param \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\Framework\App\RequestInterface $request
+     * @param FilterBuilder $filterBuilder
      */
     public function __construct(
-        \Magento\Backend\Model\Auth\Session $session,
+        \Magento\Backend\Model\Auth\Session\Proxy $session,
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Framework\App\RequestInterface $request,
+        FilterBuilder $filterBuilder,
         \Yireo\EmailTester2\Helper\Output $outputHelper,
         \Magento\Store\Api\StoreRepositoryInterface $storeRepository,
         \Magento\Backend\App\ConfigInterface $config
-    )
-    {
+    ) {
         $this->session = $session;
         $this->customerRepository = $customerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->request = $request;
+        $this->filterBuilder = $filterBuilder;
 
         parent::__construct($outputHelper, $session, $storeRepository, $request, $config);
     }
@@ -69,7 +78,7 @@ class Customer extends Generic
      *
      * @return false|\Magento\Customer\Api\Data\CustomerInterface
      */
-    public function getCustomer($customerId)
+    public function getCustomer(int $customerId)
     {
         try {
             return $this->customerRepository->getById($customerId);
@@ -83,20 +92,20 @@ class Customer extends Generic
      *
      * @return int
      */
-    public function getCustomerId()
+    public function getCustomerId() : int
     {
         $customerId = $this->request->getParam('customer_id');
         if (!empty($customerId)) {
-            return $customerId;
+            return (int) $customerId;
         }
 
         $userData = $this->session->getData();
         $customerId = (isset($userData['emailtester.customer_id'])) ? (int)$userData['emailtester.customer_id'] : null;
         if (!empty($customerId)) {
-            return $customerId;
+            return (int) $customerId;
         }
 
-        $customerId = $this->getStoreConfig('emailtester/settings/default_customer');
+        $customerId = (int) $this->getStoreConfig('emailtester/settings/default_customer');
         return $customerId;
     }
 
@@ -105,10 +114,10 @@ class Customer extends Generic
      *
      * @return array
      */
-    public function getCustomerOptions()
+    public function getCustomerOptions() : array
     {
-        $options = array();
-        $options[] = array('value' => '', 'label' => '', 'current' => null);
+        $options = [];
+        $options[] = ['value' => '', 'label' => '', 'current' => ''];
         $currentValue = $this->getCustomerId();
         $customers = $this->getCustomerCollection();
 
@@ -117,7 +126,7 @@ class Customer extends Generic
             $value = $customer->getId();
             $label = '[' . $customer->getId() . '] ' . $this->outputHelper->getCustomerOutput($customer);
             $current = ($customer->getId() == $currentValue) ? true : false;
-            $options[] = array('value' => $value, 'label' => $label, 'current' => $current);
+            $options[] = ['value' => $value, 'label' => $label, 'current' => $current];
         }
 
         return $options;
@@ -128,7 +137,7 @@ class Customer extends Generic
      *
      * @return string
      */
-    public function getCustomerSearch()
+    public function getCustomerSearch() : string
     {
         $customerId = $this->getCustomerId();
 
@@ -136,7 +145,7 @@ class Customer extends Generic
             return '';
         }
 
-        /** @var \Magento\Customer\Model\Customer $customer */
+        /** @var \Magento\Customer\Api\Data\CustomerInterface $customer */
         try {
             $customer = $this->customerRepository->getById($customerId);
         } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
@@ -149,29 +158,29 @@ class Customer extends Generic
     /**
      * @return \Magento\Customer\Api\Data\CustomerSearchResultsInterface
      */
-    protected function getCustomerCollection()
+    private function getCustomerCollection()
     {
         $searchCriteriaBuilder = $this->searchCriteriaBuilder;
         $searchCriteriaBuilder->addSortOrder('entity_id', AbstractCollection::SORT_ORDER_DESC);
 
         $websiteId = $this->getWebsiteId();
         if ($websiteId > 0) {
-            $searchCriteriaBuilder->addFilter(
-                new Filter([
-                    Filter::KEY_FIELD => 'website_id',
-                    Filter::KEY_CONDITION_TYPE => 'eq',
-                    Filter::KEY_VALUE => $websiteId
-                ]));
+            $filter = $this->filterBuilder
+                ->setField('website_id')
+                ->setConditionType('eq')
+                ->setValue($websiteId)
+                ->create();
+            $searchCriteriaBuilder->addFilter($filter);
         }
 
         $customOptions = $this->getCustomOptions('customer');
         if (!empty($customOptions)) {
-            $searchCriteriaBuilder->addFilter(
-                new Filter([
-                    Filter::KEY_FIELD => 'entity_id',
-                    Filter::KEY_CONDITION_TYPE => 'in',
-                    Filter::KEY_VALUE => $customOptions
-                ]));
+            $filter = $this->filterBuilder
+                ->setField('entity_id')
+                ->setConditionType('in')
+                ->setValue($customOptions)
+                ->create();
+            $searchCriteriaBuilder->addFilter($filter);
         }
 
         $searchCriteria = $searchCriteriaBuilder->create();
@@ -192,7 +201,7 @@ class Customer extends Generic
     /**
      * @return null|string
      */
-    protected function getCustomerCollectionLimit()
+    private function getCustomerCollectionLimit()
     {
         return $this->getStoreConfig('emailtester/settings/limit_customer');
     }

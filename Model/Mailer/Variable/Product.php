@@ -8,27 +8,29 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
 /**
  * EmailTester Core model
  */
-class Product
+class Product implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 {
     /**
      * @var int
      */
-    protected $productId;
+    private $productId;
 
     /**
      * @var \Magento\Catalog\Api\ProductRepositoryInterface
      */
-    protected $productRepository;
+    private $productRepository;
 
     /**
      * @var \Magento\Framework\Api\SearchCriteriaBuilder
      */
-    protected $searchCriteriaBuilder;
+    private $searchCriteriaBuilder;
 
     /**
      * Quote constructor.
@@ -39,16 +41,15 @@ class Product
     public function __construct(
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
-    )
-    {
+    ) {
         $this->productRepository = $productRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }
 
     /**
-     * @return \Magento\Catalog\Model\Product
+     * @return \Magento\Catalog\Api\Data\ProductInterface
      */
-    public function getVariable()
+    public function getVariable(): \Magento\Catalog\Api\Data\ProductInterface
     {
         $product = $this->getProductById($this->productId);
 
@@ -58,7 +59,7 @@ class Product
             $searchCriteria = $this->searchCriteriaBuilder->create();
             $products = $this->productRepository->getList($searchCriteria)->getItems();
 
-            if (count($products) > 0) {
+            if (!empty($products)) {
                 $product = array_shift($products);
             }
         }
@@ -67,14 +68,12 @@ class Product
     }
 
     /**
-     * @param $productId
+     * @param int $productId
      *
      * @return bool|\Magento\Catalog\Api\Data\ProductInterface
      */
-    private function getProductById($productId)
+    private function getProductById(int $productId)
     {
-        $productId = (int)$productId;
-
         if (empty($productId)) {
             return false;
         }
@@ -95,7 +94,7 @@ class Product
     /**
      * @param int $productId
      */
-    public function setProductId($productId)
+    public function setProductId(int $productId)
     {
         $this->productId = $productId;
     }

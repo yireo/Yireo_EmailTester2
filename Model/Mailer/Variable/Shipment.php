@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
 /**
@@ -15,22 +17,22 @@ namespace Yireo\EmailTester2\Model\Mailer\Variable;
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class Shipment
+class Shipment implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 {
     /**
      * @var \Magento\Sales\Api\Data\OrderInterface
      */
-    protected $order;
+    private $order;
 
     /**
      * @var \Magento\Sales\Api\ShipmentRepositoryInterface
      */
-    protected $shipmentRepository;
+    private $shipmentRepository;
 
     /**
      * @var \Magento\Framework\Api\SearchCriteriaBuilder
      */
-    protected $searchCriteriaBuilder;
+    private $searchCriteriaBuilder;
 
     /**
      * Shipment constructor.
@@ -40,32 +42,31 @@ class Shipment
     public function __construct(
         \Magento\Sales\Api\ShipmentRepositoryInterface $shipmentRepository,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
-    )
-    {
+    ) {
         $this->shipmentRepository = $shipmentRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }
 
     /**
-     * @return \Magento\Sales\Model\Order\Shipment
+     * @return \Magento\Sales\Api\Data\ShipmentInterface
      */
     public function getVariable()
     {
         try {
             $this->searchCriteriaBuilder->addFilter('order_id', $this->order->getEntityId());
             $searchCriteria = $this->searchCriteriaBuilder->create();
-            $shipments = $this->shipmentRepository->getList($searchCriteria);
+            $searchCriteria->setCurrentPage(1);
+            $searchCriteria->setPageSize(1);
+            $shipments = $this->shipmentRepository->getList($searchCriteria)->getItems();
 
             if ($shipments) {
-                $shipment = $shipments->getFirstItem();
-            } else {
-                $shipment = $this->shipmentRepository->create();
+                return $shipments[0];
             }
+
+            return $this->shipmentRepository->create();
         } catch (\Exception $e) {
-            $shipment = $this->shipmentRepository->create();
+            return $this->shipmentRepository->create();
         }
-        
-        return $shipment;
     }
 
     /**

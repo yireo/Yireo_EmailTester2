@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model;
 
 /**
@@ -18,9 +20,9 @@ namespace Yireo\EmailTester2\Model;
 class TransportBuilder extends \Magento\Framework\Mail\Template\TransportBuilder
 {
     /**
-     * @return \Magento\Framework\Mail\Message|\Magento\Framework\Mail\MessageInterface
+     * @return \Magento\Framework\Mail\Message
      */
-    public function getMessage()
+    public function getMessage() : \Magento\Framework\Mail\Message
     {
         $this->prepareMessage();
 

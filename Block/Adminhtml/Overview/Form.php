@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Block\Adminhtml\Overview;
 
 /**
@@ -20,7 +22,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
     /**
      * @var \Yireo\EmailTester2\Helper\Form
      */
-    protected $formHelper;
+    private $formHelper;
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context
@@ -146,7 +148,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
     /**
      * @return array
      */
-    protected function getFormValues()
+    private function getFormValues(): array
     {
         return $this->formHelper->getFormData();
     }

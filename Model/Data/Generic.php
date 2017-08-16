@@ -8,6 +8,8 @@
  * @license     Open Source License
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Data;
 
 /**
@@ -49,19 +51,18 @@ class Generic
      * Generic constructor.
      *
      * @param \Yireo\EmailTester2\Helper\Output $outputHelper
-     * @param \Magento\Backend\Model\Auth\Session $session
+     * @param \Magento\Backend\Model\Auth\Session\Proxy $session
      * @param \Magento\Store\Api\StoreRepositoryInterface $storeRepository
      * @param \Magento\Framework\App\RequestInterface $request
      * @param \Magento\Backend\App\ConfigInterface $config
      */
     public function __construct(
         \Yireo\EmailTester2\Helper\Output $outputHelper,
-        \Magento\Backend\Model\Auth\Session $session,
+        \Magento\Backend\Model\Auth\Session\Proxy $session,
         \Magento\Store\Api\StoreRepositoryInterface $storeRepository,
         \Magento\Framework\App\RequestInterface $request,
         \Magento\Backend\App\ConfigInterface $config
-    )
-    {
+    ) {
         $this->outputHelper = $outputHelper;
         $this->session = $session;
         $this->request = $request;
@@ -76,14 +77,14 @@ class Generic
      *
      * @return array
      */
-    protected function getCustomOptions($type = null)
+    protected function getCustomOptions(string $type = ''): array
     {
         $customOptions = $this->getStoreConfig('emailtester/settings/custom_' . $type);
         if (empty($customOptions)) {
-            return array();
+            return [];
         }
 
-        $options = array();
+        $options = [];
         $customOptions = explode(',', $customOptions);
         foreach ($customOptions as $customOption) {
             $customOption = (int)trim($customOption);
@@ -100,7 +101,7 @@ class Generic
      *
      * @return bool
      */
-    protected function isValidId($id)
+    protected function isValidId($id): bool
     {
         if (empty($id)) {
             return false;
@@ -123,11 +124,11 @@ class Generic
      * @return int|mixed
      * @throws \Exception
      */
-    protected function getStoreId()
+    protected function getStoreId(): int
     {
         $storeId = (int)$this->request->getParam('store');
         if (!$storeId > 0) {
-            $storeId = $this->session->getData('emailtester.store');
+            $storeId = (int)$this->session->getData('emailtester.store');
         }
 
         return $storeId;
@@ -136,29 +137,27 @@ class Generic
     /**
      * @return int
      */
-    protected function getWebsiteId()
+    protected function getWebsiteId(): int
     {
         $storeId = $this->getStoreId();
         if ($storeId > 0) {
-
             try {
                 $store = $this->storeRepository->getById($storeId);
+                return (int)$store->getWebsiteId();
             } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
                 return 0;
             }
-
-            return $store->getWebsiteId();
         }
 
         return 0;
     }
 
     /**
-     * @param $value
+     * @param string $value
      *
      * @return null|string
      */
-    protected function getStoreConfig($value)
+    protected function getStoreConfig(string $value)
     {
         return $this->config->getValue($value);
     }

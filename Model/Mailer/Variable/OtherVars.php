@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
 /**
@@ -15,12 +17,12 @@ namespace Yireo\EmailTester2\Model\Mailer\Variable;
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class OtherVars
+class OtherVars implements \Yireo\EmailTester2\Model\Mailer\VariablesInterface
 {
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
-    protected $scopeConfig;
+    private $scopeConfig;
 
     /**
      * OtherVars constructor.
@@ -29,8 +31,7 @@ class OtherVars
      */
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-    )
-    {
+    ) {
         $this->scopeConfig = $scopeConfig;
     }
 
@@ -39,21 +40,27 @@ class OtherVars
      */
     public function getVariables()
     {
-        $variables = array(
+        $variables = [
             'store_phone' => $this->getStorePhone(),
             'store_hours' => $this->getStoreHours(),
-        );
+        ];
 
         return $variables;
     }
 
-    protected function getStoreHours()
+    /**
+     * @return string
+     */
+    private function getStoreHours(): string
     {
-        return $this->scopeConfig->getValue('general/store_information/hours');
+        return (string)$this->scopeConfig->getValue('general/store_information/hours');
     }
 
-    protected function getStorePhone()
+    /**
+     * @return string
+     */
+    private function getStorePhone(): string
     {
-        return $this->scopeConfig->getValue('general/store_information/phone');
+        return (string)$this->scopeConfig->getValue('general/store_information/phone');
     }
 }

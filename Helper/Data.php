@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Helper;
 
 /**
@@ -20,7 +22,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return bool
      */
-    public function isEnabled()
+    public function isEnabled() : bool
     {
         return (bool)$this->getConfigValue('enabled', false);
     }
@@ -30,7 +32,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return bool
      */
-    public function isDebug()
+    public function isDebug() : bool
     {
         return (bool)$this->getConfigValue('debug');
     }
@@ -38,12 +40,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Debugging method
      *
-     * @param $string
-     * @param null $variable
+     * @param string $string
+     * @param string $variable
      *
      * @return bool
      */
-    public function debug($string, $variable = null)
+    public function debug(string $string, $variable = '') : bool
     {
         if ($this->isDebug() == false) {
             return false;
@@ -61,12 +63,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Return a configuration value
      *
-     * @param null $key
-     * @param null $defaultValue
+     * @param string $key
+     * @param mixed $defaultValue
      *
-     * @return mixed|null
+     * @return mixed
      */
-    public function getConfigValue($key = null, $defaultValue = null)
+    public function getConfigValue(string $key = '', $defaultValue = null)
     {
         $value = $this->scopeConfig->getValue(
             'emailtester2/settings/' . $key,

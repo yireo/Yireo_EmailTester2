@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Block\Adminhtml;
 
 /**
@@ -20,7 +22,7 @@ class Preview extends \Magento\Framework\View\Element\Text
     /**
      * @var \Yireo\EmailTester2\Model\Mailer
      */
-    protected $mailer;
+    private $mailer;
 
     /**
      * @param \Yireo\EmailTester2\Model\Mailer $mailer
@@ -31,20 +33,26 @@ class Preview extends \Magento\Framework\View\Element\Text
         \Yireo\EmailTester2\Model\Mailer $mailer,
         \Magento\Backend\Block\Template\Context $context,
         array $data = []
-    )
-    {
+    ) {
+
         $this->mailer = $mailer;
         parent::__construct($context, $data);
+    }
 
+    /**
+     * Additional constructor
+     */
+    protected function _construct()
+    {
         $data = $this->getRequestData();
         $this->saveToSession($data);
         $this->setMailerOutput($data);
     }
 
     /**
-     * @param $data
+     * @param array $data
      */
-    protected function setMailerOutput($data)
+    private function setMailerOutput(array $data)
     {
         $this->mailer->setData($data);
         $text = $this->mailer->getHtml();
@@ -54,13 +62,13 @@ class Preview extends \Magento\Framework\View\Element\Text
     /**
      * @return array
      */
-    protected function getRequestData()
+    private function getRequestData(): array
     {
-        $data = array();
-        $data['store_id'] = $this->_request->getParam('store_id');
-        $data['customer_id'] = $this->_request->getParam('customer_id');
-        $data['product_id'] = $this->_request->getParam('product_id');
-        $data['order_id'] = $this->_request->getParam('order_id');
+        $data = [];
+        $data['store_id'] = (int) $this->_request->getParam('store_id');
+        $data['customer_id'] = (int) $this->_request->getParam('customer_id');
+        $data['product_id'] = (int) $this->_request->getParam('product_id');
+        $data['order_id'] = (int) $this->_request->getParam('order_id');
         $data['template'] = $this->_request->getParam('template');
         $data['email'] = $this->_request->getParam('email');
 
@@ -68,9 +76,9 @@ class Preview extends \Magento\Framework\View\Element\Text
     }
 
     /**
-     * @param $data
+     * @param array $data
      */
-    protected function saveToSession($data)
+    private function saveToSession(array $data)
     {
         $this->_session->setEmailtesterValues($data);
     }

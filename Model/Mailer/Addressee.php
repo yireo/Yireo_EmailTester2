@@ -8,29 +8,35 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Mailer;
 
+/**
+ * Class Addressee
+ *
+ * @package Yireo\EmailTester2\Model\Mailer
+ */
 class Addressee
 {
     /**
-     * @var
+     * @var string
      */
     protected $name;
 
     /**
-     * @var
+     * @var string
      */
     protected $email;
 
     /**
      * Yireo_EmailTester_Model_Mailer_Addressee constructor
-     * 
+     *
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      */
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-    )
-    {
+    ) {
         // @todo: Check if these values are still in same path
         $this->name = $scopeConfig->getValue(
             'trans_email/ident_general/name',
@@ -44,33 +50,33 @@ class Addressee
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
 
     /**
-     * @param mixed $email
+     * @param string $email
      */
-    public function setEmail($email)
+    public function setEmail(string $email)
     {
         $this->email = $email;
     }
@@ -78,8 +84,8 @@ class Addressee
     /**
      * @return array
      */
-    public function getAsArray()
+    public function getAsArray(): array
     {
-        return array('name' => $this->name, 'email' => $this->email);
+        return ['name' => $this->name, 'email' => $this->email];
     }
 }

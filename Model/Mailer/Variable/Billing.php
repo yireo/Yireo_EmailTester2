@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
 /**
@@ -15,18 +17,18 @@ namespace Yireo\EmailTester2\Model\Mailer\Variable;
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class Billing
+class Billing implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 {
     /**
      * @var \Magento\Customer\Model\Data\Customer
      */
-    protected $customer;
+    private $customer;
 
     /**
      * @var \Magento\Sales\Api\Data\OrderInterface
      */
-    protected $order;
-    
+    private $order;
+
     /**
      * @return string
      */
@@ -38,9 +40,9 @@ class Billing
     }
 
     /**
-     * @param \Magento\Customer\Model\Data\Customer $customer
+     * @param \Magento\Customer\Model\Data\CustomerSecure $customer
      */
-    public function setCustomer($customer)
+    public function setCustomer(\Magento\Customer\Model\Data\CustomerSecure $customer)
     {
         $this->customer = $customer;
     }
@@ -48,7 +50,7 @@ class Billing
     /**
      * @param \Magento\Sales\Api\Data\OrderInterface $order
      */
-    public function setOrder($order)
+    public function setOrder(\Magento\Sales\Api\Data\OrderInterface $order)
     {
         $this->order = $order;
     }

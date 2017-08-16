@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Behaviour;
 
 /**
@@ -18,9 +20,11 @@ trait Datacontainable
     /**
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
+     * @param string $name
+     *
      * @return mixed
      */
     public function getData($name = null)
@@ -32,23 +36,25 @@ trait Datacontainable
         if (isset($this->data[$name])) {
             return $this->data[$name];
         }
+
+        return false;
     }
 
     /**
      * @param string $name
      * @param mixed $value
      */
-    public function setData($name, $value)
+    public function setData(string $name, $value)
     {
         $this->data[$name] = $value;
     }
 
     /**
-     * @param $name
+     * @param string $name
      *
      * @return bool
      */
-    public function isDataEmpty($name)
+    public function isDataEmpty(string $name) : bool
     {
         if (empty($this->data[$name])) {
             return true;
@@ -58,11 +64,11 @@ trait Datacontainable
     }
 
     /**
-     * @param $name
+     * @param string $name
      *
      * @return bool
      */
-    public function isDataLowerThanOne($name)
+    public function isDataLowerThanOne(string $name) : bool
     {
         if (!isset($this->data[$name])) {
             return true;

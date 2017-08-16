@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
 
 /**
@@ -17,17 +19,20 @@ namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
  */
 class Send extends \Magento\Backend\App\Action
 {
+    /**
+     * ACL resource
+     */
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
 
     /**
      * @var \Magento\Framework\Controller\Result\RedirectFactory
      */
-    protected $redirectFactory;
+    private $redirectFactory;
 
     /**
      * @var \Yireo\EmailTester2\Model\Mailer
      */
-    protected $mailer;
+    private $mailer;
 
     /**
      * @param \Magento\Backend\App\Action\Context $context
@@ -37,7 +42,6 @@ class Send extends \Magento\Backend\App\Action
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory,
-
         \Yireo\EmailTester2\Model\Mailer $mailer
     ) {
         $this->redirectFactory = $redirectFactory;
@@ -68,9 +72,9 @@ class Send extends \Magento\Backend\App\Action
     /**
      * @return array
      */
-    protected function getRequestData()
+    private function getRequestData(): array
     {
-        $data = array();
+        $data = [];
         $data['store_id'] = $this->_request->getParam('store_id');
         $data['customer_id'] = $this->_request->getParam('customer_id');
         $data['product_id'] = $this->_request->getParam('product_id');
@@ -82,9 +86,9 @@ class Send extends \Magento\Backend\App\Action
     }
 
     /**
-     * @param $data
+     * @param array $data
      */
-    protected function saveToSession($data)
+    private function saveToSession(array $data)
     {
         $this->_session->setEmailtesterValues($data);
     }

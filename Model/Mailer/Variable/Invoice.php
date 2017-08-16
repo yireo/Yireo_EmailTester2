@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
 /**
@@ -15,22 +17,22 @@ namespace Yireo\EmailTester2\Model\Mailer\Variable;
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class Invoice
+class Invoice implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 {
     /**
      * @var \Magento\Sales\Api\Data\OrderInterface
      */
-    protected $order;
+    private $order;
 
     /**
      * @var \Magento\Sales\Api\InvoiceRepositoryInterface
      */
-    protected $invoiceRepository;
+    private $invoiceRepository;
 
     /**
      * @var \Magento\Framework\Api\SearchCriteriaBuilder
      */
-    protected $searchCriteriaBuilder;
+    private $searchCriteriaBuilder;
 
     /**
      * Shipment constructor.
@@ -41,32 +43,31 @@ class Invoice
     public function __construct(
         \Magento\Sales\Api\InvoiceRepositoryInterface $invoiceRepository,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
-    )
-    {
+    ) {
         $this->invoiceRepository = $invoiceRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }
 
     /**
-     * @return \Magento\Sales\Model\Order\Invoice
+     * @return \Magento\Sales\Api\Data\InvoiceInterface
      */
     public function getVariable()
     {
         try {
             $this->searchCriteriaBuilder->addFilter('order_id', $this->order->getEntityId());
             $searchCriteria = $this->searchCriteriaBuilder->create();
+            $searchCriteria->setCurrentPage(1);
+            $searchCriteria->setPageSize(1);
             $invoices = $this->invoiceRepository->getList($searchCriteria);
 
             if ($invoices) {
-                $invoice = $invoices->getFirstItem();
-            } else {
-                $invoice = $this->invoiceRepository->create();
+                return array_shift($invoices->getItems());
             }
-        } catch (Exception $e) {
-            $invoice = $this->invoiceRepository->create();
-        }
 
-        return $invoice;
+            return $this->invoiceRepository->create();
+        } catch (\Exception $e) {
+            return $this->invoiceRepository->create();
+        }
     }
 
     /**

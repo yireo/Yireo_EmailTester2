@@ -9,6 +9,8 @@
  * @contributor Philipp Wiegel
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Data;
 
 /**
@@ -17,7 +19,7 @@ namespace Yireo\EmailTester2\Model\Data;
 class Template
 {
     /** @var */
-    protected $templateModel;
+    private $templateModel;
 
     /**
      * Constructor method
@@ -32,7 +34,7 @@ class Template
      *
      * @return array
      */
-    public function getTemplateOptions()
+    public function getTemplateOptions() : array
     {
         $options = array_merge($this->getTemplatesFromDatabase(), $this->getTemplatesFromDisc());
 
@@ -42,9 +44,9 @@ class Template
     /**
      * @return array
      */
-    public function getTemplatesFromDatabase()
+    public function getTemplatesFromDatabase() : array
     {
-        $options = array();
+        $options = [];
 
         $templateCollection = $this->getEmailTemplateCollection();
 
@@ -69,13 +71,16 @@ class Template
     /**
      * @return array
      */
-    public function getTemplatesFromDisc()
+    public function getTemplatesFromDisc() : array
     {
-        $options = array();
+        $options = [];
 
         $defaultOptions = $this->getDefaultTemplatesAsOptionsArray();
         foreach ($defaultOptions as $option) {
-            if (empty($option['value'])) continue;
+            if (empty($option['value'])) {
+                continue;
+            }
+
             if (!empty($collection)) {
                 $option['label'] = '[default] ' . $option['label'];
             }
@@ -86,9 +91,9 @@ class Template
     }
 
     /**
-     * @return
+     * @return mixed
      */
-    protected function getEmailTemplateCollection()
+    private function getEmailTemplateCollection()
     {
         return $this->templateModel->getResourceCollection()
             ->setOrder('template_code');
@@ -97,7 +102,7 @@ class Template
     /**
      * @return array
      */
-    protected function getDefaultTemplatesAsOptionsArray()
+    private function getDefaultTemplatesAsOptionsArray() : array
     {
         return $this->templateModel->getDefaultTemplatesAsOptionsArray();
     }

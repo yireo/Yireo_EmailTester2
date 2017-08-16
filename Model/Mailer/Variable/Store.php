@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
 /**
@@ -15,17 +17,17 @@ namespace Yireo\EmailTester2\Model\Mailer\Variable;
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class Store
+class Store implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 {
     /**
      * @var int
      */
-    protected $storeId;
+    private $storeId;
 
     /**
      * @var \Magento\Store\Api\StoreRepositoryInterface
      */
-    protected $storeRepository;
+    private $storeRepository;
 
     /**
      * Store constructor.
@@ -34,28 +36,27 @@ class Store
      */
     public function __construct(
         \Magento\Store\Api\StoreRepositoryInterface $storeRepository
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
     }
 
     /**
-     * @return false|\Magento\Store\Model\Store
+     * @return false|\Magento\Store\Api\Data\StoreInterface
      */
     public function getVariable()
     {
         try {
             return $this->storeRepository->getById($this->storeId);
-        }catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
             return false;
         }
 
     }
 
     /**
-     * @param $storeId
+     * @param int $storeId
      */
-    public function setStoreId($storeId)
+    public function setStoreId(int $storeId)
     {
         $this->storeId = $storeId;
     }

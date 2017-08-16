@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Helper;
 
 /**
@@ -18,42 +20,41 @@ class Form extends Data
     /**
      * @var \Yireo\EmailTester2\Model\Backend\Source\Email
      */
-    protected $emailSource;
+    private $emailSource;
 
     /**
      * @var \Magento\Store\Ui\Component\Listing\Column\Store\Options
      */
-    protected $storeSource;
+    private $storeSource;
 
     /**
      * @var \Magento\Store\Model\StoreManagerInterface
      */
-    protected $storeManager;
+    private $storeManager;
 
     /**
      * @var \Magento\Backend\Model\Session
      */
-    protected $session;
+    private $backendSession;
 
     /**
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Store\Ui\Component\Listing\Column\Store\Options $storeSource
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Backend\Model\Session $session
+     * @param \Magento\Backend\Model\Session\Proxy $session
      * @param \Yireo\EmailTester2\Model\Backend\Source\Email $emailSource
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Store\Ui\Component\Listing\Column\Store\Options $storeSource,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Backend\Model\Session $session,
+        \Magento\Backend\Model\Session\Proxy $backendSession,
         \Yireo\EmailTester2\Model\Backend\Source\Email $emailSource
-    )
-    {
+    ) {
         $this->emailSource = $emailSource;
         $this->storeSource = $storeSource;
         $this->storeManager = $storeManager;
-        $this->session = $session;
+        $this->backendSession = $backendSession;
 
         parent::__construct($context);
     }
@@ -61,15 +62,15 @@ class Form extends Data
     /**
      * @return array
      */
-    public function getTemplateOptions()
+    public function getTemplateOptions() : array
     {
         return $this->emailSource->toOptionArray();
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getStoreOptions()
+    public function getStoreOptions() : array
     {
         return $this->storeSource->toOptionArray();
     }
@@ -77,16 +78,16 @@ class Form extends Data
     /**
      * @return array
      */
-    public function getFormData()
+    public function getFormData() : array
     {
-        $data = array(
+        $data = [
             'store_id' => $this->getDefaultStoreId(),
             'email' => $this->getConfigValue('default_email'),
             'template' => $this->getConfigValue('default_transactional'),
             'customer_id' => $this->getConfigValue('default_customer'),
             'order_id' => $this->getConfigValue('default_order'),
             'product_id' => $this->getConfigValue('default_product'),
-        );
+        ];
 
         $sessionData = $this->getDataFromSession();
 
@@ -102,18 +103,18 @@ class Form extends Data
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    protected function getDataFromSession()
+    private function getDataFromSession()
     {
-        return $this->session->getData('emailtester_values');
+        return $this->backendSession->getData('emailtester_values');
     }
 
     /**
      * @return int
      */
-    protected function getDefaultStoreId()
+    private function getDefaultStoreId() : int
     {
-        return $this->storeManager->getDefaultStoreView()->getId();
+        return (int) $this->storeManager->getDefaultStoreView()->getId();
     }
 }

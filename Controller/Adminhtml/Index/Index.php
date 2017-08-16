@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
 
 use \Magento\Backend\App\Action;
@@ -21,12 +23,15 @@ use \Magento\Framework\View\Result\PageFactory;
  */
 class Index extends Action
 {
+    /**
+     * ACL resource
+     */
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
 
     /**
      * @var PageFactory
      */
-    protected $resultPageFactory;
+    private $resultPageFactory;
 
     /**
      * @param Context $context
@@ -37,6 +42,7 @@ class Index extends Action
         PageFactory $resultPageFactory
     ) {
         parent::__construct($context);
+
         $this->resultPageFactory = $resultPageFactory;
     }
 
@@ -45,7 +51,7 @@ class Index extends Action
      *
      * @return \Magento\Backend\Model\View\Result\Page
      */
-    public function execute()
+    public function execute() : \Magento\Backend\Model\View\Result\Page
     {
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();

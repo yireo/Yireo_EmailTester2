@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Backend\Source;
 
 /**
@@ -18,8 +20,7 @@ class Email
     public function __construct(
         \Magento\Email\Model\ResourceModel\Template\Collection $emailTemplateCollection,
         \Magento\Email\Model\Template\Config $emailConfig
-    )
-    {
+    ) {
         $this->emailTemplateCollection = $emailTemplateCollection;
         $this->emailConfig = $emailConfig;
     }
@@ -31,15 +32,15 @@ class Email
      */
     public function toOptionArray()
     {
-        $options = array();
-        $collection =  $this->emailTemplateCollection;
+        $options = [];
+        $collection = $this->emailTemplateCollection;
 
-        if(!empty($collection)) {
-            foreach($collection as $template) {
+        if (!empty($collection)) {
+            foreach ($collection as $template) {
                 /** @var \Magento\Email\Model\Template $templateCode */
-                $templateCode = (string) $template->getTemplateCode();
-                if(empty($templateCode)) {
-                    $templateCode = (string) $template->getData('orig_template_code');
+                $templateCode = (string)$template->getTemplateCode();
+                if (empty($templateCode)) {
+                    $templateCode = (string)$template->getData('orig_template_code');
                 }
 
                 $options[$templateCode] = [];
@@ -50,18 +51,18 @@ class Email
         }
 
         $defaultOptions = $this->emailConfig->getAvailableTemplates();
-        foreach($defaultOptions as $group => $option) {
-            if(empty($option['value'])) {
+        foreach ($defaultOptions as $group => $option) {
+            if (empty($option['value'])) {
                 continue;
             }
 
-            if(!empty($collection)) {
-                $option['label'] = '['.$option['group'].'] '.$option['label'];
+            if (!empty($collection)) {
+                $option['label'] = '[' . $option['group'] . '] ' . $option['label'];
             }
             $options[] = $option;
         }
 
-        array_unshift($options, array('value' => '', 'label' => ''));
+        array_unshift($options, ['value' => '', 'label' => '']);
 
         return $options;
     }

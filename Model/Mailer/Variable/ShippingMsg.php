@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
 /**
@@ -15,12 +17,12 @@ namespace Yireo\EmailTester2\Model\Mailer\Variable;
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class ShippingMsg
+class ShippingMsg implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 {
     /**
      * @return string
      */
-    public function getVariable()
+    public function getVariable() : string
     {
         return 'This is a sample shipping message inserted by Yireo_EmailTester.';
     }

@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Mailer;
 
 /**
@@ -20,15 +22,14 @@ class AddresseeFactory
     /**
      * @var \Magento\Framework\ObjectManagerInterface
      */
-    protected $objectManager;
+    private $objectManager;
 
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager
-    )
-    {
+    ) {
         $this->objectManager = $objectManager;
     }
 
@@ -41,6 +42,6 @@ class AddresseeFactory
      */
     public function create(array $data = [])
     {
-        return $this->objectManager->create('Yireo\EmailTester2\Model\Mailer\Addressee', $data);
+        return $this->objectManager->create(\Yireo\EmailTester2\Model\Mailer\Addressee::class, $data);
     }
 }

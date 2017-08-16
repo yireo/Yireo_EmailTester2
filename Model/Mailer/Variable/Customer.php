@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
 /**
@@ -15,42 +17,42 @@ namespace Yireo\EmailTester2\Model\Mailer\Variable;
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class Customer
+class Customer implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 {
     /**
      * @var int
      */
-    protected $customerId = 0;
+    private $customerId = 0;
 
     /**
      * @var \Magento\Sales\Api\Data\OrderInterface
      */
-    protected $order;
-    
+    private $order;
+
     /**
      * @var \Magento\Customer\Api\CustomerRepositoryInterface
      */
-    protected $customerRepository;
+    private $customerRepository;
 
     /**
      * @var \Magento\Framework\Api\SearchCriteriaBuilder
      */
-    protected $searchCriteriaBuilder;
+    private $searchCriteriaBuilder;
 
     /**
      * @var \Magento\Customer\Model\CustomerRegistry
      */
-    protected $customerRegistry;
+    private $customerRegistry;
 
     /**
      * @var \Magento\Framework\Reflection\DataObjectProcessor
      */
-    protected $dataObjectProcessor;
+    private $dataObjectProcessor;
 
     /**
      * @var \Magento\Customer\Helper\View
      */
-    protected $customerViewHelper;
+    private $customerViewHelper;
 
     /**
      * Order constructor.
@@ -64,20 +66,20 @@ class Customer
         \Magento\Customer\Model\CustomerRegistry $customerRegistry,
         \Magento\Framework\Reflection\DataObjectProcessor $dataObjectProcessor,
         \Magento\Customer\Helper\View $customerViewHelper
-    )
-    {
+    ) {
         $this->customerRepository = $customerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->customerRegistry = $customerRegistry;
         $this->dataObjectProcessor = $dataObjectProcessor;
         $this->customerViewHelper = $customerViewHelper;
     }
-    
+
     /**
-     * @return mixed
+     * @return \Magento\Customer\Model\Data\CustomerSecure
      */
-    public function getVariable()
+    public function getVariable() : \Magento\Customer\Model\Data\CustomerSecure
     {
+        /** @var \Magento\Customer\Api\Data\CustomerInterface $customer */
         if (!empty($this->order) && $this->order->getCustomerId() > 0 && $this->customerId == 0) {
             $customer = $this->getCustomerById($this->order->getCustomerId());
         } elseif ($this->customerId) {
@@ -86,8 +88,9 @@ class Customer
 
         // Load the first customer instead
         if (empty($customer) || !$customer->getId() > 0) {
-            $this->searchCriteriaBuilder->setPageSize(1);
             $searchCriteria = $this->searchCriteriaBuilder->create();
+            $searchCriteria->setPageSize(1);
+            $searchCriteria->setCurrentPage(1);
             $customers = $this->customerRepository->getList($searchCriteria)->getItems();
             $customer = $customers[0];
         }
@@ -110,7 +113,7 @@ class Customer
      *
      * @return false|\Magento\Customer\Api\Data\CustomerInterface
      */
-    public function getCustomerById($customerId)
+    public function getCustomerById(int $customerId)
     {
         $customerId = (int)$customerId;
 
@@ -124,11 +127,11 @@ class Customer
             return false;
         }
     }
-    
+
     /**
-     * @param mixed $customerId
+     * @param int $customerId
      */
-    public function setCustomerId($customerId)
+    public function setCustomerId(int $customerId)
     {
         $this->customerId = $customerId;
     }

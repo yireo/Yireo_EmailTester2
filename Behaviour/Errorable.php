@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types=1);
+
 namespace Yireo\EmailTester2\Behaviour;
 
 /**
@@ -20,20 +22,20 @@ trait Errorable
     /**
      * @var array
      */
-    protected $errors = array();
+    protected $errors = [];
 
     /**
      * @param array $errors
      */
-    public function setErrors($errors)
+    public function setErrors(array $errors)
     {
         $this->errors = $errors;
     }
 
     /**
-     * @return array
+     * @return bool
      */
-    public function hasErrors()
+    public function hasErrors() : bool
     {
         return empty($this->errors);
     }
@@ -41,7 +43,7 @@ trait Errorable
     /**
      * @return array
      */
-    public function getErrors()
+    public function getErrors() : array
     {
         return $this->errors;
     }
@@ -50,15 +52,15 @@ trait Errorable
      *
      * @return string
      */
-    public function getErrorString($delimiter = '')
+    public function getErrorString(string $delimiter = '; ') : string
     {
-        return implode('; ', $this->errors);
+        return implode($delimiter, $this->errors);
     }
 
     /**
      * @param $error string
      */
-    protected function addError($error)
+    protected function addError(string $error)
     {
         $this->errors[] = $error;
     }
