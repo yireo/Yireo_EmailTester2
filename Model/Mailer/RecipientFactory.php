@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Mailer;
 
 /**
@@ -20,17 +22,17 @@ class RecipientFactory
     /**
      * @var \Magento\Framework\ObjectManagerInterface
      */
-    protected $objectManager;
+    private $objectManager;
 
     /**
      * @var \Magento\Customer\Api\CustomerRepositoryInterface
      */
-    protected $customerRepository;
+    private $customerRepository;
 
     /**
      * @var \Magento\Customer\Helper\View
      */
-    protected $customerViewHelper;
+    private $customerViewHelper;
 
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
@@ -39,8 +41,7 @@ class RecipientFactory
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Customer\Helper\View $customerViewHelper
-    )
-    {
+    ) {
         $this->objectManager = $objectManager;
         $this->customerRepository = $customerRepository;
         $this->customerViewHelper = $customerViewHelper;
@@ -51,11 +52,11 @@ class RecipientFactory
      *
      * @param array $data
      *
-     * @return \Magento\Config\Model\Config
+     * @return \Yireo\EmailTester2\Model\Mailer\Recipient
      */
-    public function create(array $data = [])
+    public function create(array $data = []): \Yireo\EmailTester2\Model\Mailer\Recipient
     {
-        $recipient = $this->objectManager->create('Yireo\EmailTester2\Model\Mailer\Recipient', $data);
+        $recipient = $this->objectManager->create(\Yireo\EmailTester2\Model\Mailer\Recipient::class, $data);
         $this->addCustomerData($recipient, $data);
         $this->addEmail($recipient, $data);
 
@@ -63,18 +64,18 @@ class RecipientFactory
     }
 
     /**
-     * @param $recipient
-     * @param $data
+     * @param Recipient $recipient
+     * @param array $data
      *
      * @return bool
      */
-    protected function addCustomerData(&$recipient, $data)
+    private function addCustomerData(Recipient &$recipient, array $data): bool
     {
         if (!isset($data['customer_id'])) {
             return false;
         }
 
-        $customerId = (int) $data['customer_id'];
+        $customerId = (int)$data['customer_id'];
 
         if (empty($customerId)) {
             return false;
@@ -83,7 +84,7 @@ class RecipientFactory
         /** @var  $customer \Magento\Customer\Api\Data\CustomerInterface */
         try {
             $customer = $this->customerRepository->getById($customerId);
-        } catch(\Magento\Framework\Exception\NoSuchEntityException $exception) {
+        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
             return false;
         }
 
@@ -98,12 +99,12 @@ class RecipientFactory
     }
 
     /**
-     * @param $recipient
-     * @param $data
+     * @param Recipient $recipient
+     * @param array $data
      *
      * @return bool
      */
-    protected function addEmail(&$recipient, $data)
+    private function addEmail(Recipient &$recipient, array $data): bool
     {
         if (empty($data['email'])) {
             return false;

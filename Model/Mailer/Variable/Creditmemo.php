@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
 /**
@@ -15,22 +17,22 @@ namespace Yireo\EmailTester2\Model\Mailer\Variable;
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class Creditmemo
+class Creditmemo implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 {
     /**
      * @var \Magento\Sales\Api\Data\OrderInterface
      */
-    protected $order;
+    private $order;
 
     /**
      * @var \Magento\Sales\Api\CreditmemoRepositoryInterface
      */
-    protected $creditmemoRepository;
+    private $creditmemoRepository;
 
     /**
      * @var \Magento\Framework\Api\SearchCriteriaBuilder
      */
-    protected $searchCriteriaBuilder;
+    private $searchCriteriaBuilder;
 
     /**
      * Constructor.
@@ -41,23 +43,24 @@ class Creditmemo
     public function __construct(
         \Magento\Sales\Api\CreditmemoRepositoryInterface $creditmemoRepository,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
-    )
-    {
+    ) {
         $this->creditmemoRepository = $creditmemoRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }
-    
+
     /**
-     * @return \Magento\Sales\Model\Order\Creditmemo
+     * @return \Magento\Sales\Model\Order\Creditmemo|null
      */
     public function getVariable()
     {
         $this->searchCriteriaBuilder->addFilter('order_id', $this->order->getEntityId());
         $searchCriteria = $this->searchCriteriaBuilder->create();
-        $creditmemos = $this->creditmemoRepository->getList($searchCriteria);
+        $searchCriteria->setCurrentPage(1);
+        $searchCriteria->setPageSize(1);
+        $creditmemos = $this->creditmemoRepository->getList($searchCriteria)->getItems();
 
         if (!empty($creditmemos)) {
-            $creditmemo = $creditmemos->getFirstItem();
+            $creditmemo = $creditmemos[0];
         } else {
             $creditmemo = null;
         }

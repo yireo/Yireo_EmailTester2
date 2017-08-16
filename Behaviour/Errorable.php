@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types=1);
+
 namespace Yireo\EmailTester2\Behaviour;
 
 /**
@@ -20,7 +22,7 @@ trait Errorable
     /**
      * @var array
      */
-    protected $errors = array();
+    protected $errors = [];
 
     /**
      * @param array $errors
@@ -50,9 +52,9 @@ trait Errorable
      *
      * @return string
      */
-    public function getErrorString(string $delimiter = '; ')
+    public function getErrorString(string $delimiter = '; ') : string
     {
-        return implode($delimiter . '', $this->errors);
+        return implode($delimiter, $this->errors);
     }
 
     /**

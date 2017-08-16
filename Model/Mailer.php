@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model;
 
 /**
@@ -23,52 +25,52 @@ class Mailer extends \Magento\Framework\DataObject
     /**
      * @var Mailer\AddresseeFactory
      */
-    protected $addresseeFactory;
+    private $addresseeFactory;
 
     /**
      * @var Mailer\RecipientFactory
      */
-    protected $recipientFactory;
+    private $recipientFactory;
 
     /**
      * @var Mailer\VariableBuilder
      */
-    protected $variableBuilder;
+    private $variableBuilder;
 
     /**
      * @var  \Magento\Framework\Mail\Template\TransportBuilder
      */
-    protected $transportBuilder;
+    private $transportBuilder;
 
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
-    protected $scopeConfig;
+    private $scopeConfig;
 
     /**
      * @var \Magento\Store\Model\StoreManagerInterface
      */
-    protected $storeManager;
+    private $storeManager;
 
     /**
      * @var \Magento\Framework\Translate\Inline\StateInterface
      */
-    protected $inlineTranslation;
+    private $inlineTranslation;
 
     /**
      * @var \Magento\Framework\Event\ManagerInterface
      */
-    protected $eventManager;
+    private $eventManager;
 
     /**
      * @var int
      */
-    protected $storeId;
+    private $storeId;
 
     /**
      * @var string
      */
-    protected $template;
+    private $template;
 
     /**
      * Mailer constructor.
@@ -92,8 +94,7 @@ class Mailer extends \Magento\Framework\DataObject
         \Magento\Framework\Translate\Inline\StateInterface $inlineTranslation,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         array $data = []
-    )
-    {
+    ) {
         $this->addresseeFactory = $addresseeFactory;
         $this->recipientFactory = $recipientFactory;
         $this->variableBuilder = $variableBuilder;
@@ -138,8 +139,8 @@ class Mailer extends \Magento\Framework\DataObject
             $sent = false;
         }
 
-        if ($sent == false) {
-            $this->processMailerErrors($transport);
+        if ($sent === false) {
+            $this->processMailerErrors();
             return false;
         }
 
@@ -148,6 +149,8 @@ class Mailer extends \Magento\Framework\DataObject
 
     /**
      * @return string
+     *
+     * @throws \Exception
      */
     protected function getRawContentFromTransportBuilder() : string
     {
@@ -162,26 +165,29 @@ class Mailer extends \Magento\Framework\DataObject
         if (method_exists($body, 'getRawContent')) {
             return $body->getRawContent();
         }
-        
-        throw \Exception('Unexpected body type');
+
+        throw new \Magento\Framework\Exception\LocalizedException(new \Magento\Framework\Phrase('Unexpected body type'));
     }
 
     /**
      * Send HTTP headers
+     *
+     * @return bool
      */
-    protected function sendHeaders()
+    private function sendHeaders(): bool
     {
         if (headers_sent()) {
-            return;
+            return false;
         }
 
         header('Content-Type: text/html; charset=UTF-8');
+        return true;
     }
 
     /**
-     * @param $transport
+     *
      */
-    protected function processMailerErrors($transport)
+    private function processMailerErrors()
     {
         if ($this->scopeConfig->getValue('system/smtp/disable')) {
             $this->addError('SMTP is disabled');
@@ -195,12 +201,12 @@ class Mailer extends \Magento\Framework\DataObject
     /**
      * @return \Yireo\EmailTester2\Model\Mailer\Recipient
      */
-    protected function getRecipient()
+    private function getRecipient()
     {
-        $data = array(
+        $data = [
             'customer_id' => $this->getData('customer_id'),
             'email' => $this->getData('email'),
-        );
+        ];
 
         return $this->recipientFactory->create($data);
     }
@@ -208,7 +214,7 @@ class Mailer extends \Magento\Framework\DataObject
     /**
      * Prepare for the main action
      */
-    protected function prepare()
+    private function prepare()
     {
         $this->setDefaultStoreId();
 
@@ -220,7 +226,7 @@ class Mailer extends \Magento\Framework\DataObject
     /**
      * Prepare the transport builder
      */
-    protected function prepareTransportBuilder()
+    private function prepareTransportBuilder()
     {
         /** @var \Yireo\EmailTester2\Model\Mailer\Addressee $sender */
         $sender = $this->addresseeFactory->create();
@@ -241,7 +247,8 @@ class Mailer extends \Magento\Framework\DataObject
         );
 
         $this->eventManager->dispatch(
-            'emailtester_variables', ['variables' => &$variables]
+            'emailtester_variables',
+            ['variables' => &$variables]
         );
 
         $this->transportBuilder->setTemplateIdentifier($templateId)
@@ -254,12 +261,12 @@ class Mailer extends \Magento\Framework\DataObject
     /**
      * Make sure a valid store ID is set
      */
-    protected function setDefaultStoreId()
+    private function setDefaultStoreId()
     {
         $storeId = $this->getStoreId();
 
         if (empty($storeId)) {
-            $storeId = $this->storeManager->getStore()->getId();
+            $storeId = (int)$this->storeManager->getStore()->getId();
             $this->setStoreId($storeId);
         }
     }
@@ -269,7 +276,7 @@ class Mailer extends \Magento\Framework\DataObject
      *
      * @return array
      */
-    protected function collectVariables()
+    private function collectVariables(): array
     {
         $variableBuilder = $this->variableBuilder;
         $variableBuilder->setData($this->getData());
@@ -281,15 +288,15 @@ class Mailer extends \Magento\Framework\DataObject
     /**
      * @return int
      */
-    protected function getStoreId()
+    private function getStoreId(): int
     {
-        return $this->getData('store_id');
+        return (int)$this->getData('store_id');
     }
 
     /**
      * @param int $storeId
      */
-    protected function setStoreId($storeId)
+    private function setStoreId(int $storeId)
     {
         $this->setData('store_id', $storeId);
     }
@@ -297,7 +304,7 @@ class Mailer extends \Magento\Framework\DataObject
     /**
      * @return string
      */
-    protected function getTemplate()
+    private function getTemplate(): string
     {
         return $this->getData('template');
     }
@@ -305,7 +312,7 @@ class Mailer extends \Magento\Framework\DataObject
     /**
      * @param string $template
      */
-    protected function setTemplate($template)
+    private function setTemplate(string $template)
     {
         $this->setData('template', $template);
     }

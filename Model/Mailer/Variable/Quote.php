@@ -8,22 +8,24 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
 /**
  * EmailTester Core model
  */
-class Quote
+class Quote implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 {
     /**
      * @var \Magento\Sales\Api\Data\OrderInterface
      */
-    protected $order;
-    
+    private $order;
+
     /**
      * @var \Magento\Quote\Api\CartRepositoryInterface
      */
-    protected $quoteRepository;
+    private $quoteRepository;
 
     /**
      * Quote constructor.
@@ -32,13 +34,12 @@ class Quote
      */
     public function __construct(
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
-    )
-    {
+    ) {
         $this->quoteRepository = $quoteRepository;
     }
-    
+
     /**
-     * @return false|\Magento\Quote\Model\Quote
+     * @return false|\Magento\Quote\Api\Data\CartInterface
      */
     public function getVariable()
     {
@@ -46,7 +47,7 @@ class Quote
             return false;
         }
 
-        $quoteId = (int) $this->order->getQuoteId();
+        $quoteId = (int)$this->order->getQuoteId();
 
         if (empty($quoteId)) {
             return false;

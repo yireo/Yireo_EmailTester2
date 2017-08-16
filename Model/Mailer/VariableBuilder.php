@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Mailer;
 
 /**
@@ -18,7 +20,7 @@ class VariableBuilder extends \Magento\Framework\DataObject
     /**
      * @var array
      */
-    protected $variableNames = array(
+    private $variableNames = [
         'store',
         'order',
         'customer',
@@ -33,21 +35,21 @@ class VariableBuilder extends \Magento\Framework\DataObject
         'order_vars',
         'shipping_msg',
         'other_vars',
-    );
+    ];
 
     /**
      * @var \Magento\Framework\ObjectManagerInterface
      */
-    protected $objectManager;
+    private $objectManager;
 
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param array $data
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
-        $data = array()
-    )
-    {
+        $data = []
+    ) {
         $this->objectManager = $objectManager;
 
         parent::__construct($data);
@@ -58,18 +60,16 @@ class VariableBuilder extends \Magento\Framework\DataObject
      *
      * @return array
      */
-    public function getVariables()
+    public function getVariables(): array
     {
-        $variables = array();
+        $variables = [];
         $variables['template'] = $this->getData('template');
 
         foreach ($this->variableNames as $variableName) {
-
             $className = ucfirst($this->dashesToCamelCase($variableName));
-            $variableModel = $this->objectManager->create('Yireo\EmailTester2\Model\Mailer\Variable\\' . $className);
+            $variableModel = $this->objectManager->create('\Yireo\EmailTester2\Model\Mailer\Variable\\' . $className);
 
             foreach ($this->getData() as $name => $value) {
-
                 $methodName = 'set' . ucfirst($this->dashesToCamelCase($name));
 
                 if (method_exists($variableModel, $methodName)) {
@@ -96,13 +96,13 @@ class VariableBuilder extends \Magento\Framework\DataObject
     }
 
     /**
-     * @param $string
+     * @param string $string
      *
      * @return string
      */
-    public function dashesToCamelCase($string)
+    public function dashesToCamelCase(string $string): string
     {
-        $string = explode("_", $string);
+        $string = explode('_', $string);
         $first = true;
         foreach ($string as &$v) {
             if ($first) {
@@ -112,6 +112,6 @@ class VariableBuilder extends \Magento\Framework\DataObject
             $v = ucfirst($v);
         }
 
-        return implode("", $string);
+        return implode('', $string);
     }
 }

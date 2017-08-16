@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
 /**
@@ -15,17 +17,17 @@ namespace Yireo\EmailTester2\Model\Mailer\Variable;
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class OrderVars
+class OrderVars implements \Yireo\EmailTester2\Model\Mailer\VariablesInterface
 {
     /**
      * @var \Magento\Sales\Api\Data\OrderInterface
      */
-    protected $order;
+    private $order;
 
     /**
      * @var \Magento\Sales\Model\Order\Address\Renderer
      */
-    protected $addressRenderer;
+    private $addressRenderer;
 
     /**
      * PaymentHtml constructor.
@@ -34,17 +36,16 @@ class OrderVars
      */
     public function __construct(
         \Magento\Sales\Model\Order\Address\Renderer $addressRenderer
-    )
-    {
+    ) {
         $this->addressRenderer = $addressRenderer;
     }
 
     /**
      * @return array
      */
-    public function getVariables()
+    public function getVariables(): array
     {
-        $variables = array();
+        $variables = [];
         $variables['formattedShippingAddress'] = $this->getFormattedShippingAddress();
         $variables['formattedBillingAddress'] = $this->getFormattedBillingAddress();
 
@@ -60,20 +61,20 @@ class OrderVars
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    protected function getFormattedShippingAddress()
+    private function getFormattedShippingAddress(): string
     {
         return $this->order->getIsVirtual()
-            ? null
-            : $this->addressRenderer->format($this->order->getShippingAddress(), 'html');
+            ? ''
+            : (string)$this->addressRenderer->format($this->order->getShippingAddress(), 'html');
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    protected function getFormattedBillingAddress()
+    private function getFormattedBillingAddress(): string
     {
-        return $this->addressRenderer->format($this->order->getBillingAddress(), 'html');
+        return (string)$this->addressRenderer->format($this->order->getBillingAddress(), 'html');
     }
 }

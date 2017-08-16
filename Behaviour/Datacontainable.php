@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Behaviour;
 
 /**
@@ -18,10 +20,11 @@ trait Datacontainable
     /**
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
-	 * @param string $name
+     * @param string $name
+     *
      * @return mixed
      */
     public function getData($name = null)
@@ -33,6 +36,8 @@ trait Datacontainable
         if (isset($this->data[$name])) {
             return $this->data[$name];
         }
+
+        return false;
     }
 
     /**

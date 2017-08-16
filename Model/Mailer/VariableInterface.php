@@ -13,10 +13,14 @@ declare(strict_types = 1);
 namespace Yireo\EmailTester2\Model\Mailer;
 
 /**
- * Class Recipient
+ * Interface VariableInterface
  *
  * @package Yireo\EmailTester2\Model\Mailer
  */
-class Recipient extends Addressee
+interface VariableInterface
 {
+    /**
+     * @return mixed
+     */
+    public function getVariable();
 }

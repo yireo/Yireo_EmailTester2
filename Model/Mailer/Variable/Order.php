@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
 /**
@@ -15,37 +17,37 @@ namespace Yireo\EmailTester2\Model\Mailer\Variable;
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class Order
+class Order implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 {
     /**
      * @var int
      */
-    protected $orderId = 0;
+    private $orderId = 0;
 
     /**
      * @var int
      */
-    protected $customerId = 0;
+    private $customerId = 0;
 
     /**
      * @var \Magento\Sales\Api\OrderRepositoryInterface
      */
-    protected $orderRepository;
+    private $orderRepository;
 
     /**
      * @var \Magento\Customer\Api\CustomerRepositoryInterface
      */
-    protected $customerRepository;
+    private $customerRepository;
 
     /**
      * @var \Magento\Framework\Api\SearchCriteriaBuilder
      */
-    protected $searchCriteriaBuilder;
+    private $searchCriteriaBuilder;
 
     /**
      * @var \Magento\Customer\Helper\View
      */
-    protected $customerViewHelper;
+    private $customerViewHelper;
 
     /**
      * Order constructor.
@@ -59,8 +61,7 @@ class Order
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Customer\Helper\View $customerViewHelper
-    )
-    {
+    ) {
         $this->orderRepository = $orderRepository;
         $this->customerRepository = $customerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -81,18 +82,19 @@ class Order
 
         // Load the first order instead
         if (!$order || !$order->getEntityId() > 0) {
-            $this->searchCriteriaBuilder->setPageSize(1);
             $searchCriteria = $this->searchCriteriaBuilder->create();
+            $searchCriteria->setPageSize(1);
+            $searchCriteria->setCurrentPage(1);
             $orders = $this->orderRepository->getList($searchCriteria)->getItems();
 
-            if (count($orders) > 0) {
-                $order = array_shift($orders);
+            if (!empty($orders)) {
+                return array_shift($orders);
             }
         }
 
         // Set the customer into the order
         $customer = $this->getCustomerById($this->customerId);
-        if (!empty($order) && !empty($customer)) {
+        if ($order instanceof \Magento\Sales\Api\Data\OrderInterface && $customer instanceof \Magento\Customer\Api\Data\CustomerInterface) {
             $order->setCustomerId($customer->getId());
             $order->setCustomerName($this->customerViewHelper->getCustomerName($customer));
             $order->setCustomerFirstname($customer->getFirstname());
@@ -105,14 +107,12 @@ class Order
     }
 
     /**
-     * @param $orderId
+     * @param int $orderId
      *
      * @return bool|\Magento\Sales\Api\Data\OrderInterface
      */
-    private function getOrderById($orderId)
+    private function getOrderById(int $orderId)
     {
-        $orderId = (int)$orderId;
-
         if (empty($orderId)) {
             return false;
         }
@@ -127,12 +127,12 @@ class Order
     }
 
     /**
+     * @param int $customerId
+     *
      * @return false|\Magento\Customer\Api\Data\CustomerInterface
      */
-    private function getCustomerById($customerId)
+    private function getCustomerById(int $customerId)
     {
-        $customerId = (int) $customerId;
-
         if (empty($customerId)) {
             return false;
         }
@@ -151,17 +151,17 @@ class Order
     }
 
     /**
-     * @param mixed $orderId
+     * @param int $orderId
      */
-    public function setOrderId($orderId)
+    public function setOrderId(int $orderId)
     {
         $this->orderId = $orderId;
     }
 
     /**
-     * @param mixed $customerId
+     * @param int $customerId
      */
-    public function setCustomerId($customerId)
+    public function setCustomerId(int $customerId)
     {
         $this->customerId = $customerId;
     }

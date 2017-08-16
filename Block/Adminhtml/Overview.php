@@ -8,21 +8,28 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Block\Adminhtml;
 
 use \Magento\Backend\Block\Template;
 
+/**
+ * Class Overview
+ *
+ * @package Yireo\EmailTester2\Block\Adminhtml
+ */
 class Overview extends Template
 {
     /**
      * @var \Magento\Backend\Block\Widget\Button\ButtonList
      */
-    protected $buttonList;
+    private $buttonList;
 
     /**
      * @var \Magento\Backend\Block\Widget\Button\ToolbarInterface
      */
-    protected $toolbar;
+    private $toolbar;
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context
@@ -75,7 +82,7 @@ class Overview extends Template
     /**
      * Add the buttons
      */
-    protected function addButtons()
+    private function addButtons()
     {
         $this->buttonList->add(
             'send',
@@ -103,7 +110,7 @@ class Overview extends Template
      *
      * @return string
      */
-    protected function getSendUrl()
+    private function getSendUrl() : string
     {
         return $this->getUrl('*/*/send');
     }
@@ -113,7 +120,7 @@ class Overview extends Template
      *
      * @return string
      */
-    protected function getPreviewUrl()
+    private function getPreviewUrl() : string
     {
         return $this->getUrl('*/*/preview');
     }

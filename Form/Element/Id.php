@@ -1,4 +1,14 @@
 <?php
+/**
+ * EmailTester2 plugin for Magento
+ *
+ * @package     Yireo_EmailTester2
+ * @author      Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
+ * @license     Open Source License (OSL v3)
+ */
+
+declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Form\Element;
 
@@ -20,8 +30,7 @@ class Id extends AbstractElement
         CollectionFactory $factoryCollection,
         Escaper $escaper,
         $data = []
-    )
-    {
+    ) {
         parent::__construct($factoryElement, $factoryCollection, $escaper, $data);
         $this->setType('text');
         $this->setExtType('textfield');
@@ -34,7 +43,7 @@ class Id extends AbstractElement
      */
     public function getElementHtml()
     {
-        $attributes = array(
+        $attributes = [
             'id' => $this->getId(),
             'name' => $this->getName(),
             'value' => $this->getValue(),
@@ -42,13 +51,13 @@ class Id extends AbstractElement
             'type' => 'text',
             'class' => 'input-text admin__control-text',
             'autocomplete' => 'off'
-        );
+        ];
 
-        $attributeHtml = array();
+        $attributeHtml = [];
         foreach ($attributes as $attributeName => $attributeValue) {
-            $attributeHtml[] = $attributeName.'="'.$attributeValue.'"';
+            $attributeHtml[] = $attributeName . '="' . $attributeValue . '"';
         }
 
-        return '<input '.implode($attributeHtml).'>';
+        return '<input ' . implode($attributeHtml) . '>';
     }
 }

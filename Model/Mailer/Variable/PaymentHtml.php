@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types = 1);
+
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
 /**
@@ -15,33 +17,31 @@ namespace Yireo\EmailTester2\Model\Mailer\Variable;
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class PaymentHtml
+class PaymentHtml implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 {
     /**
      * @var \Magento\Sales\Api\Data\OrderInterface
      */
-    protected $order;
+    private $order;
 
     /**
      * @var int
      */
-    protected $storeId;
+    private $storeId;
 
     /**
      * @var \Magento\Payment\Helper\Data
      */
-    protected $paymentHelper;
+    private $paymentHelper;
 
     /**
      * PaymentHtml constructor.
      *
      * @param \Magento\Payment\Helper\Data $paymentHelper
-     * @param \Magento\Framework\View\LayoutInterface $layout
      */
     public function __construct(
         \Magento\Payment\Helper\Data $paymentHelper
-    )
-    {
+    ) {
         $this->paymentHelper = $paymentHelper;
     }
 
@@ -68,11 +68,11 @@ class PaymentHtml
      *
      * @return string
      */
-    public function getPaymentBlockHtml(\Magento\Sales\Api\Data\OrderInterface $order, $storeId)
+    public function getPaymentBlockHtml(\Magento\Sales\Api\Data\OrderInterface $order, int $storeId): string
     {
         try {
-            $paymentInfo = $this->order->getPayment();
-            return $this->paymentHelper->getInfoBlockHtml($paymentInfo, $storeId);
+            $paymentInfo = $order->getPayment();
+            return (string)$this->paymentHelper->getInfoBlockHtml($paymentInfo, $storeId);
         } catch (\Exception $exception) {
             return '';
         }
@@ -87,9 +87,9 @@ class PaymentHtml
     }
 
     /**
-     * @param $storeId
+     * @param int $storeId
      */
-    public function setStoreId($storeId)
+    public function setStoreId(int $storeId)
     {
         $this->storeId = $storeId;
     }
