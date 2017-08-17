@@ -57,7 +57,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
      *
      * @param array $data
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit_Framework_MockObject_MockBuilder
      */
     private function getCustomerStub($data)
     {
@@ -79,7 +79,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
     /**
      * Get a stub for the $context parameter of the helper
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit_Framework_MockObject_MockBuilder
      */
     private function _getContextStub()
     {
@@ -97,7 +97,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
     /**
      * Get a stub for the $scopeConfig with a $context
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit_Framework_MockObject_MockBuilder
      */
     private function _getScopeConfigStub()
     {
