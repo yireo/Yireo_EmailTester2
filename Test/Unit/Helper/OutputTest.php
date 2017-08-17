@@ -61,27 +61,19 @@ class OutputTest extends \PHPUnit_Framework_TestCase
      */
     private function getCustomerStub($data)
     {
-        // @todo: Rewrite to getMockObject()
-        $customerStub = $this->getMock(
-            '\Magento\Customer\Model\Customer',
-            ['getName', 'getEmail'],
-            [$data['name'], $data['email']],
-            '',
-            false,
-            false
-        );
+        $customer = $this->getMockBuilder(\Magento\Customer\Model\Customer::class);
 
-        $customerStub->expects($this->any())
+        $customer->expects($this->any())
             ->method('getName')
             ->will($this->returnValue($data['name'])
             );
 
-        $customerStub->expects($this->any())
+        $customer->expects($this->any())
             ->method('getEmail')
             ->will($this->returnValue($data['email'])
             );
 
-        return $customerStub;
+        return $customer;
     }
 
     /**
@@ -91,18 +83,9 @@ class OutputTest extends \PHPUnit_Framework_TestCase
      */
     private function _getContextStub()
     {
+        $context = $this->getMockBuilder(\Magento\Framework\App\Helper\Context::class);
+
         $scopeConfig = $this->_getScopeConfigStub();
-
-        // @todo: Rewrite to getMockObject()
-        $context = $this->getMock(
-            'Magento\Framework\App\Helper\Context',
-            ['getScopeConfig'],
-            [],
-            '',
-            false,
-            false
-        );
-
         $context->expects($this->any())
             ->method('getScopeConfig')
             ->will($this->returnValue($scopeConfig)
@@ -118,7 +101,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
      */
     private function _getScopeConfigStub()
     {
-        $scopeConfig = $this->getMock('Magento\Framework\App\Config\ScopeConfigInterface');
+        $scopeConfig = $this->getMockBuilder(\Magento\Framework\App\Config\ScopeConfigInterface::class);
 
         $scopeConfig->expects($this->any())->method('getValue')->will($this->returnCallback([$this, 'getScopeConfigMethodStub']));
 

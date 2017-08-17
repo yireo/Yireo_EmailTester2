@@ -79,15 +79,7 @@ class DataTest extends \PHPUnit_Framework_TestCase
     {
         $scopeConfig = $this->_getScopeConfigStub();
 
-        // @todo: Rewrite to getMockObject()
-        $context = $this->getMock(
-            'Magento\Framework\App\Helper\Context',
-            ['getScopeConfig'],
-            [],
-            '',
-            false,
-            false
-        );
+        $context = $this->getMockBuilder(\Magento\Framework\App\Helper\Context::class);
 
         $context->expects($this->any())
             ->method('getScopeConfig')
@@ -104,8 +96,7 @@ class DataTest extends \PHPUnit_Framework_TestCase
      */
     private function _getScopeConfigStub()
     {
-        $scopeConfig = $this->getMock('Magento\Framework\App\Config\ScopeConfigInterface');
-
+        $scopeConfig = $this->getMockBuilder(\Magento\Framework\App\Config\ScopeConfigInterface::class);
         $scopeConfig->expects($this->any())->method('getValue')->will($this->returnCallback([$this, 'getScopeConfigMethodStub']));
 
         return $scopeConfig;
