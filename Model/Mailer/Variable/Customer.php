@@ -81,9 +81,9 @@ class Customer implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     {
         /** @var \Magento\Customer\Api\Data\CustomerInterface $customer */
         if (!empty($this->order) && $this->order->getCustomerId() > 0 && $this->customerId == 0) {
-            $customer = $this->getCustomerById($this->order->getCustomerId());
+            $customer = $this->getCustomerById((int) $this->order->getCustomerId());
         } elseif ($this->customerId) {
-            $customer = $this->getCustomerById($this->customerId);
+            $customer = $this->getCustomerById((int) $this->customerId);
         }
 
         // Load the first customer instead
