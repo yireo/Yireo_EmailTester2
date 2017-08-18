@@ -18,12 +18,12 @@ use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 /**
  * Class Yireo\EmailTester2\Model\Data\Order
  */
-class Order extends Generic
+class Order
 {
     /**
      * @var \Magento\Backend\Model\Auth\Session
      */
-    protected $session;
+    private $session;
 
     /**
      * @var \Magento\Framework\App\RequestInterface
@@ -44,6 +44,16 @@ class Order extends Generic
      * @var FilterBuilder
      */
     private $filterBuilder;
+
+    /**
+     * @var \Yireo\EmailTester2\Helper\Output
+     */
+    private $outputHelper;
+
+    /**
+     * @var \Magento\Backend\App\ConfigInterface
+     */
+    private $config;
 
     /**
      * Order constructor.
@@ -72,8 +82,8 @@ class Order extends Generic
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->request = $request;
         $this->filterBuilder = $filterBuilder;
-
-        parent::__construct($outputHelper, $session, $storeRepository, $request, $config);
+        $this->outputHelper = $outputHelper;
+        $this->config = $config;
     }
 
     /**
@@ -109,7 +119,7 @@ class Order extends Generic
             return (int)$orderId;
         }
 
-        $orderId = (int)$this->getStoreConfig('emailtester/settings/default_order');
+        $orderId = (int)$this->config->getValue('emailtester/settings/default_order');
         return $orderId;
     }
 
@@ -145,7 +155,7 @@ class Order extends Generic
     {
         $orderId = $this->getOrderId();
 
-        if ($this->isValidId($orderId)) {
+        if ($this->outputHelper->isValidId($orderId)) {
             try {
                 /** @var \Magento\Sales\Model\Order $order */
                 $order = $this->orderRepository->get($orderId);
@@ -167,7 +177,7 @@ class Order extends Generic
         $searchCriteriaBuilder = $this->searchCriteriaBuilder;
         $searchCriteriaBuilder->addSortOrder('entity_id', AbstractCollection::SORT_ORDER_DESC);
 
-        $customOptions = $this->getCustomOptions('order');
+        $customOptions = $this->outputHelper->getCustomOptions('order');
         if (!empty($customOptions)) {
             $filter = $this->filterBuilder
                 ->setField('entity_id')
@@ -177,7 +187,7 @@ class Order extends Generic
             $searchCriteriaBuilder->addFilter($filter);
         }
 
-        $storeIds = $this->getStoreIds();
+        $storeIds = $this->outputHelper->getStoreIds();
         if (!empty($storeIds)) {
             $filter = $this->filterBuilder
                 ->setField('store_id')
@@ -200,35 +210,6 @@ class Order extends Generic
         $orders = $this->orderRepository->getList($searchCriteria);
 
         return $orders;
-    }
-
-    /**
-     * @return array
-     */
-    private function getStoreIds(): array
-    {
-        $storeIds = [];
-
-        $storeId = $this->getStoreId();
-        if (empty($storeId)) {
-            return $storeIds;
-        }
-
-        try {
-            /** @var $store \Magento\Store\Api\Data\StoreInterface */
-            $store = $this->storeRepository->getById($storeId);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
-            return $storeIds;
-        }
-
-        $website = $store->getWebsite();
-
-        foreach ($website->getStores() as $store) {
-            /** @var $store \Magento\Store\Api\Data\StoreInterface */
-            $storeIds[] = $store->getId();
-        }
-
-        return $storeIds;
     }
 
     /**

@@ -18,22 +18,22 @@ use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 /**
  * Class Product
  */
-class Product extends Generic
+class Product
 {
     /**
      * @var \Magento\Backend\Model\Auth\Session
      */
-    protected $session;
-
-    /**
-     * @var \Magento\Framework\App\RequestInterface
-     */
-    private $request;
+    private $session;
 
     /**
      * @var \Magento\Catalog\Api\ProductRepositoryInterface
      */
     private $productRepository;
+
+    /**
+     * @var \Magento\Framework\App\RequestInterface
+     */
+    private $request;
 
     /**
      * @var \Magento\Framework\Api\Search\SearchCriteriaBuilder
@@ -47,14 +47,12 @@ class Product extends Generic
 
     /**
      * Product constructor.
-     *
      * @param \Magento\Backend\Model\Auth\Session\Proxy $session
      * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
      * @param \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\Framework\App\RequestInterface $request
      * @param FilterBuilder $filterBuilder
      * @param \Yireo\EmailTester2\Helper\Output $outputHelper
-     * @param \Magento\Store\Api\StoreRepositoryInterface $storeRepository
      * @param \Magento\Backend\App\ConfigInterface $config
      */
     public function __construct(
@@ -64,7 +62,6 @@ class Product extends Generic
         \Magento\Framework\App\RequestInterface $request,
         FilterBuilder $filterBuilder,
         \Yireo\EmailTester2\Helper\Output $outputHelper,
-        \Magento\Store\Api\StoreRepositoryInterface $storeRepository,
         \Magento\Backend\App\ConfigInterface $config
     ) {
         $this->session = $session;
@@ -72,8 +69,8 @@ class Product extends Generic
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->request = $request;
         $this->filterBuilder = $filterBuilder;
-
-        parent::__construct($outputHelper, $session, $storeRepository, $request, $config);
+        $this->outputHelper = $outputHelper;
+        $this->config = $config;
     }
 
     /**
@@ -109,7 +106,7 @@ class Product extends Generic
             return $productId;
         }
 
-        $productId = $this->getStoreConfig('emailtester/settings/default_product');
+        $productId = $this->config->getValue('emailtester/settings/default_product');
         return $productId;
     }
 
@@ -145,7 +142,7 @@ class Product extends Generic
     {
         $productId = $this->getProductId();
 
-        if ($this->isValidId($productId)) {
+        if ($this->outputHelper->isValidId($productId)) {
             try {
                 /** @var \Magento\Catalog\Model\Product $product */
                 $product = $this->productRepository->getById($productId);
@@ -167,7 +164,7 @@ class Product extends Generic
         $searchCriteriaBuilder = $this->searchCriteriaBuilder;
         $searchCriteriaBuilder->addSortOrder('entity_id', AbstractCollection::SORT_ORDER_DESC);
 
-        $customOptions = $this->getCustomOptions('product');
+        $customOptions = $this->outputHelper->getCustomOptions('product');
         if (!empty($customOptions)) {
             $filter = $this->filterBuilder
                 ->setField('entity_id')
@@ -197,6 +194,6 @@ class Product extends Generic
      */
     private function getProductCollectionLimit()
     {
-        return $this->getStoreConfig('emailtester/settings/limit_product');
+        return $this->config->getValue('emailtester/settings/limit_product');
     }
 }

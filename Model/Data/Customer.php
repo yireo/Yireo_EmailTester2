@@ -18,17 +18,12 @@ use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 /**
  * Class Customer
  */
-class Customer extends Generic
+class Customer
 {
     /**
      * @var \Magento\Backend\Model\Auth\Session
      */
-    protected $session;
-
-    /**
-     * @var \Magento\Framework\App\RequestInterface
-     */
-    private $request;
+    private $session;
 
     /**
      * @var \Magento\Customer\Api\CustomerRepositoryInterface
@@ -41,9 +36,24 @@ class Customer extends Generic
     private $searchCriteriaBuilder;
 
     /**
+     * @var \Magento\Framework\App\RequestInterface
+     */
+    private $request;
+
+    /**
      * @var FilterBuilder
      */
     private $filterBuilder;
+
+    /**
+     * @var \Yireo\EmailTester2\Helper\Output
+     */
+    private $outputHelper;
+
+    /**
+     * @var \Magento\Backend\App\ConfigInterface
+     */
+    private $config;
 
     /**
      * Customer constructor.
@@ -69,8 +79,8 @@ class Customer extends Generic
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->request = $request;
         $this->filterBuilder = $filterBuilder;
-
-        parent::__construct($outputHelper, $session, $storeRepository, $request, $config);
+        $this->outputHelper = $outputHelper;
+        $this->config = $config;
     }
 
     /**
@@ -105,7 +115,7 @@ class Customer extends Generic
             return (int) $customerId;
         }
 
-        $customerId = (int) $this->getStoreConfig('emailtester/settings/default_customer');
+        $customerId = (int) $this->config->getValue('emailtester/settings/default_customer');
         return $customerId;
     }
 
@@ -122,7 +132,7 @@ class Customer extends Generic
         $customers = $this->getCustomerCollection();
 
         foreach ($customers as $customer) {
-            /** @var \Magento\Customer\Model\Customer $customer */
+            /** @var \Magento\Customer\Api\Data\CustomerInterface $customer */
             $value = $customer->getId();
             $label = '[' . $customer->getId() . '] ' . $this->outputHelper->getCustomerOutput($customer);
             $current = ($customer->getId() == $currentValue) ? true : false;
@@ -141,7 +151,7 @@ class Customer extends Generic
     {
         $customerId = $this->getCustomerId();
 
-        if (!$this->isValidId($customerId)) {
+        if (!$this->outputHelper->isValidId($customerId)) {
             return '';
         }
 
@@ -163,7 +173,7 @@ class Customer extends Generic
         $searchCriteriaBuilder = $this->searchCriteriaBuilder;
         $searchCriteriaBuilder->addSortOrder('entity_id', AbstractCollection::SORT_ORDER_DESC);
 
-        $websiteId = $this->getWebsiteId();
+        $websiteId = $this->outputHelper->getWebsiteId();
         if ($websiteId > 0) {
             $filter = $this->filterBuilder
                 ->setField('website_id')
@@ -173,7 +183,7 @@ class Customer extends Generic
             $searchCriteriaBuilder->addFilter($filter);
         }
 
-        $customOptions = $this->getCustomOptions('customer');
+        $customOptions = $this->outputHelper->getCustomOptions('customer');
         if (!empty($customOptions)) {
             $filter = $this->filterBuilder
                 ->setField('entity_id')
@@ -203,6 +213,6 @@ class Customer extends Generic
      */
     private function getCustomerCollectionLimit()
     {
-        return $this->getStoreConfig('emailtester/settings/limit_customer');
+        return $this->config->getValue('emailtester/settings/limit_customer');
     }
 }
