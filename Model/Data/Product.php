@@ -23,7 +23,7 @@ class Product extends Generic
     /**
      * @var \Magento\Backend\Model\Auth\Session
      */
-    private $session;
+    protected $session;
 
     /**
      * @var \Magento\Framework\App\RequestInterface
