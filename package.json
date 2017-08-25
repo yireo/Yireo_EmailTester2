@@ -1,0 +1,13 @@
+{
+  "name": "Yireo_EmailTester2",
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.yireo.com:magento2-extensions/Yireo_EmailTester2.git"
+  },
+  "devDependencies": {
+    "jasmine": "^2.8.0"
+  },
+  "scripts": {
+    "test": "jasmine"
+  }
+}
