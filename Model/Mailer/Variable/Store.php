@@ -54,10 +54,10 @@ class Store implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     }
 
     /**
-     * @param int $storeId
+     * @param mixed $storeId
      */
-    public function setStoreId(int $storeId)
+    public function setStoreId($storeId)
     {
-        $this->storeId = $storeId;
+        $this->storeId = (int) $storeId;
     }
 }
