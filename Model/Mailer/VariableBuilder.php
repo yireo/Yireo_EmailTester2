@@ -8,9 +8,24 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Model\Mailer;
+
+use Yireo\EmailTester2\Model\Mailer\Variable\Billing;
+use Yireo\EmailTester2\Model\Mailer\Variable\Comment;
+use Yireo\EmailTester2\Model\Mailer\Variable\Creditmemo;
+use Yireo\EmailTester2\Model\Mailer\Variable\Customer;
+use Yireo\EmailTester2\Model\Mailer\Variable\Invoice;
+use Yireo\EmailTester2\Model\Mailer\Variable\Order;
+use Yireo\EmailTester2\Model\Mailer\Variable\OrderVars;
+use Yireo\EmailTester2\Model\Mailer\Variable\OtherVars;
+use Yireo\EmailTester2\Model\Mailer\Variable\PaymentHtml;
+use Yireo\EmailTester2\Model\Mailer\Variable\Product;
+use Yireo\EmailTester2\Model\Mailer\Variable\Quote;
+use Yireo\EmailTester2\Model\Mailer\Variable\Shipment;
+use Yireo\EmailTester2\Model\Mailer\Variable\ShippingMsg;
+use Yireo\EmailTester2\Model\Mailer\Variable\Store;
 
 /**
  * EmailTester model
@@ -20,37 +35,46 @@ class VariableBuilder extends \Magento\Framework\DataObject
     /**
      * @var array
      */
-    private $variableNames = [
-        'store',
-        'order',
-        'customer',
-        'product',
-        'quote',
-        'shipment',
-        'invoice',
-        'creditmemo',
-        'billing',
-        'comment',
-        'payment_html',
-        'order_vars',
-        'shipping_msg',
-        'other_vars',
+    private $variableModelNames = [
+        'store' => Store::class,
+        'order' => Order::class,
+        'customer' => Customer::class,
+        'product' => Product::class,
+        'qoute' => Quote::class,
+        'shipment' => Shipment::class,
+        'invoice' => Invoice::class,
+        'creditmemo' => Creditmemo::class,
+        'billing' => Billing::class,
+        'comment' => Comment::class,
+        'payment_html' => PaymentHtml::class,
+        'order_vars' => OrderVars::class,
+        'shipping_msg' => ShippingMsg::class,
+        'other_vars' => OtherVars::class
     ];
 
     /**
-     * @var \Magento\Framework\ObjectManagerInterface
+     * @var VariableFactory
      */
-    private $objectManager;
+    private $variableFactory;
 
     /**
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @var VariableMethodFactory
+     */
+    private $variableMethodFactory;
+
+    /**
+     * @param VariableFactory $variableFactory
+     * @param VariableMethodFactory $variableMethodFactory
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\ObjectManagerInterface $objectManager,
+        VariableFactory $variableFactory,
+        VariableMethodFactory $variableMethodFactory,
         $data = []
-    ) {
-        $this->objectManager = $objectManager;
+    )
+    {
+        $this->variableFactory = $variableFactory;
+        $this->variableMethodFactory = $variableMethodFactory;
 
         parent::__construct($data);
     }
@@ -62,56 +86,79 @@ class VariableBuilder extends \Magento\Framework\DataObject
      */
     public function getVariables(): array
     {
-        $variables = [];
+        $variables = $this->getVariablesFromVariableModels();
         $variables['template'] = $this->getData('template');
 
-        foreach ($this->variableNames as $variableName) {
-            $className = ucfirst($this->dashesToCamelCase($variableName));
-            $variableModel = $this->objectManager->create('\Yireo\EmailTester2\Model\Mailer\Variable\\' . $className);
+        return $variables;
+    }
 
-            foreach ($this->getData() as $name => $value) {
-                $methodName = 'set' . ucfirst($this->dashesToCamelCase($name));
+    /**
+     * @return array
+     */
+    public function getVariableModelNames(): array
+    {
+        return $this->variableModelNames;
+    }
 
-                if (method_exists($variableModel, $methodName)) {
-                    $variableModel->$methodName($value);
-                }
-            }
-
-            if (method_exists($variableModel, 'getVariable')) {
-                $variableValue = $variableModel->getVariable();
-                $this->setData($variableName, $variableValue);
-                $variables[$variableName] = $variableValue;
-            }
-
-            if (method_exists($variableModel, 'getVariables')) {
-                $variableValues = $variableModel->getVariables();
-                foreach ($variableValues as $variableName => $variableValue) {
-                    $this->setData($variableName, $variableValue);
-                    $variables[$variableName] = $variableValue;
-                }
-            }
+    /**
+     * @return array
+     */
+    private function getVariablesFromVariableModels(): array
+    {
+        $variables = [];
+        foreach ($this->variableModelNames as $variableName => $variableModelName) {
+            $variableModel = $this->variableFactory->create($variableModelName);
+            $variables = array_merge($variables, $this->callVariableModelMethods($variableModel, $variableName));
         }
 
         return $variables;
     }
 
     /**
-     * @param string $string
-     *
-     * @return string
+     * @param AbstractVariableInterface $variableModel
+     * @param string $variableName
+     * @return array
      */
-    public function dashesToCamelCase(string $string): string
+    private function callVariableModelMethods(AbstractVariableInterface $variableModel, string $variableName): array
     {
-        $string = explode('_', $string);
-        $first = true;
-        foreach ($string as &$v) {
-            if ($first) {
-                $first = false;
-                continue;
+        foreach ($this->getData() as $name => $value) {
+            $methodName = $this->variableMethodFactory->create($name, $variableModel);
+            if ($methodName && $value) {
+                $variableModel->$methodName($value);
             }
-            $v = ucfirst($v);
         }
 
-        return implode('', $string);
+        $variables = $this->retrieveVariables($variableModel, $variableName);
+
+        return $variables;
+    }
+
+    /**
+     * @param AbstractVariableInterface $variableModel
+     * @param string $variableName
+     * @return array
+     */
+    private function retrieveVariables(AbstractVariableInterface $variableModel, string $variableName): array
+    {
+        $variables = [];
+
+        if (method_exists($variableModel, 'getVariable')) {
+            $variableValue = $variableModel->getVariable();
+            $this->setData($variableName, $variableValue);
+            $variables[$variableName] = $variableValue;
+        }
+
+        if (method_exists($variableModel, 'getVariables')) {
+            $variableValues = $variableModel->getVariables();
+            if (!empty($variableValues)) {
+                foreach ($variableValues as $variableName => $variableValue) {
+                    $this->setData($variableName, $variableValue);
+                    $variables[$variableName] = $variableValue;
+                }
+            }
+
+        }
+
+        return $variables;
     }
 }

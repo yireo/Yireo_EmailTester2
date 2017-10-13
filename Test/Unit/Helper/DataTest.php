@@ -13,13 +13,14 @@ declare(strict_types = 1);
 namespace Yireo\EmailTester2\Test\Unit\Helper;
 
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class DataTest
  *
  * @package Yireo\EmailTester2\Test\Unit\Helper
  */
-class DataTest extends \PHPUnit_Framework_TestCase
+class DataTest extends TestCase
 {
     /**
      * @var \Yireo\EmailTester2\Helper\Data
@@ -73,18 +74,19 @@ class DataTest extends \PHPUnit_Framework_TestCase
     /**
      * Get a stub for the $context parameter of the helper
      *
-     * @return \PHPUnit_Framework_MockObject_MockBuilder
+     * @return \PHPUnit_Framework_MockObject_MockObject
      */
     private function _getContextStub()
     {
         $scopeConfig = $this->_getScopeConfigStub();
 
-        $context = $this->getMockBuilder(\Magento\Framework\App\Helper\Context::class);
+        $context = $this->getMockBuilder(\Magento\Framework\App\Helper\Context::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $context->expects($this->any())
+        $context
             ->method('getScopeConfig')
-            ->will($this->returnValue($scopeConfig)
-            );
+            ->will($this->returnValue($scopeConfig));
 
         return $context;
     }
@@ -92,12 +94,17 @@ class DataTest extends \PHPUnit_Framework_TestCase
     /**
      * Get a stub for the $scopeConfig with a $context
      *
-     * @return \PHPUnit_Framework_MockObject_MockBuilder
+     * @return \PHPUnit_Framework_MockObject_MockObject
      */
     private function _getScopeConfigStub()
     {
-        $scopeConfig = $this->getMockBuilder(\Magento\Framework\App\Config\ScopeConfigInterface::class);
-        $scopeConfig->expects($this->any())->method('getValue')->will($this->returnCallback([$this, 'getScopeConfigMethodStub']));
+        $scopeConfig = $this->getMockBuilder(\Magento\Framework\App\Config\ScopeConfigInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $scopeConfig
+            ->method('getValue')
+            ->will($this->returnCallback([$this, 'getScopeConfigMethodStub']));
 
         return $scopeConfig;
     }

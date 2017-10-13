@@ -8,21 +8,23 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Test\Unit\Helper;
 
+use Yireo\EmailTester2\Helper\Output as TargetHelper;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class OutputTest
  *
  * @package Yireo\EmailTester2\Test\Unit\Helper
  */
-class OutputTest extends \PHPUnit_Framework_TestCase
+class OutputTest extends TestCase
 {
     /**
-     * @var \Yireo\EmailTester2\Helper\Output
+     * @var TargetHelper
      */
     private $targetHelper;
 
@@ -39,7 +41,10 @@ class OutputTest extends \PHPUnit_Framework_TestCase
         $this->objectManagerHelper = new ObjectManagerHelper($this);
 
         $context = $this->_getContextStub();
-        $this->targetHelper = new \Yireo\EmailTester2\Helper\Output($context);
+        $session = $this->_getSessionStub();
+        $storeRepository = $this->_getStoreRepositoryStub();
+
+        $this->targetHelper = new TargetHelper($session, $storeRepository, $context);
     }
 
     /**
@@ -48,69 +53,66 @@ class OutputTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCustomerOutput()
     {
-        $customerStub = $this->getCustomerStub(['name' => 'John Doe', 'email' => 'john@example.com']);
-        $this->assertEquals($this->targetHelper->getCustomerOutput($customerStub), 'John Doe [john@example.com]');
+        $customerStub = $this->getCustomerStub(['id' => 42, 'email' => 'john@example.com']);
+        $this->assertEquals($this->targetHelper->getCustomerOutput($customerStub), 'john@example.com [42]');
     }
 
     /**
-     * Get a stub for the $appState object
-     *
      * @param array $data
      *
-     * @return \PHPUnit_Framework_MockObject_MockBuilder
+     * @return \PHPUnit_Framework_MockObject_MockObject
      */
     private function getCustomerStub($data)
     {
-        $customer = $this->getMockBuilder(\Magento\Customer\Model\Customer::class);
+        $customer = $this->getMockBuilder(\Magento\Customer\Api\Data\CustomerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $customer->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue($data['name'])
-            );
+        $customer
+            ->method('getId')
+            ->will($this->returnValue($data['id']));
 
-        $customer->expects($this->any())
+        $customer
             ->method('getEmail')
-            ->will($this->returnValue($data['email'])
-            );
+            ->will($this->returnValue($data['email']));
 
         return $customer;
     }
 
     /**
-     * Get a stub for the $context parameter of the helper
-     *
-     * @return \PHPUnit_Framework_MockObject_MockBuilder
+     * @return \PHPUnit_Framework_MockObject_MockObject
      */
     private function _getContextStub()
     {
-        $context = $this->getMockBuilder(\Magento\Framework\App\Helper\Context::class);
+        $stub = $this->getMockBuilder(\Magento\Framework\App\Helper\Context::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $scopeConfig = $this->_getScopeConfigStub();
-        $context->expects($this->any())
+        $stub
             ->method('getScopeConfig')
-            ->will($this->returnValue($scopeConfig)
-            );
+            ->will($this->returnValue($scopeConfig));
 
-        return $context;
+        return $stub;
     }
 
     /**
-     * Get a stub for the $scopeConfig with a $context
-     *
-     * @return \PHPUnit_Framework_MockObject_MockBuilder
+     * @return \PHPUnit_Framework_MockObject_MockObject
      */
     private function _getScopeConfigStub()
     {
-        $scopeConfig = $this->getMockBuilder(\Magento\Framework\App\Config\ScopeConfigInterface::class);
+        $stub = $this->getMockBuilder(\Magento\Framework\App\Config\ScopeConfigInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $scopeConfig->expects($this->any())->method('getValue')->will($this->returnCallback([$this, 'getScopeConfigMethodStub']));
+        $stub
+            ->method('getValue')
+            ->will($this->returnCallback([$this, 'getScopeConfigMethodStub']));
 
-        return $scopeConfig;
+        return $stub;
     }
 
     /**
-     * Mimic configuration values for usage within $scopeConfig
-     *
      * @param $hashName
      *
      * @return mixed
@@ -125,5 +127,33 @@ class OutputTest extends \PHPUnit_Framework_TestCase
         }
 
         throw new \InvalidArgumentException('Unknown id = ' . $hashName);
+    }
+
+    /**
+     * Get a stub for the $context parameter of the helper
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    private function _getSessionStub()
+    {
+        $stub = $this->getMockBuilder(\Magento\Backend\Model\Session::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        return $stub;
+    }
+
+    /**
+     * Get a stub for the $context parameter of the helper
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    private function _getStoreRepositoryStub()
+    {
+        $stub = $this->getMockBuilder(\Magento\Store\Model\StoreRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        return $stub;
     }
 }

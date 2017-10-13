@@ -58,14 +58,14 @@ class Customer
     /**
      * Customer constructor.
      *
-     * @param \Magento\Backend\Model\Auth\Session\Proxy $session
+     * @param \Magento\Backend\Model\Auth\Session $session
      * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      * @param \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\Framework\App\RequestInterface $request
      * @param FilterBuilder $filterBuilder
      */
     public function __construct(
-        \Magento\Backend\Model\Auth\Session\Proxy $session,
+        \Magento\Backend\Model\Auth\Session $session,
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Framework\App\RequestInterface $request,
@@ -168,7 +168,7 @@ class Customer
     /**
      * @return \Magento\Customer\Api\Data\CustomerSearchResultsInterface
      */
-    private function getCustomerCollection()
+    private function getCustomerCollection() : \Magento\Customer\Api\Data\CustomerSearchResultsInterface
     {
         $searchCriteriaBuilder = $this->searchCriteriaBuilder;
         $searchCriteriaBuilder->addSortOrder('entity_id', AbstractCollection::SORT_ORDER_DESC);
@@ -188,7 +188,7 @@ class Customer
             $filter = $this->filterBuilder
                 ->setField('entity_id')
                 ->setConditionType('in')
-                ->setValue($customOptions)
+                ->setValue(implode(',', $customOptions))
                 ->create();
             $searchCriteriaBuilder->addFilter($filter);
         }
@@ -209,10 +209,10 @@ class Customer
     }
 
     /**
-     * @return null|string
+     * @return int
      */
-    private function getCustomerCollectionLimit()
+    private function getCustomerCollectionLimit() : int
     {
-        return $this->config->getValue('emailtester/settings/limit_customer');
+        return (int) $this->config->getValue('emailtester/settings/limit_customer');
     }
 }

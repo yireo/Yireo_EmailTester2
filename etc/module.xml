@@ -9,11 +9,13 @@
  * @license     Open Source License (OSL v3)
  */
 -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
-    <module name="Yireo_EmailTester2" setup_version="0.2.6">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Yireo_EmailTester2" setup_version="0.2.7">
         <sequence>
-            <module name="Magento_Core"/>
-            <module name="Magento_Store"/>
+            <module name="Magento_Customer"/>
+            <module name="Magento_Catalog"/>
+            <module name="Magento_Checkout"/>
         </sequence>
     </module>
 </config>

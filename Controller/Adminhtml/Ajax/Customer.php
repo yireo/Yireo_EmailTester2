@@ -51,7 +51,7 @@ class Customer extends Action
     /**
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
-     * @param \Magento\Framework\App\Request\Http\Proxy $request
+     * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
@@ -59,7 +59,7 @@ class Customer extends Action
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
-        \Magento\Framework\App\Request\Http\Proxy $request,
+        \Magento\Framework\App\Request\Http $request,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Framework\Api\FilterBuilder $filterBuilder,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory

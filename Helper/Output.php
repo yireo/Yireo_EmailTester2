@@ -12,7 +12,7 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Helper;
 
-use Magento\Backend\Model\Session\Proxy as Session;
+use Magento\Backend\Model\Session;
 use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\StoreRepository;
 
@@ -58,7 +58,7 @@ class Output extends Data
      */
     public function getCustomerOutput(\Magento\Customer\Api\Data\CustomerInterface $customer) : string
     {
-        return $customer->getName() . ' [' . $customer->getEmail() . ']';
+        return $customer->getEmail() . ' [' . $customer->getId() . ']';
     }
 
     /**

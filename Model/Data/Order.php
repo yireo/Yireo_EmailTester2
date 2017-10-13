@@ -58,7 +58,7 @@ class Order
     /**
      * Order constructor.
      *
-     * @param \Magento\Backend\Model\Auth\Session\Proxy $session
+     * @param \Magento\Backend\Model\Auth\Session $session
      * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
      * @param \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\Framework\App\RequestInterface $request
@@ -68,7 +68,7 @@ class Order
      * @param \Magento\Backend\App\ConfigInterface $config
      */
     public function __construct(
-        \Magento\Backend\Model\Auth\Session\Proxy $session,
+        \Magento\Backend\Model\Auth\Session $session,
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Framework\App\RequestInterface $request,
@@ -172,7 +172,7 @@ class Order
     /**
      * @return \Magento\Sales\Api\Data\OrderSearchResultInterface
      */
-    private function getOrderCollection()
+    private function getOrderCollection() : \Magento\Sales\Api\Data\OrderSearchResultInterface
     {
         $searchCriteriaBuilder = $this->searchCriteriaBuilder;
         $searchCriteriaBuilder->addSortOrder('entity_id', AbstractCollection::SORT_ORDER_DESC);
@@ -182,7 +182,7 @@ class Order
             $filter = $this->filterBuilder
                 ->setField('entity_id')
                 ->setConditionType('in')
-                ->setValue($customOptions)
+                ->setValue(implode(',', $customOptions))
                 ->create();
             $searchCriteriaBuilder->addFilter($filter);
         }
@@ -192,7 +192,7 @@ class Order
             $filter = $this->filterBuilder
                 ->setField('store_id')
                 ->setConditionType('in')
-                ->setValue($storeIds)
+                ->setValue(implode(',', $storeIds))
                 ->create();
             $searchCriteriaBuilder->addFilter($filter);
         }
@@ -213,10 +213,10 @@ class Order
     }
 
     /**
-     * @return null|string
+     * @return int
      */
-    private function getOrderCollectionLimit()
+    private function getOrderCollectionLimit() : int
     {
-        return $this->getStoreConfig('emailtester/settings/limit_order');
+        return (int) $this->getStoreConfig('emailtester/settings/limit_order');
     }
 }

@@ -85,9 +85,9 @@ class Mailer extends \Magento\Framework\DataObject
      * @param array $data
      */
     public function __construct(
-        \Yireo\EmailTester2\Model\Mailer\AddresseeFactory $addresseeFactory,
-        \Yireo\EmailTester2\Model\Mailer\RecipientFactory $recipientFactory,
-        \Yireo\EmailTester2\Model\Mailer\VariableBuilder $variableBuilder,
+        Mailer\AddresseeFactory $addresseeFactory,
+        Mailer\RecipientFactory $recipientFactory,
+        Mailer\VariableBuilder $variableBuilder,
         \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
@@ -234,7 +234,7 @@ class Mailer extends \Magento\Framework\DataObject
         $recipient = $this->getRecipient();
         $templateId = $this->getData('template');
         $storeId = $this->getStoreId();
-        $variables = $this->collectVariables();
+        $variables = $this->buildVariables();
 
         if (preg_match('/^([^\/]+)\/(.*)$/', $templateId, $match)) {
             $templateId = $match[1];
@@ -276,10 +276,11 @@ class Mailer extends \Magento\Framework\DataObject
      *
      * @return array
      */
-    private function collectVariables(): array
+    private function buildVariables(): array
     {
         $variableBuilder = $this->variableBuilder;
-        $variableBuilder->setData($this->getData());
+        $data = $this->getData();
+        $variableBuilder->setData($data);
         $variables = $variableBuilder->getVariables();
 
         return $variables;

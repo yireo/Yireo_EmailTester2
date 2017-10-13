@@ -17,7 +17,7 @@ namespace Yireo\EmailTester2\Model\Mailer;
  *
  * @package Yireo\EmailTester2\Model\Mailer
  */
-interface VariablesInterface
+interface VariablesInterface extends AbstractVariableInterface
 {
     /**
      * @return mixed

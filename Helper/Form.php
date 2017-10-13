@@ -41,14 +41,14 @@ class Form extends Data
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Store\Ui\Component\Listing\Column\Store\Options $storeSource
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Backend\Model\Session\Proxy $session
+     * @param \Magento\Backend\Model\Session $session
      * @param \Yireo\EmailTester2\Model\Backend\Source\Email $emailSource
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Store\Ui\Component\Listing\Column\Store\Options $storeSource,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Backend\Model\Session\Proxy $backendSession,
+        \Magento\Backend\Model\Session $backendSession,
         \Yireo\EmailTester2\Model\Backend\Source\Email $emailSource
     ) {
         $this->emailSource = $emailSource;
@@ -105,9 +105,9 @@ class Form extends Data
     /**
      * @return array
      */
-    private function getDataFromSession()
+    private function getDataFromSession() : array
     {
-        return $this->backendSession->getData('emailtester_values');
+        return (array) $this->backendSession->getData('emailtester_values');
     }
 
     /**

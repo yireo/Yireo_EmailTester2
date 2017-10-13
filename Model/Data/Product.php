@@ -47,7 +47,7 @@ class Product
 
     /**
      * Product constructor.
-     * @param \Magento\Backend\Model\Auth\Session\Proxy $session
+     * @param \Magento\Backend\Model\Auth\Session $session
      * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
      * @param \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\Framework\App\RequestInterface $request
@@ -56,7 +56,7 @@ class Product
      * @param \Magento\Backend\App\ConfigInterface $config
      */
     public function __construct(
-        \Magento\Backend\Model\Auth\Session\Proxy $session,
+        \Magento\Backend\Model\Auth\Session $session,
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Framework\App\RequestInterface $request,
@@ -78,7 +78,7 @@ class Product
      *
      * @return false|\Magento\Catalog\Api\Data\ProductInterface
      */
-    public function getProduct($productId)
+    public function getProduct(int $productId)
     {
         try {
             return $this->productRepository->getById($productId);
@@ -92,21 +92,21 @@ class Product
      *
      * @return int
      */
-    public function getProductId()
+    public function getProductId() : int
     {
         $productId = $this->request->getParam('product_id', 0);
         if (!empty($productId)) {
-            return $productId;
+            return (int) $productId;
         }
 
         $userData = $this->session->getData();
-        $productId = (isset($userData['emailtester.product_id'])) ? (int)$userData['emailtester.product_id'] : null;
+        $productId = (isset($userData['emailtester.product_id'])) ? (int)$userData['emailtester.product_id'] : 0;
 
         if (!empty($productId)) {
-            return $productId;
+            return (int) $productId;
         }
 
-        $productId = $this->config->getValue('emailtester/settings/default_product');
+        $productId = (int) $this->config->getValue('emailtester/settings/default_product');
         return $productId;
     }
 
@@ -115,7 +115,7 @@ class Product
      *
      * @return array
      */
-    public function getProductOptions()
+    public function getProductOptions() : array
     {
         $options = [];
         $options[] = ['value' => '', 'label' => '', 'current' => ''];
@@ -138,7 +138,7 @@ class Product
      *
      * @return string
      */
-    public function getProductSearch()
+    public function getProductSearch() : string
     {
         $productId = $this->getProductId();
 
@@ -147,7 +147,7 @@ class Product
                 /** @var \Magento\Catalog\Model\Product $product */
                 $product = $this->productRepository->getById($productId);
             } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
-                return false;
+                return '';
             }
 
             return $this->outputHelper->getProductOutput($product);
@@ -159,7 +159,7 @@ class Product
     /**
      * @return \Magento\Catalog\Api\Data\ProductSearchResultsInterface
      */
-    private function getProductCollection()
+    private function getProductCollection() : \Magento\Catalog\Api\Data\ProductSearchResultsInterface
     {
         $searchCriteriaBuilder = $this->searchCriteriaBuilder;
         $searchCriteriaBuilder->addSortOrder('entity_id', AbstractCollection::SORT_ORDER_DESC);
@@ -169,7 +169,7 @@ class Product
             $filter = $this->filterBuilder
                 ->setField('entity_id')
                 ->setConditionType('in')
-                ->setValue($customOptions)
+                ->setValue(implode(',', $customOptions))
                 ->create();
             $searchCriteriaBuilder->addFilter($filter);
         }
@@ -190,10 +190,10 @@ class Product
     }
 
     /**
-     * @return null|string
+     * @return int
      */
-    private function getProductCollectionLimit()
+    private function getProductCollectionLimit() : int
     {
-        return $this->config->getValue('emailtester/settings/limit_product');
+        return (int) $this->config->getValue('emailtester/settings/limit_product');
     }
 }
