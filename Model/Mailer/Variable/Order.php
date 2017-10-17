@@ -77,7 +77,7 @@ class Order implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 
         // Load the order by ID
         if (!empty($this->orderId)) {
-            $order = $this->getOrderById($this->orderId);
+            $order = $this->getOrderById((int)$this->orderId);
         }
 
         // Load the first order instead
@@ -93,7 +93,7 @@ class Order implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
         }
 
         // Set the customer into the order
-        $customer = $this->getCustomerById($this->customerId);
+        $customer = $this->getCustomerById((int)$this->customerId);
         if ($order instanceof \Magento\Sales\Api\Data\OrderInterface && $customer instanceof \Magento\Customer\Api\Data\CustomerInterface) {
             $order->setCustomerId($customer->getId());
             $order->setCustomerName($this->customerViewHelper->getCustomerName($customer));

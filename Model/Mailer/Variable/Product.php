@@ -51,7 +51,7 @@ class Product implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
      */
     public function getVariable(): \Magento\Catalog\Api\Data\ProductInterface
     {
-        $product = $this->getProductById($this->productId);
+        $product = $this->getProductById((int)$this->productId);
 
         // Load the first product instead
         if ($product === false) {
