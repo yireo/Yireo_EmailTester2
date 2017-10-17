@@ -104,7 +104,7 @@ class Customer
      */
     public function getCustomerId() : int
     {
-        $customerId = $this->request->getParam('customer_id');
+        $customerId = (int) $this->request->getParam('customer_id');
         if (!empty($customerId)) {
             return (int) $customerId;
         }

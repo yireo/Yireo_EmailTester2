@@ -94,7 +94,7 @@ class Product
      */
     public function getProductId() : int
     {
-        $productId = $this->request->getParam('product_id', 0);
+        $productId = (int) $this->request->getParam('product_id', 0);
         if (!empty($productId)) {
             return (int) $productId;
         }

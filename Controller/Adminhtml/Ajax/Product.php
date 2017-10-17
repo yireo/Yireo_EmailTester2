@@ -100,7 +100,7 @@ class Product extends Action
      */
     private function getSearchQuery() : string
     {
-        $search = $this->request->getParam('term');
+        $search = (string) $this->request->getParam('term');
         return $search;
     }
 

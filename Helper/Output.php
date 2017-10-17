@@ -136,8 +136,7 @@ class Output extends Data
     /**
      * Get the current store
      *
-     * @return int|mixed
-     * @throws \Exception
+     * @return int
      */
     public function getStoreId(): int
     {

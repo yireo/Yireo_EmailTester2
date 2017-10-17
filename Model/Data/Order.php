@@ -107,7 +107,7 @@ class Order
      */
     public function getOrderId(): int
     {
-        $orderId = $this->request->getParam('order_id');
+        $orderId = (int) $this->request->getParam('order_id');
         if (!empty($orderId)) {
             return (int)$orderId;
         }
