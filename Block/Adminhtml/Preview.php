@@ -69,8 +69,8 @@ class Preview extends \Magento\Framework\View\Element\Text
         $data['customer_id'] = (int) $this->_request->getParam('customer_id');
         $data['product_id'] = (int) $this->_request->getParam('product_id');
         $data['order_id'] = (int) $this->_request->getParam('order_id');
-        $data['template'] = $this->_request->getParam('template');
-        $data['email'] = $this->_request->getParam('email');
+        $data['template'] = (string) $this->_request->getParam('template');
+        $data['email'] = (string) $this->_request->getParam('email');
 
         return $data;
     }
