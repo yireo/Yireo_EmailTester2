@@ -15,9 +15,9 @@
     }
   ],
   "require": {
-    "magento/module-catalog": "^100.1.0|^101.0.0",
-    "magento/module-customer": "^100.1.0|^101.0.0",
-    "magento/module-checkout": "^100.1.0|^101.0.0",
+    "magento/module-catalog": "^100.1|^101.0",
+    "magento/module-customer": "^100.1|^101.0",
+    "magento/module-checkout": "^100.1|^101.0",
     "php": ">=7.0.0"
   },
   "require-dev": {
