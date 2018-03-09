@@ -57,9 +57,10 @@ class Creditmemo implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
         $searchCriteria = $this->searchCriteriaBuilder->create();
         $searchCriteria->setCurrentPage(1);
         $searchCriteria->setPageSize(1);
-        $creditmemos = $this->creditmemoRepository->getList($searchCriteria)->getItems();
+        $searchResult = $this->creditmemoRepository->getList($searchCriteria);
+        $creditmemos = $searchResult->getItems();
 
-        if (!empty($creditmemos)) {
+        if (!empty($creditmemos[0])) {
             $creditmemo = $creditmemos[0];
         } else {
             $creditmemo = null;
