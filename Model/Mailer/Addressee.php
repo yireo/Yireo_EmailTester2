@@ -8,9 +8,12 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Model\Mailer;
+
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Class Addressee
@@ -19,6 +22,11 @@ namespace Yireo\EmailTester2\Model\Mailer;
  */
 class Addressee
 {
+    /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
+
     /**
      * @var string
      */
@@ -32,21 +40,13 @@ class Addressee
     /**
      * Yireo_EmailTester_Model_Mailer_Addressee constructor
      *
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-    ) {
-        // @todo: Check if these values are still in same path
-        $this->name = $scopeConfig->getValue(
-            'trans_email/ident_general/name',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        );
-
-        $this->email = $scopeConfig->getValue(
-            'trans_email/ident_general/email',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        );
+        ScopeConfigInterface $scopeConfig
+    )
+    {
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
@@ -54,6 +54,13 @@ class Addressee
      */
     public function getName(): string
     {
+        if (empty($this->name)) {
+            $this->name = $this->scopeConfig->getValue(
+                'trans_email/ident_general/name',
+                ScopeInterface::SCOPE_STORE
+            );
+        }
+
         return $this->name;
     }
 
@@ -70,6 +77,13 @@ class Addressee
      */
     public function getEmail(): string
     {
+        if (empty($this->email)) {
+            $this->email = $this->scopeConfig->getValue(
+                'trans_email/ident_general/email',
+                ScopeInterface::SCOPE_STORE
+            );
+        }
+
         return $this->email;
     }
 
@@ -86,6 +100,6 @@ class Addressee
      */
     public function getAsArray(): array
     {
-        return ['name' => $this->name, 'email' => $this->email];
+        return ['name' => $this->getName(), 'email' => $this->getEmail()];
     }
 }

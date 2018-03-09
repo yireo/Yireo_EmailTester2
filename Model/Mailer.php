@@ -11,6 +11,9 @@
 declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model;
+use Exception;
+use Magento\Framework\Exception\LocalizedException;
+use Zend_Mime_Part;
 
 /**
  * EmailTester Core model
@@ -73,6 +76,11 @@ class Mailer extends \Magento\Framework\DataObject
     private $template;
 
     /**
+     * @var \Magento\Framework\PhraseFactory
+     */
+    private $phraseFactory;
+
+    /**
      * Mailer constructor.
      *
      * @param Mailer\AddresseeFactory $addresseeFactory
@@ -82,6 +90,7 @@ class Mailer extends \Magento\Framework\DataObject
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Framework\Translate\Inline\StateInterface $inlineTranslation
+     * @param \Magento\Framework\PhraseFactory $phraseFactory
      * @param array $data
      */
     public function __construct(
@@ -93,6 +102,7 @@ class Mailer extends \Magento\Framework\DataObject
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Framework\Translate\Inline\StateInterface $inlineTranslation,
         \Magento\Framework\Event\ManagerInterface $eventManager,
+        \Magento\Framework\PhraseFactory $phraseFactory,
         array $data = []
     ) {
         $this->addresseeFactory = $addresseeFactory;
@@ -103,6 +113,7 @@ class Mailer extends \Magento\Framework\DataObject
         $this->storeManager = $storeManager;
         $this->inlineTranslation = $inlineTranslation;
         $this->eventManager = $eventManager;
+        $this->phraseFactory = $phraseFactory;
 
         parent::__construct($data);
     }
@@ -134,7 +145,7 @@ class Mailer extends \Magento\Framework\DataObject
         try {
             $transport->sendMessage();
             $sent = true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->addError($e->getMessage());
             $sent = false;
         }
@@ -150,11 +161,11 @@ class Mailer extends \Magento\Framework\DataObject
     /**
      * @return string
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function getRawContentFromTransportBuilder() : string
     {
-        /** @var \Zend_Mime_Part $body */
+        /** @var Zend_Mime_Part $body */
         $message = $this->transportBuilder->getMessage();
         $body = $message->getBody();
 
@@ -166,7 +177,7 @@ class Mailer extends \Magento\Framework\DataObject
             return $body->getRawContent();
         }
 
-        throw new \Magento\Framework\Exception\LocalizedException(new \Magento\Framework\Phrase('Unexpected body type'));
+        throw new LocalizedException($this->phraseFactory->create('Unexpected body type'));
     }
 
     /**

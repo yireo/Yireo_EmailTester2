@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Model\Mailer;
 
+use Magento\Framework\DataObject;
 use Yireo\EmailTester2\Model\Mailer\Variable\Billing;
 use Yireo\EmailTester2\Model\Mailer\Variable\Comment;
 use Yireo\EmailTester2\Model\Mailer\Variable\Creditmemo;
@@ -30,7 +31,7 @@ use Yireo\EmailTester2\Model\Mailer\Variable\Store;
 /**
  * EmailTester model
  */
-class VariableBuilder extends \Magento\Framework\DataObject
+class VariableBuilder extends DataObject
 {
     /**
      * @var array

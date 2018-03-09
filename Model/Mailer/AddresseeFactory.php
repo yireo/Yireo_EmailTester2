@@ -11,6 +11,8 @@
 declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer;
+use Magento\Config\Model\Config;
+use Magento\Framework\ObjectManagerInterface;
 
 /**
  * Class RecipientFactory
@@ -20,15 +22,15 @@ namespace Yireo\EmailTester2\Model\Mailer;
 class AddresseeFactory
 {
     /**
-     * @var \Magento\Framework\ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
     private $objectManager;
 
     /**
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param ObjectManagerInterface $objectManager
      */
     public function __construct(
-        \Magento\Framework\ObjectManagerInterface $objectManager
+        ObjectManagerInterface $objectManager
     ) {
         $this->objectManager = $objectManager;
     }
@@ -38,10 +40,10 @@ class AddresseeFactory
      *
      * @param array $data
      *
-     * @return \Magento\Config\Model\Config
+     * @return Config
      */
     public function create(array $data = [])
     {
-        return $this->objectManager->create(\Yireo\EmailTester2\Model\Mailer\Addressee::class, $data);
+        return $this->objectManager->create(Addressee::class, $data);
     }
 }

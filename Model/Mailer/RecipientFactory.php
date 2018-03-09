@@ -11,6 +11,10 @@
 declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Helper\View;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\ObjectManagerInterface;
 
 /**
  * Class RecipientFactory
@@ -20,27 +24,27 @@ namespace Yireo\EmailTester2\Model\Mailer;
 class RecipientFactory
 {
     /**
-     * @var \Magento\Framework\ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
     private $objectManager;
 
     /**
-     * @var \Magento\Customer\Api\CustomerRepositoryInterface
+     * @var CustomerRepositoryInterface
      */
     private $customerRepository;
 
     /**
-     * @var \Magento\Customer\Helper\View
+     * @var View
      */
     private $customerViewHelper;
 
     /**
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param ObjectManagerInterface $objectManager
      */
     public function __construct(
-        \Magento\Framework\ObjectManagerInterface $objectManager,
-        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
-        \Magento\Customer\Helper\View $customerViewHelper
+        ObjectManagerInterface $objectManager,
+        CustomerRepositoryInterface $customerRepository,
+        View $customerViewHelper
     ) {
         $this->objectManager = $objectManager;
         $this->customerRepository = $customerRepository;
@@ -52,11 +56,11 @@ class RecipientFactory
      *
      * @param array $data
      *
-     * @return \Yireo\EmailTester2\Model\Mailer\Recipient
+     * @return Recipient
      */
-    public function create(array $data = []): \Yireo\EmailTester2\Model\Mailer\Recipient
+    public function create(array $data = []): Recipient
     {
-        $recipient = $this->objectManager->create(\Yireo\EmailTester2\Model\Mailer\Recipient::class, $data);
+        $recipient = $this->objectManager->create(Recipient::class, $data);
         $this->addCustomerData($recipient, $data);
         $this->addEmail($recipient, $data);
 
@@ -81,10 +85,9 @@ class RecipientFactory
             return false;
         }
 
-        /** @var  $customer \Magento\Customer\Api\Data\CustomerInterface */
         try {
             $customer = $this->customerRepository->getById($customerId);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+        } catch (NoSuchEntityException $exception) {
             return false;
         }
 

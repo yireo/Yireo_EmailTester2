@@ -32,6 +32,7 @@ class Id extends AbstractElement
         $data = []
     ) {
         parent::__construct($factoryElement, $factoryCollection, $escaper, $data);
+
         $this->setType('text');
         $this->setExtType('textfield');
     }

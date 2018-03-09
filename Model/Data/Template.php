@@ -15,24 +15,19 @@ namespace Yireo\EmailTester2\Model\Data;
 
 /**
  * Class Template
+ *
+ * @deprecated There is no proper usage here
  */
 class Template
 {
     /** @var */
-    private $templateModel;
-
-    /**
-     * Constructor method
-     */
-    public function __construct()
-    {
-        $this->templateModel = null;
-    }
+    private $templateModel = null;
 
     /**
      * Get all email template options
      *
      * @return array
+     * @deprecated There is no proper usage here
      */
     public function getTemplateOptions() : array
     {
@@ -44,7 +39,7 @@ class Template
     /**
      * @return array
      */
-    public function getTemplatesFromDatabase() : array
+    private function getTemplatesFromDatabase() : array
     {
         $options = [];
 
@@ -71,7 +66,7 @@ class Template
     /**
      * @return array
      */
-    public function getTemplatesFromDisc() : array
+    private function getTemplatesFromDisc() : array
     {
         $options = [];
 
