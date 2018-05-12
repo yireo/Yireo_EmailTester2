@@ -1,5 +1,6 @@
 {
   "name": "yireo/magento2-emailtester2",
+  "version": "0.2.12",
   "license": "OSL-3.0",
   "type": "magento2-module",
   "homepage": "https://www.yireo.com/software/magento-extensions/emailtester",
@@ -23,7 +24,6 @@
   },
   "require-dev": {
     "phpunit/phpunit": "*",
-    "phan/phan": "^0.8",
     "composer/composer": "*@dev"
   },
   "autoload": {
