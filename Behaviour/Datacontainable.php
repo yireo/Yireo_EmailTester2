@@ -50,6 +50,14 @@ trait Datacontainable
     }
 
     /**
+     *
+     */
+    public function resetData()
+    {
+        $this->data = [];
+    }
+
+    /**
      * @param string $name
      *
      * @return bool
@@ -74,7 +82,8 @@ trait Datacontainable
             return true;
         }
 
-        if ($this->data[$name] < 1) {
+        $value = (int)$this->data[$name];
+        if ($value < 1) {
             return true;
         }
 

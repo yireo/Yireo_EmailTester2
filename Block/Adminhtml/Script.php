@@ -12,11 +12,13 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Block\Adminhtml;
 
+use Magento\Backend\Block\Template;
+
 /**
  * Class Script
  *
  * @package Yireo\EmailTester2\Block\Adminhtml
  */
-class Script extends \Magento\Backend\Block\Template
+class Script extends Template
 {
 }

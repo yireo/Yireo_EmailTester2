@@ -12,29 +12,37 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Block\Adminhtml\Overview;
 
+use Magento\Backend\Block\Template\Context;
+use Magento\Backend\Block\Widget\Form\Generic;
+use Magento\Framework\Data\Form as DataForm;
+use Magento\Framework\Data\FormFactory;
+use Magento\Framework\Registry;
+use Yireo\EmailTester2\Helper\Form as FormHelper;
+
 /**
  * Class Form
  *
  * @package Yireo\EmailTester2\Block\Adminhtml\Overview
  */
-class Form extends \Magento\Backend\Block\Widget\Form\Generic
+class Form extends Generic
 {
     /**
-     * @var \Yireo\EmailTester2\Helper\Form
+     * @var FormHelper
      */
     private $formHelper;
 
     /**
-     * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Framework\Data\FormFactory $formFactory
+     * @param Context $context
+     * @param Registry $registry
+     * @param FormFactory $formFactory
+     * @param FormHelper $formHelper
      * @param array $data
      */
     public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Framework\Data\FormFactory $formFactory,
-        \Yireo\EmailTester2\Helper\Form $formHelper,
+        Context $context,
+        Registry $registry,
+        FormFactory $formFactory,
+        FormHelper $formHelper,
         array $data = []
     ) {
         $this->formHelper = $formHelper;
@@ -48,10 +56,11 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
      * @return \Magento\Backend\Block\Widget\Form
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _prepareForm()
     {
-        /** @var \Magento\Framework\Data\Form $form */
+        /** @var DataForm $form */
         $form = $this->_formFactory->create();
 
         // Generic fieldset

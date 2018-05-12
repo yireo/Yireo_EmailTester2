@@ -12,7 +12,13 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Block\Adminhtml;
 
-use \Magento\Backend\Block\Template;
+use Magento\Backend\Block\Template;
+use Magento\Backend\Block\Template\Context;
+use Magento\Backend\Block\Widget\Button\ButtonList;
+use Magento\Backend\Block\Widget\Button\Item as ButtonItem;
+use Magento\Backend\Block\Widget\Button\ToolbarInterface as ButtonToolbarInterface;
+use Magento\Framework\View\Element\AbstractBlock;
+use Yireo\EmailTester2\Block\Adminhtml\Overview\Form as OverviewForm;
 
 /**
  * Class Overview
@@ -22,25 +28,25 @@ use \Magento\Backend\Block\Template;
 class Overview extends Template
 {
     /**
-     * @var \Magento\Backend\Block\Widget\Button\ButtonList
+     * @var ButtonList
      */
     private $buttonList;
 
     /**
-     * @var \Magento\Backend\Block\Widget\Button\ToolbarInterface
+     * @var ButtonToolbarInterface
      */
     private $toolbar;
 
     /**
-     * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Backend\Block\Widget\Button\ButtonList $buttonList
-     * @param \Magento\Backend\Block\Widget\Button\ToolbarInterface $toolbar
+     * @param Context $context
+     * @param ButtonList $buttonList
+     * @param ButtonToolbarInterface $toolbar
      * @param array $data
      */
     public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        \Magento\Backend\Block\Widget\Button\ButtonList $buttonList,
-        \Magento\Backend\Block\Widget\Button\ToolbarInterface $toolbar,
+        Context $context,
+        ButtonList $buttonList,
+        ButtonToolbarInterface $toolbar,
         array $data = []
     ) {
         $this->buttonList = $buttonList;
@@ -61,7 +67,7 @@ class Overview extends Template
     /**
      * {@inheritdoc}
      */
-    public function canRender(\Magento\Backend\Block\Widget\Button\Item $item) : bool
+    public function canRender(ButtonItem $item) : bool
     {
         return !$item->isDeleted();
     }
@@ -69,12 +75,12 @@ class Overview extends Template
     /**
      * Create add button and grid blocks
      *
-     * @return \Magento\Framework\View\Element\AbstractBlock
+     * @return AbstractBlock
      */
     protected function _prepareLayout()
     {
         $this->addButtons();
-        $this->addChild('form', 'Yireo\EmailTester2\Block\Adminhtml\Overview\Form');
+        $this->addChild('form', OverviewForm::class);
 
         return parent::_prepareLayout();
     }

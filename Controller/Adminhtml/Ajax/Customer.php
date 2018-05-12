@@ -12,7 +12,18 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Controller\Adminhtml\Ajax;
 
-use \Magento\Backend\App\Action;
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Customer\Model\Customer as CustomerModel;
+use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\SearchCriteria;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Request\Http as HttpRequest;
+use Magento\Framework\Controller\Result\Json;
+use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class Index
@@ -24,45 +35,45 @@ class Customer extends Action
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
 
     /**
-     * @var \Magento\Customer\Api\CustomerRepositoryInterface
+     * @var CustomerRepositoryInterface
      */
     private $customerRepository;
 
     /**
-     * @var \Magento\Framework\Controller\Result\JsonFactory
+     * @var JsonFactory
      */
     private $resultJsonFactory;
 
     /**
-     * @var \Magento\Framework\App\Request\Http
+     * @var HttpRequest
      */
     private $request;
 
     /**
-     * @var \Magento\Framework\Api\SearchCriteriaBuilder
+     * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
 
     /**
-     * @var \Magento\Framework\Api\FilterBuilder
+     * @var FilterBuilder
      */
     private $filterBuilder;
 
     /**
-     * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
-     * @param \Magento\Framework\App\Request\Http $request
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
-     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param Context $context
+     * @param CustomerRepositoryInterface $customerRepository
+     * @param HttpRequest $request
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param FilterBuilder $filterBuilder
+     * @param JsonFactory $resultJsonFactory
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
-        \Magento\Framework\App\Request\Http $request,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Framework\Api\FilterBuilder $filterBuilder,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+        Context $context,
+        CustomerRepositoryInterface $customerRepository,
+        HttpRequest $request,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        FilterBuilder $filterBuilder,
+        JsonFactory $resultJsonFactory
     ) {
         parent::__construct($context);
 
@@ -76,15 +87,16 @@ class Customer extends Action
     /**
      * Index action
      *
-     * @return \Magento\Framework\Controller\Result\Json
+     * @return Json
+     * @throws LocalizedException
      */
-    public function execute(): \Magento\Framework\Controller\Result\Json
+    public function execute(): Json
     {
         $customerData = [];
         $searchResults = $this->customerRepository->getList($this->loadSearchCriteria());
 
         foreach ($searchResults->getItems() as $customer) {
-            /** @var $customer \Magento\Customer\Model\Customer */
+            /** @var $customer CustomerModel */
             $customerData[] = [
                 'value' => $customer->getId(),
                 'label' => $this->getCustomerLabel($customer),
@@ -104,25 +116,26 @@ class Customer extends Action
     }
 
     /**
-     * @param \Magento\Customer\Api\Data\CustomerInterface $customer
+     * @param CustomerInterface $customer
      *
      * @return string
      */
-    private function getCustomerLabel(\Magento\Customer\Api\Data\CustomerInterface $customer): string
+    private function getCustomerLabel(CustomerInterface $customer): string
     {
         return $customer->getFirstname() . ' ' . $customer->getLastname() . ' [' . $customer->getEmail() . ']';
     }
 
     /**
-     * @return \Magento\Framework\Api\SearchCriteria
+     * @return SearchCriteria
      */
-    private function loadSearchCriteria(): \Magento\Framework\Api\SearchCriteria
+    private function loadSearchCriteria(): SearchCriteria
     {
         $this->searchCriteriaBuilder->setCurrentPage(0);
         $this->searchCriteriaBuilder->setPageSize(10);
 
         $searchFields = ['firstname', 'lastname', 'email'];
         $filters = [];
+
         foreach ($searchFields as $field) {
             $filters[] = $this->filterBuilder
                 ->setField($field)
@@ -130,6 +143,7 @@ class Customer extends Action
                 ->setValue($this->getSearchQuery() . '%')
                 ->create();
         }
+
         $this->searchCriteriaBuilder->addFilters($filters);
 
         return $this->searchCriteriaBuilder->create();

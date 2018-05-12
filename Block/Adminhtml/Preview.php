@@ -12,26 +12,30 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Block\Adminhtml;
 
+use Magento\Backend\Block\Template\Context;
+use Magento\Framework\View\Element\Text;
+use Yireo\EmailTester2\Model\Mailer;
+
 /**
  * Class Preview
  *
  * @package Yireo\EmailTester2\Block\Adminhtml
  */
-class Preview extends \Magento\Framework\View\Element\Text
+class Preview extends Text
 {
     /**
-     * @var \Yireo\EmailTester2\Model\Mailer
+     * @var Mailer
      */
     private $mailer;
 
     /**
-     * @param \Yireo\EmailTester2\Model\Mailer $mailer
-     * @param \Magento\Backend\Block\Template\Context $context
+     * @param Mailer $mailer
+     * @param Context $context
      * @param array $data
      */
     public function __construct(
-        \Yireo\EmailTester2\Model\Mailer $mailer,
-        \Magento\Backend\Block\Template\Context $context,
+        Mailer $mailer,
+        Context $context,
         array $data = []
     ) {
 

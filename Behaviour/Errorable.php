@@ -60,7 +60,15 @@ trait Errorable
     /**
      * @param string $error
      */
-    protected function addError(string $error)
+    public function setError(string $error)
+    {
+        $this->addError($error);
+    }
+
+    /**
+     * @param string $error
+     */
+    public function addError(string $error)
     {
         $this->errors[] = $error;
     }
