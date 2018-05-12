@@ -38,7 +38,7 @@ class Addressee
     protected $email;
 
     /**
-     * Yireo_EmailTester_Model_Mailer_Addressee constructor
+     * Addressee constructor
      *
      * @param ScopeConfigInterface $scopeConfig
      */

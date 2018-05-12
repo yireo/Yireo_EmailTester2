@@ -26,7 +26,7 @@ use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\LocalizedException;
 
 /**
- * Class Index
+ * Class Customer
  *
  * @package Yireo\EmailTester2\Controller\Ajax
  */

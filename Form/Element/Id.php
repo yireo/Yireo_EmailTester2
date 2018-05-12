@@ -16,6 +16,7 @@ use Magento\Framework\Escaper;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Data\Form\Element\Factory;
 use Magento\Framework\Data\Form\Element\CollectionFactory;
+use Magento\Framework\Exception\LocalizedException;
 
 class Id extends AbstractElement
 {
@@ -24,6 +25,8 @@ class Id extends AbstractElement
      * @param CollectionFactory $factoryCollection
      * @param Escaper $escaper
      * @param array $data
+     *
+     * @throws LocalizedException
      */
     public function __construct(
         Factory $factoryElement,
@@ -41,6 +44,7 @@ class Id extends AbstractElement
      * Get the HTML
      *
      * @return mixed
+     * @throws LocalizedException
      */
     public function getElementHtml()
     {

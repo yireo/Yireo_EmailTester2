@@ -12,44 +12,50 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Helper;
 
+use Magento\Backend\Model\Session;
+use Magento\Framework\App\Helper\Context;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Store\Ui\Component\Listing\Column\Store\Options;
+use Yireo\EmailTester2\Model\Backend\Source\Email;
+
 /**
  * Class \Yireo\EmailTester2\Helper\Form
  */
 class Form extends Data
 {
     /**
-     * @var \Yireo\EmailTester2\Model\Backend\Source\Email
+     * @var Email
      */
     private $emailSource;
 
     /**
-     * @var \Magento\Store\Ui\Component\Listing\Column\Store\Options
+     * @var Options
      */
     private $storeSource;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
     private $storeManager;
 
     /**
-     * @var \Magento\Backend\Model\Session
+     * @var Session
      */
     private $backendSession;
 
     /**
-     * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Magento\Store\Ui\Component\Listing\Column\Store\Options $storeSource
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Backend\Model\Session $session
-     * @param \Yireo\EmailTester2\Model\Backend\Source\Email $emailSource
+     * @param Context $context
+     * @param Options $storeSource
+     * @param StoreManagerInterface $storeManager
+     * @param Session $backendSession
+     * @param Email $emailSource
      */
     public function __construct(
-        \Magento\Framework\App\Helper\Context $context,
-        \Magento\Store\Ui\Component\Listing\Column\Store\Options $storeSource,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Backend\Model\Session $backendSession,
-        \Yireo\EmailTester2\Model\Backend\Source\Email $emailSource
+        Context $context,
+        Options $storeSource,
+        StoreManagerInterface $storeManager,
+        Session $backendSession,
+        Email $emailSource
     ) {
         $this->emailSource = $emailSource;
         $this->storeSource = $storeSource;

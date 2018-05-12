@@ -12,7 +12,16 @@ declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Controller\Adminhtml\Ajax;
 
-use \Magento\Backend\App\Action;
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\SearchCriteria;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Request\Http;
+use Magento\Framework\Controller\Result\Json;
+use Magento\Framework\Controller\Result\JsonFactory;
 
 /**
  * Class Index
@@ -24,45 +33,45 @@ class Product extends Action
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
 
     /**
-     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     * @var ProductRepositoryInterface
      */
     private $productRepository;
 
     /**
-     * @var \Magento\Framework\App\Request\Http
+     * @var Http
      */
     private $request;
 
     /**
-     * @var \Magento\Framework\Api\SearchCriteriaBuilder
+     * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
 
     /**
-     * @var \Magento\Framework\Api\FilterBuilder
+     * @var FilterBuilder
      */
     private $filterBuilder;
 
     /**
-     * @var \Magento\Framework\Controller\Result\JsonFactory
+     * @var JsonFactory
      */
     private $resultJsonFactory;
 
     /**
-     * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
-     * @param \Magento\Framework\App\Request\Http $request
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
-     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param Context $context
+     * @param ProductRepositoryInterface $productRepository
+     * @param Http $request
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param FilterBuilder $filterBuilder
+     * @param JsonFactory $resultJsonFactory
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
-        \Magento\Framework\App\Request\Http $request,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Framework\Api\FilterBuilder $filterBuilder,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+        Context $context,
+        ProductRepositoryInterface $productRepository,
+        Http $request,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        FilterBuilder $filterBuilder,
+        JsonFactory $resultJsonFactory
     ) {
         parent::__construct($context);
         $this->productRepository = $productRepository;
@@ -75,15 +84,15 @@ class Product extends Action
     /**
      * Index action
      *
-     * @return \Magento\Framework\Controller\Result\Json
+     * @return Json
      */
-    public function execute() : \Magento\Framework\Controller\Result\Json
+    public function execute() : Json
     {
         $productData = [];
         $searchResults = $this->productRepository->getList($this->loadSearchCriteria());
 
         foreach ($searchResults->getItems() as $product) {
-            /** @var $product \Magento\Catalog\Api\Data\ProductInterface */
+            /** @var $product ProductInterface */
             $productData[] = [
                 'value' => $product->getId(),
                 'label' => $this->getProductLabel($product),
@@ -105,17 +114,17 @@ class Product extends Action
     }
 
     /**
-     * @param \Magento\Catalog\Api\Data\ProductInterface $product
+     * @param ProductInterface $product
      *
      * @return string
      */
-    private function getProductLabel(\Magento\Catalog\Api\Data\ProductInterface $product) : string
+    private function getProductLabel(ProductInterface $product) : string
     {
         return $product->getName() . ' ['.$product->getSku().']';
     }
 
     /**
-     * @return \Magento\Framework\Api\SearchCriteria
+     * @return SearchCriteria
      */
     private function loadSearchCriteria()
     {

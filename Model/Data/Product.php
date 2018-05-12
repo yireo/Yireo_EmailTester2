@@ -12,8 +12,18 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Data;
 
+use Magento\Backend\App\ConfigInterface;
+use Magento\Backend\Model\Auth\Session;
+use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Api\Data\ProductSearchResultsInterface;
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Model\Product as ProductModel;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Eav\Model\Entity\Collection\AbstractCollection;
+use Magento\Framework\Api\Search\SearchCriteriaBuilder;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Yireo\EmailTester2\Helper\Output;
 
 /**
  * Class Product
@@ -21,22 +31,22 @@ use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 class Product
 {
     /**
-     * @var \Magento\Backend\Model\Auth\Session
+     * @var Session
      */
     private $session;
 
     /**
-     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     * @var ProductRepositoryInterface
      */
     private $productRepository;
 
     /**
-     * @var \Magento\Framework\App\RequestInterface
+     * @var RequestInterface
      */
     private $request;
 
     /**
-     * @var \Magento\Framework\Api\Search\SearchCriteriaBuilder
+     * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
 
@@ -46,23 +56,33 @@ class Product
     private $filterBuilder;
 
     /**
+     * @var Output
+     */
+    private $outputHelper;
+
+    /**
+     * @var ConfigInterface
+     */
+    private $config;
+
+    /**
      * Product constructor.
-     * @param \Magento\Backend\Model\Auth\Session $session
-     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
-     * @param \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\Framework\App\RequestInterface $request
+     * @param Session $session
+     * @param ProductRepositoryInterface $productRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param RequestInterface $request
      * @param FilterBuilder $filterBuilder
-     * @param \Yireo\EmailTester2\Helper\Output $outputHelper
-     * @param \Magento\Backend\App\ConfigInterface $config
+     * @param Output $outputHelper
+     * @param ConfigInterface $config
      */
     public function __construct(
-        \Magento\Backend\Model\Auth\Session $session,
-        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
-        \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Framework\App\RequestInterface $request,
+        Session $session,
+        ProductRepositoryInterface $productRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        RequestInterface $request,
         FilterBuilder $filterBuilder,
-        \Yireo\EmailTester2\Helper\Output $outputHelper,
-        \Magento\Backend\App\ConfigInterface $config
+        Output $outputHelper,
+        ConfigInterface $config
     ) {
         $this->session = $session;
         $this->productRepository = $productRepository;
@@ -76,13 +96,13 @@ class Product
     /**
      * @param int $productId
      *
-     * @return false|\Magento\Catalog\Api\Data\ProductInterface
+     * @return false|ProductInterface
      */
     public function getProduct(int $productId)
     {
         try {
             return $this->productRepository->getById($productId);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+        } catch (NoSuchEntityException $exception) {
             return false;
         }
     }
@@ -123,7 +143,7 @@ class Product
         $products = $this->getProductCollection();
 
         foreach ($products as $product) {
-            /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
+            /** @var ProductInterface $product */
             $value = $product->getId();
             $label = '[' . $product->getId() . '] ' . $this->outputHelper->getProductOutput($product);
             $current = ($product->getId() == $currentValue) ? true : false;
@@ -144,9 +164,9 @@ class Product
 
         if ($this->outputHelper->isValidId($productId)) {
             try {
-                /** @var \Magento\Catalog\Model\Product $product */
+                /** @var ProductModel $product */
                 $product = $this->productRepository->getById($productId);
-            } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+            } catch (NoSuchEntityException $exception) {
                 return '';
             }
 
@@ -157,9 +177,9 @@ class Product
     }
 
     /**
-     * @return \Magento\Catalog\Api\Data\ProductSearchResultsInterface
+     * @return ProductSearchResultsInterface
      */
-    private function getProductCollection() : \Magento\Catalog\Api\Data\ProductSearchResultsInterface
+    private function getProductCollection() : ProductSearchResultsInterface
     {
         $searchCriteriaBuilder = $this->searchCriteriaBuilder;
         $searchCriteriaBuilder->addSortOrder('entity_id', AbstractCollection::SORT_ORDER_DESC);

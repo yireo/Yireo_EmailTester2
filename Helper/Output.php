@@ -13,7 +13,12 @@ declare(strict_types = 1);
 namespace Yireo\EmailTester2\Helper;
 
 use Magento\Backend\Model\Session;
+use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\StoreRepository;
 
 /**
@@ -22,7 +27,7 @@ use Magento\Store\Model\StoreRepository;
 class Output extends Data
 {
     /**
-     * @var \Magento\Backend\Model\Session
+     * @var Session
      */
     private $session;
 
@@ -52,11 +57,11 @@ class Output extends Data
     /**
      * Output a string describing a customer record
      *
-     * @param \Magento\Customer\Api\Data\CustomerInterface $customer
+     * @param CustomerInterface $customer
      *
      * @return string
      */
-    public function getCustomerOutput(\Magento\Customer\Api\Data\CustomerInterface $customer) : string
+    public function getCustomerOutput(CustomerInterface $customer) : string
     {
         return $customer->getEmail() . ' [' . $customer->getId() . ']';
     }
@@ -64,11 +69,11 @@ class Output extends Data
     /**
      * Output a string describing a product record
      *
-     * @param \Magento\Catalog\Api\Data\ProductInterface $product
+     * @param ProductInterface $product
      *
      * @return string
      */
-    public function getProductOutput(\Magento\Catalog\Api\Data\ProductInterface $product) : string
+    public function getProductOutput(ProductInterface $product) : string
     {
         return $product->getName() . ' [' . $product->getSku() . ']';
     }
@@ -76,11 +81,11 @@ class Output extends Data
     /**
      * Output a string describing a customer record
      *
-     * @param \Magento\Sales\Api\Data\OrderInterface $order
+     * @param OrderInterface $order
      *
      * @return string
      */
-    public function getOrderOutput(\Magento\Sales\Api\Data\OrderInterface $order) : string
+    public function getOrderOutput(OrderInterface $order) : string
     {
         return '#' . $order->getIncrementId() . ' [' . $order->getCustomerEmail() . ' / ' . $order->getState() . ']';
     }
@@ -161,16 +166,16 @@ class Output extends Data
         }
 
         try {
-            /** @var $store \Magento\Store\Api\Data\StoreInterface */
+            /** @var $store StoreInterface */
             $store = $this->storeRepository->getById($storeId);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+        } catch (NoSuchEntityException $exception) {
             return $storeIds;
         }
 
         $website = $store->getWebsite();
 
         foreach ($website->getStores() as $store) {
-            /** @var $store \Magento\Store\Api\Data\StoreInterface */
+            /** @var $store StoreInterface */
             $storeIds[] = $store->getId();
         }
 
@@ -187,7 +192,7 @@ class Output extends Data
             try {
                 $store = $this->storeRepository->getById($storeId);
                 return (int)$store->getWebsiteId();
-            } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+            } catch (NoSuchEntityException $exception) {
                 return 0;
             }
         }
