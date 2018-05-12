@@ -22,7 +22,6 @@
   },
   "require-dev": {
     "phpunit/phpunit": "*",
-    "phan/phan": "*",
     "composer/composer": "*@dev"
   },
   "autoload": {
