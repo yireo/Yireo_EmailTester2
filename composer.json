@@ -22,7 +22,7 @@
   },
   "require-dev": {
     "phpunit/phpunit": "*",
-    "phan/phan": "^0.8",
+    "phan/phan": "*",
     "composer/composer": "*@dev"
   },
   "autoload": {
