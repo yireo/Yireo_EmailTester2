@@ -14,28 +14,31 @@ namespace Yireo\EmailTester2\Controller\Adminhtml\Ajax;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Catalog\Api\Data\ProductInterface;
-use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteria;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Api\OrderRepositoryInterface;
 
 /**
- * Class Index
+ * Class OrderSearch
  *
  * @package Yireo\EmailTester2\Controller\Ajax
  */
-class Product extends Action
+class OrderSearch extends Action
 {
+    /**
+     * ACL resource
+     */
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
 
     /**
-     * @var ProductRepositoryInterface
+     * @var OrderRepositoryInterface
      */
-    private $productRepository;
+    private $orderRepository;
 
     /**
      * @var Http
@@ -59,7 +62,7 @@ class Product extends Action
 
     /**
      * @param Context $context
-     * @param ProductRepositoryInterface $productRepository
+     * @param OrderRepositoryInterface $orderRepository
      * @param Http $request
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
@@ -67,14 +70,15 @@ class Product extends Action
      */
     public function __construct(
         Context $context,
-        ProductRepositoryInterface $productRepository,
+        OrderRepositoryInterface $orderRepository,
         Http $request,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         FilterBuilder $filterBuilder,
         JsonFactory $resultJsonFactory
     ) {
         parent::__construct($context);
-        $this->productRepository = $productRepository;
+
+        $this->orderRepository = $orderRepository;
         $this->request = $request;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
@@ -88,20 +92,19 @@ class Product extends Action
      */
     public function execute() : Json
     {
-        $productData = [];
-        $searchResults = $this->productRepository->getList($this->loadSearchCriteria());
+        $orderData = [];
+        $searchResults = $this->orderRepository->getList($this->loadSearchCriteria());
 
-        foreach ($searchResults->getItems() as $product) {
-            /** @var $product ProductInterface */
-            $productData[] = [
-                'value' => $product->getId(),
-                'label' => $this->getProductLabel($product),
+        foreach ($searchResults->getItems() as $order) {
+            /** @var $order OrderInterface */
+            $orderData[] = [
+                'value' => $order->getEntityId(),
+                'label' => $this->getOrderLabel($order),
             ];
         }
 
-        return $this->resultJsonFactory->create()->setData(
-            $productData
-        );
+        $resultJson = $this->resultJsonFactory->create();
+        return $resultJson->setData($orderData);
     }
 
     /**
@@ -114,33 +117,37 @@ class Product extends Action
     }
 
     /**
-     * @param ProductInterface $product
+     * @param OrderInterface $order
      *
      * @return string
      */
-    private function getProductLabel(ProductInterface $product) : string
+    private function getOrderLabel(OrderInterface $order) : string
     {
-        return $product->getName() . ' ['.$product->getSku().']';
+        return $order->getIncrementId() . ' [' . $order->getCustomerEmail() . ']';
     }
 
     /**
      * @return SearchCriteria
      */
-    private function loadSearchCriteria()
+    private function loadSearchCriteria() : SearchCriteria
     {
         $this->searchCriteriaBuilder->setCurrentPage(0);
         $this->searchCriteriaBuilder->setPageSize(10);
+        $search = $this->getSearchQuery();
 
-        $searchFields = ['name', 'sku'];
-        $filters = [];
-        foreach ($searchFields as $field) {
-            $filters[] = $this->filterBuilder
-                ->setField($field)
-                ->setConditionType('like')
-                ->setValue($this->getSearchQuery() . '%')
-                ->create();
+        if (!empty($search)) {
+            $searchFields = ['customer_email'];
+            $filters = [];
+            foreach ($searchFields as $field) {
+                $filters[] = $this->filterBuilder
+                    ->setField($field)
+                    ->setConditionType('like')
+                    ->setValue('%' . $this->getSearchQuery() . '%')
+                    ->create();
+            }
+
+            $this->searchCriteriaBuilder->addFilters($filters);
         }
-        $this->searchCriteriaBuilder->addFilters($filters);
 
         return $this->searchCriteriaBuilder->create();
     }

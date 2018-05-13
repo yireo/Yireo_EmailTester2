@@ -9,8 +9,8 @@
     </argument>
     <settings>
         <buttons>
-            <button name="send" class="Yireo\EmailTester2\Block\Adminhtml\Overview\Form\SendButton"/>
-            <button name="preview" class="Yireo\EmailTester2\Block\Adminhtml\Overview\Form\PreviewButton"/>
+            <button name="send" class="Yireo\EmailTester2\Block\Adminhtml\Form\SendButton"/>
+            <button name="preview" class="Yireo\EmailTester2\Block\Adminhtml\Form\PreviewButton"/>
         </buttons>
         <namespace>emailtester_form</namespace>
         <dataScope>data</dataScope>
@@ -25,33 +25,164 @@
             </item>
         </argument>
         <settings>
-            <submitUrl path="emailtester/index/submit"/>
+            <submitUrl path="emailtester/index/preview"/>
         </settings>
-        <dataProvider class="Yireo\EmailTester2\Model\DataProvider" name="emailtester_form_data_source">
+        <dataProvider class="Yireo\EmailTester2\Model\Form\DataProvider" name="emailtester_form_data_source">
             <settings>
                 <requestFieldName>form_id</requestFieldName>
                 <primaryFieldName>form_id</primaryFieldName>
             </settings>
         </dataProvider>
     </dataSource>
-    <fieldset name="order_fieldset">
+
+    <fieldset name="generic_fieldset">
         <settings>
-            <label translate="true">Order Value</label>
+            <label translate="true">Generic Options</label>
         </settings>
+
         <field name="action">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="visible" xsi:type="boolean">false</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="formElement" xsi:type="string">input</item>
-                    <item name="source" xsi:type="string">action</item>
                 </item>
             </argument>
         </field>
+
+        <field name="store_id">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Cms\Ui\Component\Listing\Column\Cms\Options</item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="default" xsi:type="string">0</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <required>true</required>
+                <dataType>int</dataType>
+                <label translate="true">Store View</label>
+                <dataScope>store_id</dataScope>
+            </settings>
+        </field>
+
+        <field name="template">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Yireo\EmailTester2\Model\Backend\Source\Email</item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <required>true</required>
+                <dataType>string</dataType>
+                <label translate="true">Email Template</label>
+                <dataScope>template</dataScope>
+            </settings>
+        </field>
+
+        <field name="email" sortOrder="1" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Cms\Ui\Component\Listing\Column\Cms\Options</item>
+                <item name="config" xsi:type="array">
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <required>1</required>
+                <dataType>text</dataType>
+                <label translate="true">Mail To</label>
+                <placeholder>Email Address</placeholder>
+                <dataScope>email</dataScope>
+            </settings>
+        </field>
+    </fieldset>
+
+    <fieldset name="customer_fieldset">
+            <settings>
+            <label translate="true">Customer Value</label>
+        </settings>
+
+        <field name="customer_id" sortOrder="1" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Yireo_EmailTester2/js/form/element/id-preview/customerId</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Customer ID</label>
+                <placeholder>Numeric ID</placeholder>
+                <dataScope>customer_id</dataScope>
+            </settings>
+        </field>
+
+        <field name="customer_search" sortOrder="2" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Yireo_EmailTester2/js/form/element/autocomplete/customerSearch</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Customer Search</label>
+                <placeholder>Search here for an increment ID, name or email</placeholder>
+                <dataScope>customer_search</dataScope>
+            </settings>
+        </field>
+    </fieldset>
+
+    <fieldset name="product_fieldset">
+    <settings>
+            <label translate="true">Product Value</label>
+        </settings>
+
+        <field name="product_id" sortOrder="1" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Yireo_EmailTester2/js/form/element/id-preview/productId</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Product ID</label>
+                <placeholder>Numeric ID</placeholder>
+                <dataScope>product_id</dataScope>
+            </settings>
+        </field>
+
+        <field name="product_search" sortOrder="2" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Yireo_EmailTester2/js/form/element/autocomplete/productSearch</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Product Search</label>
+                <placeholder>Search here for an increment ID, name or email</placeholder>
+                <dataScope>product_search</dataScope>
+            </settings>
+        </field>
+    </fieldset>
+
+    <fieldset name="order_fieldset">
+        <settings>
+            <label translate="true">Order Value</label>
+        </settings>
+
         <field name="order_id" sortOrder="1" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="component" xsi:type="string">Yireo_EmailTester2/js/form/element/orderId</item>
+                    <item name="component" xsi:type="string">Yireo_EmailTester2/js/form/element/id-preview/orderId</item>
                 </item>
             </argument>
             <settings>
@@ -61,10 +192,11 @@
                 <dataScope>order_id</dataScope>
             </settings>
         </field>
+
         <field name="order_search" sortOrder="2" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="component" xsi:type="string">Yireo_EmailTester2/js/form/element/orderSearch</item>
+                    <item name="component" xsi:type="string">Yireo_EmailTester2/js/form/element/autocomplete/orderSearch</item>
                 </item>
             </argument>
             <settings>
@@ -75,4 +207,5 @@
             </settings>
         </field>
     </fieldset>
+
 </form>

@@ -8,44 +8,37 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Controller\Adminhtml\Ajax;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Customer\Api\CustomerRepositoryInterface;
-use Magento\Customer\Api\Data\CustomerInterface;
-use Magento\Customer\Model\Customer as CustomerModel;
+use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteria;
 use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Framework\App\Request\Http as HttpRequest;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\Exception\LocalizedException;
 
 /**
- * Class Customer
+ * Class ProductSearch
  *
  * @package Yireo\EmailTester2\Controller\Ajax
  */
-class Customer extends Action
+class ProductSearch extends Action
 {
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
 
     /**
-     * @var CustomerRepositoryInterface
+     * @var ProductRepositoryInterface
      */
-    private $customerRepository;
+    private $productRepository;
 
     /**
-     * @var JsonFactory
-     */
-    private $resultJsonFactory;
-
-    /**
-     * @var HttpRequest
+     * @var Http
      */
     private $request;
 
@@ -60,24 +53,28 @@ class Customer extends Action
     private $filterBuilder;
 
     /**
+     * @var JsonFactory
+     */
+    private $resultJsonFactory;
+
+    /**
      * @param Context $context
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param HttpRequest $request
+     * @param ProductRepositoryInterface $productRepository
+     * @param Http $request
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
      * @param JsonFactory $resultJsonFactory
      */
     public function __construct(
         Context $context,
-        CustomerRepositoryInterface $customerRepository,
-        HttpRequest $request,
+        ProductRepositoryInterface $productRepository,
+        Http $request,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         FilterBuilder $filterBuilder,
         JsonFactory $resultJsonFactory
     ) {
         parent::__construct($context);
-
-        $this->customerRepository = $customerRepository;
+        $this->productRepository = $productRepository;
         $this->request = $request;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
@@ -88,54 +85,54 @@ class Customer extends Action
      * Index action
      *
      * @return Json
-     * @throws LocalizedException
      */
-    public function execute(): Json
+    public function execute() : Json
     {
-        $customerData = [];
-        $searchResults = $this->customerRepository->getList($this->loadSearchCriteria());
+        $productData = [];
+        $searchResults = $this->productRepository->getList($this->loadSearchCriteria());
 
-        foreach ($searchResults->getItems() as $customer) {
-            /** @var $customer CustomerModel */
-            $customerData[] = [
-                'value' => $customer->getId(),
-                'label' => $this->getCustomerLabel($customer),
+        foreach ($searchResults->getItems() as $product) {
+            /** @var $product ProductInterface */
+            $productData[] = [
+                'value' => $product->getId(),
+                'label' => $this->getProductLabel($product),
             ];
         }
 
-        return $this->resultJsonFactory->create()->setData($customerData);
+        return $this->resultJsonFactory->create()->setData(
+            $productData
+        );
     }
 
     /**
      * @return string
      */
-    private function getSearchQuery(): string
+    private function getSearchQuery() : string
     {
         $search = (string) $this->request->getParam('term');
         return $search;
     }
 
     /**
-     * @param CustomerInterface $customer
+     * @param ProductInterface $product
      *
      * @return string
      */
-    private function getCustomerLabel(CustomerInterface $customer): string
+    private function getProductLabel(ProductInterface $product) : string
     {
-        return $customer->getFirstname() . ' ' . $customer->getLastname() . ' [' . $customer->getEmail() . ']';
+        return $product->getName() . ' ['.$product->getSku().']';
     }
 
     /**
      * @return SearchCriteria
      */
-    private function loadSearchCriteria(): SearchCriteria
+    private function loadSearchCriteria()
     {
         $this->searchCriteriaBuilder->setCurrentPage(0);
         $this->searchCriteriaBuilder->setPageSize(10);
 
-        $searchFields = ['firstname', 'lastname', 'email'];
+        $searchFields = ['name', 'sku'];
         $filters = [];
-
         foreach ($searchFields as $field) {
             $filters[] = $this->filterBuilder
                 ->setField($field)
@@ -143,7 +140,6 @@ class Customer extends Action
                 ->setValue($this->getSearchQuery() . '%')
                 ->create();
         }
-
         $this->searchCriteriaBuilder->addFilters($filters);
 
         return $this->searchCriteriaBuilder->create();

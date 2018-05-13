@@ -15,24 +15,12 @@ namespace Yireo\EmailTester2\Helper;
 use Magento\Backend\Model\Session;
 use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Store\Ui\Component\Listing\Column\Store\Options;
-use Yireo\EmailTester2\Model\Backend\Source\Email;
 
 /**
  * Class \Yireo\EmailTester2\Helper\Form
  */
 class Form extends Data
 {
-    /**
-     * @var Email
-     */
-    private $emailSource;
-
-    /**
-     * @var Options
-     */
-    private $storeSource;
-
     /**
      * @var StoreManagerInterface
      */
@@ -45,40 +33,18 @@ class Form extends Data
 
     /**
      * @param Context $context
-     * @param Options $storeSource
      * @param StoreManagerInterface $storeManager
      * @param Session $backendSession
-     * @param Email $emailSource
      */
     public function __construct(
         Context $context,
-        Options $storeSource,
         StoreManagerInterface $storeManager,
-        Session $backendSession,
-        Email $emailSource
+        Session $backendSession
     ) {
-        $this->emailSource = $emailSource;
-        $this->storeSource = $storeSource;
         $this->storeManager = $storeManager;
         $this->backendSession = $backendSession;
 
         parent::__construct($context);
-    }
-
-    /**
-     * @return array
-     */
-    public function getTemplateOptions() : array
-    {
-        return $this->emailSource->toOptionArray();
-    }
-
-    /**
-     * @return array
-     */
-    public function getStoreOptions() : array
-    {
-        return $this->storeSource->toOptionArray();
     }
 
     /**
@@ -94,6 +60,10 @@ class Form extends Data
             'order_id' => $this->getConfigValue('default_order'),
             'product_id' => $this->getConfigValue('default_product'),
         ];
+
+        $data['product_search'] = $data['product_id'];
+        $data['customer_search'] = $data['customer_id'];
+        $data['order_search'] = $data['order_id'];
 
         $sessionData = $this->getDataFromSession();
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Yireo\EmailTester2\Model;
+namespace Yireo\EmailTester2\Model\Form;
 
 use Magento\Framework\Api\Filter;
 use Magento\Framework\App\RequestInterface;

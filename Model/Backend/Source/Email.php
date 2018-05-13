@@ -11,15 +11,27 @@
 declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Backend\Source;
+
 use Magento\Email\Model\ResourceModel\Template\Collection;
 use Magento\Email\Model\Template;
 use Magento\Email\Model\Template\Config;
+use Magento\Framework\Data\OptionSourceInterface;
 
 /**
  * Class Yireo\EmailTester2\Model\Backend\Source\Email
  */
-class Email
+class Email implements OptionSourceInterface
 {
+    /**
+     * @var array
+     */
+    protected $options;
+
+    /**
+     * @var array
+     */
+    protected $currentOptions = [];
+
     /**
      * @var Collection
      */
@@ -51,6 +63,10 @@ class Email
      */
     public function toOptionArray()
     {
+        if ($this->options !== null) {
+            return $this->options;
+        }
+
         $options = [];
         $collection = $this->emailTemplateCollection;
 

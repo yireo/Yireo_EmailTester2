@@ -10,27 +10,13 @@
 
 /** @var $block Magento\Backend\Block\Template */
 ?>
-<script type="text/x-magento-init">
-{
-    "*": {
-        "emailtester" : {
-            "customer_ajax_url": "<?= $block->escapeUrl($block->getUrl('*/ajax/customer')) ?>",
-            "product_ajax_url": "<?= $block->escapeUrl($block->getUrl('*/ajax/product')) ?>",
-            "order_ajax_url": "<?= $block->escapeUrl($block->getUrl('*/ajax/order')) ?>"
-        }
-    }
-}
-</script>
-
-<?php /*
 <script>
-    var window.submitEmailTesterFormToUrl;
-    require(['jquery'], function($) {
-         window.submitEmailTesterFormToUrl = function(formId, url) {
-            var form = $('#' + formId);
-            form.attr('action', url);
-            form.submit();
-        }
-    });
+    window.emailtester = {
+        "customerSearchAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/customerSearch')) ?>",
+        "productSearchAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/productSearch')) ?>",
+        "orderSearchAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/orderSearch')) ?>",
+        "customerIdAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/customerId')) ?>",
+        "productIdAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/productId')) ?>",
+        "orderIdAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/orderId')) ?>"
+    };
 </script>
-*/ ?>

@@ -5,7 +5,6 @@
         value: value,
         hasFocus: focused,
         valueUpdate: valueUpdate,
-        autocomplete: autocompleteOptions,
         attr: {
             name: inputName,
             placeholder: placeholder,
@@ -14,8 +13,8 @@
             disabled: disabled,
             maxlength: 255
     }"/>
-    <label class="admin__addon-prefix">
-        <span>Search: </span>
+    <label class="admin__addon-suffix">
+        (<span data-bind="text: loadPreviewData">No data selected yet</span>)
     </label>
 </div>
 

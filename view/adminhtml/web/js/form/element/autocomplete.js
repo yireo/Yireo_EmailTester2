@@ -4,6 +4,8 @@ define([
         'jquery'
     ], function (Element, ko, $) {
 
+        'use strict';
+
         ko.bindingHandlers.autocomplete = {
             init: function(element, valueAccessor) {
                 var options = ko.utils.unwrapObservable(valueAccessor());
@@ -16,10 +18,9 @@ define([
 
         return Element.extend({
             defaults: {
-                valueUpdate: 'blur',
+                valueUpdate: 'keyup',
                 elementTmpl: 'Yireo_EmailTester2/form/element/autocomplete.html',
                 autocompleteUrl: '',
-                autocompleteTargetElement: '',
                 autocompleteOptions: {
                     source: '',
                     minLength: 1
@@ -28,13 +29,6 @@ define([
             initialize: function() {
                 this._super();
                 this.autocompleteOptions.source = this.autocompleteUrl;
-                this.autocompleteOptions.select = this.onSelect;
-                this.autocompleteOptions.select.autocompleteTargetElement = this.autocompleteTargetElement;
-            },
-            onSelect: function (event, ui) {
-                console.log('Hello World: ' + this.autocompleteTargetElement);
-                var $target = $(this.autocompleteTargetElement);
-                $target.val(ui.item.value);
             }
         });
     }
