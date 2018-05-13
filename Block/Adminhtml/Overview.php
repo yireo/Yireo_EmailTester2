@@ -28,33 +28,6 @@ use Yireo\EmailTester2\Block\Adminhtml\Overview\Form as OverviewForm;
 class Overview extends Template
 {
     /**
-     * @var ButtonList
-     */
-    private $buttonList;
-
-    /**
-     * @var ButtonToolbarInterface
-     */
-    private $toolbar;
-
-    /**
-     * @param Context $context
-     * @param ButtonList $buttonList
-     * @param ButtonToolbarInterface $toolbar
-     * @param array $data
-     */
-    public function __construct(
-        Context $context,
-        ButtonList $buttonList,
-        ButtonToolbarInterface $toolbar,
-        array $data = []
-    ) {
-        $this->buttonList = $buttonList;
-        $this->toolbar = $toolbar;
-        parent::__construct($context, $data);
-    }
-
-    /**
      * Return form block HTML
      *
      * @return string
@@ -79,55 +52,8 @@ class Overview extends Template
      */
     protected function _prepareLayout()
     {
-        $this->addButtons();
         $this->addChild('form', OverviewForm::class);
 
         return parent::_prepareLayout();
-    }
-
-    /**
-     * Add the buttons
-     */
-    private function addButtons()
-    {
-        $this->buttonList->add(
-            'send',
-            [
-                'label' => __('Send Email'),
-                'onclick' => "submitEmailTesterFormToUrl('emailtester_form', '" . $this->getSendUrl() . "')",
-                'class' => 'send primary'
-            ]
-        );
-
-        $this->buttonList->add(
-            'preview',
-            [
-                'label' => __('Preview Email'),
-                'class' => 'preview primary',
-                'onclick' => "submitEmailTesterFormToUrl('emailtester_form', '" . $this->getPreviewUrl() . "')",
-            ]
-        );
-
-        $this->toolbar->pushButtons($this, $this->buttonList);
-    }
-
-    /**
-     * Return the URL to send the mail
-     *
-     * @return string
-     */
-    private function getSendUrl() : string
-    {
-        return $this->getUrl('*/*/send');
-    }
-
-    /**
-     * Return the URL to output the mail
-     *
-     * @return string
-     */
-    private function getPreviewUrl() : string
-    {
-        return $this->getUrl('*/*/preview');
     }
 }

@@ -130,6 +130,7 @@ class Form extends Generic
         );
 
         // Order fieldset
+        /*
         $orderFieldset = $form->addFieldset(
             'order_fieldset',
             ['legend' => __('Order Value'), 'class' => 'fieldset-wide']
@@ -145,7 +146,7 @@ class Form extends Generic
             'order_search',
             'text',
             ['name' => 'order_search', 'label' => __('Order Search'), 'placeholder' => 'Increment ID, name or email', 'required' => false]
-        );
+        );*/
 
         $form->setValues($this->getFormValues());
 

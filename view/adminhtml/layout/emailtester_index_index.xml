@@ -17,14 +17,15 @@
     </head>
     <body>
         <referenceContainer name="content">
-            <block class="Yireo\EmailTester2\Block\Adminhtml\Script"
+            <block class="Magento\Backend\Block\Template"
                    name="script"
-                   template="script.phtml">
+                   template="Yireo_EmailTester2::script.phtml">
             </block>
             <block class="Yireo\EmailTester2\Block\Adminhtml\Overview"
                 name="overview"
                 template="overview.phtml">
             </block>
+            <uiComponent name="emailtester_form"/>
         </referenceContainer>
     </body>
 </page>

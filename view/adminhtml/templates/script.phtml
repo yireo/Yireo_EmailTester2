@@ -4,11 +4,11 @@
  *
  * @package     Yireo_EmailTester2
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright (c) 2017 Yireo.com
+ * @copyright   Copyright (c) 2018 Yireo.com
  * @license     Open Software License
  */
 
-/** @var $block Yireo\EmailTester2\Block\Adminhtml\Script */
+/** @var $block Magento\Backend\Block\Template */
 ?>
 <script type="text/x-magento-init">
 {
@@ -22,10 +22,15 @@
 }
 </script>
 
+<?php /*
 <script>
-    function submitEmailTesterFormToUrl(formId, url) {
-        var form = jQuery('#' + formId);
-        form.attr('action', url);
-        form.submit();
-    }
+    var window.submitEmailTesterFormToUrl;
+    require(['jquery'], function($) {
+         window.submitEmailTesterFormToUrl = function(formId, url) {
+            var form = $('#' + formId);
+            form.attr('action', url);
+            form.submit();
+        }
+    });
 </script>
+*/ ?>
