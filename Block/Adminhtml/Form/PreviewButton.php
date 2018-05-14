@@ -12,22 +12,6 @@ use Magento\Framework\UrlInterface;
 class PreviewButton implements ButtonProviderInterface
 {
     /**
-     * @var UrlInterface
-     */
-    private $urlBuilder;
-
-    /**
-     * SendButton constructor.
-     *
-     * @param UrlInterface $urlBuilder
-     */
-    public function __construct(
-        UrlInterface $urlBuilder
-    ) {
-        $this->urlBuilder = $urlBuilder;
-    }
-
-    /**
      * @return array
      */
     public function getButtonData()
@@ -35,6 +19,7 @@ class PreviewButton implements ButtonProviderInterface
         return [
             'label' => __('Preview Email'),
             'class' => 'save primary',
+            'on_click' => '',
             'data_attribute' => [
                 'mage-init' => [
                     'button' => [
@@ -46,20 +31,5 @@ class PreviewButton implements ButtonProviderInterface
             ],
             'sort_order' => 80,
         ];
-    }
-
-    /**
-     * Return the URL to send the mail
-     *
-     * @return string
-     */
-    public function getUrl(): string
-    {
-        return $this->urlBuilder->getUrl('*/*/save');
-    }
-
-    public function getFormId(): int
-    {
-        return 0;
     }
 }
