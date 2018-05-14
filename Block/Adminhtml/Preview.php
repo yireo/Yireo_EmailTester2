@@ -12,6 +12,7 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Block\Adminhtml;
 
+use Exception;
 use Magento\Backend\Block\Template\Context;
 use Magento\Framework\View\Element\Text;
 use Yireo\EmailTester2\Model\Mailer;
@@ -55,6 +56,8 @@ class Preview extends Text
 
     /**
      * @param array $data
+     *
+     * @throws Exception
      */
     private function setMailerOutput(array $data)
     {

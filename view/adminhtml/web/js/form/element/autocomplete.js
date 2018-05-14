@@ -3,14 +3,13 @@ define([
         'knockout',
         'jquery'
     ], function (Element, ko, $) {
-
         'use strict';
 
         ko.bindingHandlers.autocomplete = {
-            init: function(element, valueAccessor) {
+            init: function (element, valueAccessor) {
                 var options = ko.utils.unwrapObservable(valueAccessor());
                 $(element).autocomplete(options);
-                ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
+                ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
                     $(element).autocomplete("destroy");
                 });
             }
@@ -26,7 +25,7 @@ define([
                     minLength: 1
                 }
             },
-            initialize: function() {
+            initialize: function () {
                 this._super();
                 this.autocompleteOptions.source = this.autocompleteUrl;
             }

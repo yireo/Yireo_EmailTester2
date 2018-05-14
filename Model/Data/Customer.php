@@ -75,7 +75,6 @@ class Customer
      * @param RequestInterface $request
      * @param FilterBuilder $filterBuilder
      * @param Output $outputHelper
-     * @param StoreRepositoryInterface $storeRepository
      * @param ConfigInterface $config
      */
     public function __construct(
@@ -85,7 +84,6 @@ class Customer
         RequestInterface $request,
         FilterBuilder $filterBuilder,
         Output $outputHelper,
-        StoreRepositoryInterface $storeRepository,
         ConfigInterface $config
     ) {
         $this->session = $session;
@@ -138,6 +136,7 @@ class Customer
      * Get an array of customer select options
      *
      * @return array
+     * @throws LocalizedException
      */
     public function getCustomerOptions() : array
     {

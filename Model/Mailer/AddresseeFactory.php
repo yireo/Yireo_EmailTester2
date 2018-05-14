@@ -11,6 +11,7 @@
 declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer;
+
 use Magento\Config\Model\Config;
 use Magento\Framework\ObjectManagerInterface;
 

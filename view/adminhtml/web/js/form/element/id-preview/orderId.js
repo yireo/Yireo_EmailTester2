@@ -1,6 +1,7 @@
 define([
         'Yireo_EmailTester2/js/form/element/id-preview'
     ], function (IdPreviewField) {
+        'use strict';
 
         return IdPreviewField.extend({
             defaults: {

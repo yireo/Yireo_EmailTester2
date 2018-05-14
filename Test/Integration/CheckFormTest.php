@@ -4,8 +4,14 @@ namespace Yireo\EmailTester2\Test\Integration;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\Framework\App\Config\MutableScopeConfigInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\TestFramework\TestCase\AbstractBackendController;
 
-class CheckFormTest extends \Magento\TestFramework\TestCase\AbstractBackendController
+/**
+ * Class CheckFormTest
+ *
+ * @package Yireo\EmailTester2\Test\Integration
+ */
+class CheckFormTest extends AbstractBackendController
 {
     protected function setUp()
     {
@@ -21,7 +27,8 @@ class CheckFormTest extends \Magento\TestFramework\TestCase\AbstractBackendContr
     {
         /** @var \Magento\TestFramework\Config $config */
         $config = Bootstrap::getObjectManager()->create(MutableScopeConfigInterface::class);
-        $config->setValue('emailtester2/settings/default_email', 'dummy@example.com', ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+        $configPath = 'emailtester2/settings/default_email';
+        $config->setValue($configPath, 'dummy@example.com', ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
 
         //$this->getRequest()->setParam('block', 'tab_orders');
         $this->dispatch('backend/emailtester/index');

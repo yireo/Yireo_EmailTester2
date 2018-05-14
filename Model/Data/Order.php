@@ -75,7 +75,6 @@ class Order
      * @param RequestInterface $request
      * @param FilterBuilder $filterBuilder
      * @param Output $outputHelper
-     * @param StoreRepositoryInterface $storeRepository
      * @param ConfigInterface $config
      */
     public function __construct(
@@ -85,7 +84,6 @@ class Order
         RequestInterface $request,
         FilterBuilder $filterBuilder,
         Output $outputHelper,
-        StoreRepositoryInterface $storeRepository,
         ConfigInterface $config
     ) {
         $this->session = $session;

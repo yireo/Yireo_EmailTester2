@@ -46,8 +46,7 @@ class Output extends Data
         Session $session,
         StoreRepository $storeRepository,
         Context $context
-    )
-    {
+    ) {
         $this->session = $session;
         $this->storeRepository = $storeRepository;
 

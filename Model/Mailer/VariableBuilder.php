@@ -72,8 +72,7 @@ class VariableBuilder extends DataObject
         VariableFactory $variableFactory,
         VariableMethodFactory $variableMethodFactory,
         $data = []
-    )
-    {
+    ) {
         $this->variableFactory = $variableFactory;
         $this->variableMethodFactory = $variableMethodFactory;
 
@@ -118,6 +117,7 @@ class VariableBuilder extends DataObject
     /**
      * @param AbstractVariableInterface $variableModel
      * @param string $variableName
+     *
      * @return array
      */
     private function callVariableModelMethods(AbstractVariableInterface $variableModel, string $variableName): array
@@ -137,6 +137,7 @@ class VariableBuilder extends DataObject
     /**
      * @param AbstractVariableInterface $variableModel
      * @param string $variableName
+     *
      * @return array
      */
     private function retrieveVariables(AbstractVariableInterface $variableModel, string $variableName): array
@@ -157,7 +158,6 @@ class VariableBuilder extends DataObject
                     $variables[$variableName] = $variableValue;
                 }
             }
-
         }
 
         return $variables;

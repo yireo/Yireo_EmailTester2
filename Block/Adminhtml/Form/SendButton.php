@@ -23,8 +23,7 @@ class SendButton implements ButtonProviderInterface
      */
     public function __construct(
         UrlInterface $urlBuilder
-    )
-    {
+    ) {
         $this->urlBuilder = $urlBuilder;
     }
 

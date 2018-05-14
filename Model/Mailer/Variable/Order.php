@@ -12,12 +12,22 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Customer\Helper\View;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Api\OrderRepositoryInterface;
+use Yireo\EmailTester2\Model\Mailer\VariableInterface;
+
 /**
  * Class Order
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class Order implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
+class Order implements VariableInterface
 {
     /**
      * @var int
@@ -30,37 +40,38 @@ class Order implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     private $customerId = 0;
 
     /**
-     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     * @var OrderRepositoryInterface
      */
     private $orderRepository;
 
     /**
-     * @var \Magento\Customer\Api\CustomerRepositoryInterface
+     * @var CustomerRepositoryInterface
      */
     private $customerRepository;
 
     /**
-     * @var \Magento\Framework\Api\SearchCriteriaBuilder
+     * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
 
     /**
-     * @var \Magento\Customer\Helper\View
+     * @var View
      */
     private $customerViewHelper;
 
     /**
      * Order constructor.
      *
-     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
-     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param OrderRepositoryInterface $orderRepository
+     * @param CustomerRepositoryInterface $customerRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param View $customerViewHelper
      */
     public function __construct(
-        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
-        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Customer\Helper\View $customerViewHelper
+        OrderRepositoryInterface $orderRepository,
+        CustomerRepositoryInterface $customerRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        View $customerViewHelper
     ) {
         $this->orderRepository = $orderRepository;
         $this->customerRepository = $customerRepository;
@@ -69,7 +80,7 @@ class Order implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     }
 
     /**
-     * @return \Magento\Sales\Api\Data\OrderInterface
+     * @return OrderInterface
      */
     public function getVariable()
     {
@@ -94,7 +105,7 @@ class Order implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 
         // Set the customer into the order
         $customer = $this->getCustomerById((int)$this->customerId);
-        if ($order instanceof \Magento\Sales\Api\Data\OrderInterface && $customer instanceof \Magento\Customer\Api\Data\CustomerInterface) {
+        if ($order instanceof OrderInterface && $customer instanceof CustomerInterface) {
             $order->setCustomerId($customer->getId());
             $order->setCustomerName($this->customerViewHelper->getCustomerName($customer));
             $order->setCustomerFirstname($customer->getFirstname());
@@ -109,7 +120,7 @@ class Order implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     /**
      * @param int $orderId
      *
-     * @return bool|\Magento\Sales\Api\Data\OrderInterface
+     * @return bool|OrderInterface
      */
     private function getOrderById(int $orderId)
     {
@@ -119,7 +130,7 @@ class Order implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 
         try {
             $order = $this->orderRepository->get($orderId);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+        } catch (NoSuchEntityException $exception) {
             return false;
         }
 
@@ -129,7 +140,8 @@ class Order implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     /**
      * @param int $customerId
      *
-     * @return false|\Magento\Customer\Api\Data\CustomerInterface
+     * @return false|CustomerInterface
+     * @throws LocalizedException
      */
     private function getCustomerById(int $customerId)
     {
@@ -139,7 +151,7 @@ class Order implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 
         try {
             $customer = $this->customerRepository->getById($customerId);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+        } catch (NoSuchEntityException $exception) {
             return false;
         }
 

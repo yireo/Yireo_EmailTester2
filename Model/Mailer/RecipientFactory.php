@@ -11,6 +11,7 @@
 declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer;
+
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Helper\View;
 use Magento\Framework\Exception\NoSuchEntityException;

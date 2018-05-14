@@ -3,7 +3,6 @@ define([
         'knockout',
         'jquery'
     ], function (Element, ko, $) {
-
         'use strict';
 
         return Element.extend({
@@ -15,6 +14,7 @@ define([
             initialize: function () {
                 this._super();
 
+                this.disabled(true);
                 this.searchValue = ko.observable();
                 this.previewValue = ko.observable();
 

@@ -14,8 +14,6 @@ namespace Yireo\EmailTester2\Behaviour;
 
 /**
  * EmailTester error trait
- * @todo: Log errors to log instead
- * @todo: Give exceptions
  */
 trait Errorable
 {

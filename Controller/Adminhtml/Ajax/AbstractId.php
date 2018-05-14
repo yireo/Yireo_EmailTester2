@@ -60,14 +60,14 @@ abstract class AbstractId extends Action
      *
      * @return Json
      */
-    public function execute() : Json
+    public function execute(): Json
     {
         try {
             $data = [
                 'id' => $this->getId(),
                 'label' => $this->getLabel(),
             ];
-        } catch(NoSuchEntityException $e) {
+        } catch (NoSuchEntityException $e) {
             $data = [
                 'id' => 0,
                 'label' => 'No entry found',
@@ -82,7 +82,7 @@ abstract class AbstractId extends Action
     /**
      * @return int
      */
-    protected function getId() : int
+    protected function getId(): int
     {
         return (int)$this->request->getParam('id');
     }

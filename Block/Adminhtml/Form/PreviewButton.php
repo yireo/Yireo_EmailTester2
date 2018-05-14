@@ -23,8 +23,7 @@ class PreviewButton implements ButtonProviderInterface
      */
     public function __construct(
         UrlInterface $urlBuilder
-    )
-    {
+    ) {
         $this->urlBuilder = $urlBuilder;
     }
 
@@ -37,8 +36,12 @@ class PreviewButton implements ButtonProviderInterface
             'label' => __('Preview Email'),
             'class' => 'save primary',
             'data_attribute' => [
-                'action' => 'preview',
-                'mage-init' => ['button' => ['event' => 'preview']],
+                'mage-init' => [
+                    'button' => [
+                        'actionName' => 'preview',
+                        'event' => 'preview'
+                    ]
+                ],
                 'form-role' => 'preview',
             ],
             'sort_order' => 80,
@@ -50,8 +53,13 @@ class PreviewButton implements ButtonProviderInterface
      *
      * @return string
      */
-    private function getUrl() : string
+    public function getUrl(): string
     {
-        return $this->urlBuilder->getUrl('*/*/preview');
+        return $this->urlBuilder->getUrl('*/*/save');
+    }
+
+    public function getFormId(): int
+    {
+        return 0;
     }
 }
