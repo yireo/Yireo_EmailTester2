@@ -8,8 +8,10 @@
  */
 
 var config = {
-    path: {
-        'Magento_Ui/js/form/adapter': 'Yireo_EmailTester2/js/form/adapter'
+    map: {
+        '*': {
+            'Magento_Ui/js/form/adapter': 'Yireo_EmailTester2/js/form/adapter'
+        }
     },
     config: {
         mixins: {

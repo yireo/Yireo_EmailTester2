@@ -141,8 +141,6 @@ class Mailer extends DataObject
     {
         $this->prepare();
 
-        // Send some extra headers just make sure the document is compliant
-        $this->sendHeaders();
         return $this->getRawContentFromTransportBuilder();
     }
 
@@ -192,21 +190,6 @@ class Mailer extends DataObject
         }
 
         throw new LocalizedException($this->phraseFactory->create('Unexpected body type'));
-    }
-
-    /**
-     * Send HTTP headers
-     *
-     * @return bool
-     */
-    private function sendHeaders(): bool
-    {
-        if (headers_sent()) {
-            return false;
-        }
-
-        header('Content-Type: text/html; charset=UTF-8');
-        return true;
     }
 
     /**

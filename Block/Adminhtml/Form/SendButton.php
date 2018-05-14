@@ -19,10 +19,13 @@ class SendButton implements ButtonProviderInterface
         return [
             'label' => __('Send Email'),
             'class' => 'save primary',
+            'on_click' => '',
             'data_attribute' => [
-                'action' => 'send',
-                'mage-init' => ['button' => ['event' => 'send']],
-                'form-role' => 'send',
+                'mage-init' => [
+                    'button' => [
+                        'event' => 'send'
+                    ]
+                ],
             ],
             'sort_order' => 80,
         ];

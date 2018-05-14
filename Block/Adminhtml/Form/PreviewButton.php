@@ -23,11 +23,9 @@ class PreviewButton implements ButtonProviderInterface
             'data_attribute' => [
                 'mage-init' => [
                     'button' => [
-                        'actionName' => 'preview',
                         'event' => 'preview'
                     ]
                 ],
-                'form-role' => 'preview',
             ],
             'sort_order' => 80,
         ];
