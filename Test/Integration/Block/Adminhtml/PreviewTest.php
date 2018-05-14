@@ -22,6 +22,11 @@ class PreviewTest extends AbstractBackendController
 
     /**
      * Test whether the page contains valid body content
+     *
+     * @magentoConfigFixture current_store emailtester2/settings/default_email info@example.com
+     * @magentoConfigFixture current_store emailtester2/settings/default_transactional customer_create_account_email_template
+     *
+     * @magentoDataFixture Magento/Catalog/_files/product_simple.php
      */
     public function testValidBodyContent()
     {
