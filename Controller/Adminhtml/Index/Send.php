@@ -11,13 +11,19 @@
 declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\Controller\Result\Redirect;
+use Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\Message\ManagerInterface;
+use Yireo\EmailTester2\Model\Mailer;
 
 /**
  * Class Index
  *
  * @package Yireo\EmailTester2\Controller\Index
  */
-class Send extends \Magento\Backend\App\Action
+class Send extends Action
 {
     /**
      * ACL resource
@@ -25,35 +31,41 @@ class Send extends \Magento\Backend\App\Action
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
 
     /**
-     * @var \Magento\Framework\Controller\Result\RedirectFactory
+     * @var RedirectFactory
      */
     private $redirectFactory;
 
     /**
-     * @var \Yireo\EmailTester2\Model\Mailer
+     * @var Mailer
      */
     private $mailer;
+    /**
+     * @var Context
+     */
+    private $context;
 
     /**
-     * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory
-     * @param \Yireo\EmailTester2\Model\Mailer $mailer
+     * @param Context $context
+     * @param RedirectFactory $redirectFactory
+     * @param ManagerInterface $messageManager
+     * @param Mailer $mailer
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory,
-        \Yireo\EmailTester2\Model\Mailer $mailer
+        Context $context,
+        RedirectFactory $redirectFactory,
+        ManagerInterface $messageManager,
+        Mailer $mailer
     ) {
+        parent::__construct($context);
         $this->redirectFactory = $redirectFactory;
         $this->mailer = $mailer;
-
-        parent::__construct($context);
+        $this->messageManager = $messageManager;
     }
 
     /**
      * Index action
      *
-     * @return \Magento\Framework\Controller\Result\Redirect
+     * @return Redirect
      */
     public function execute()
     {
@@ -63,8 +75,9 @@ class Send extends \Magento\Backend\App\Action
         $this->mailer->setData($data);
         $this->mailer->send();
 
+        $this->messageManager->addNoticeMessage('Message sent to '.$data['email']);
         $redirect = $this->redirectFactory->create();
-        $redirect->setPath('*/*/index');
+        $redirect->setPath('*/*/index', ['form_id' => 0]);
 
         return $redirect;
     }

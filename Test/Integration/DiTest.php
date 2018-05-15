@@ -3,11 +3,17 @@ namespace Yireo\EmailTester2\Test\Integration;
 
 use Magento\TestFramework\Helper\Bootstrap;
 use Yireo\EmailTester2\Model\Mailer;
-use Yireo\EmailTester2\Model\TransportBuilder;
 
-
-class DITest extends \PHPUnit_Framework_TestCase
+/**
+ * Class DiTest
+ *
+ * @package Yireo\EmailTester2\Test\Integration
+ */
+class DiTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * Test whether fetching the mailer through the Object Manager works
+     */
     public function testMailerTransportBuilder()
     {
         /** @var Mailer $mailer */

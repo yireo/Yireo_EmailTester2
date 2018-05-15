@@ -12,12 +12,24 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Customer\Helper\View;
+use Magento\Customer\Model\CustomerRegistry;
+use Magento\Customer\Model\Data\CustomerSecure;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Reflection\DataObjectProcessor;
+use Magento\Sales\Api\Data\OrderInterface;
+use Yireo\EmailTester2\Model\Mailer\VariableInterface;
+
 /**
  * Class Customer
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class Customer implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
+class Customer implements VariableInterface
 {
     /**
      * @var int
@@ -25,61 +37,68 @@ class Customer implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     private $customerId = 0;
 
     /**
-     * @var \Magento\Sales\Api\Data\OrderInterface
+     * @var OrderInterface
      */
     private $order;
 
     /**
-     * @var \Magento\Customer\Api\CustomerRepositoryInterface
+     * @var CustomerRepositoryInterface
      */
     private $customerRepository;
 
     /**
-     * @var \Magento\Framework\Api\SearchCriteriaBuilder
+     * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
 
     /**
-     * @var \Magento\Customer\Model\CustomerRegistry
+     * @var CustomerRegistry
      */
     private $customerRegistry;
 
     /**
-     * @var \Magento\Framework\Reflection\DataObjectProcessor
+     * @var DataObjectProcessor
      */
     private $dataObjectProcessor;
 
     /**
-     * @var \Magento\Customer\Helper\View
+     * @var View
      */
     private $customerViewHelper;
 
     /**
      * Order constructor.
      *
-     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param CustomerRepositoryInterface $customerRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param CustomerRegistry $customerRegistry
+     * @param DataObjectProcessor $dataObjectProcessor
+     * @param View $customerViewHelper
      */
     public function __construct(
-        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Customer\Model\CustomerRegistry $customerRegistry,
-        \Magento\Framework\Reflection\DataObjectProcessor $dataObjectProcessor,
-        \Magento\Customer\Helper\View $customerViewHelper
+        CustomerRepositoryInterface $customerRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        CustomerRegistry $customerRegistry,
+        DataObjectProcessor $dataObjectProcessor,
+        View $customerViewHelper,
+        \Magento\Framework\PhraseFactory $phraseFactory
     ) {
         $this->customerRepository = $customerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->customerRegistry = $customerRegistry;
         $this->dataObjectProcessor = $dataObjectProcessor;
         $this->customerViewHelper = $customerViewHelper;
+        $this->phraseFactory = $phraseFactory;
     }
 
     /**
-     * @return \Magento\Customer\Model\Data\CustomerSecure
+     * @return CustomerSecure
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
-    public function getVariable() : \Magento\Customer\Model\Data\CustomerSecure
+    public function getVariable() : CustomerSecure
     {
-        /** @var \Magento\Customer\Api\Data\CustomerInterface $customer */
+        /** @var CustomerInterface $customer */
         if (!empty($this->order) && $this->order->getCustomerId() > 0 && $this->customerId == 0) {
             $customer = $this->getCustomerById((int) $this->order->getCustomerId());
         } elseif ($this->customerId) {
@@ -92,16 +111,20 @@ class Customer implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
             $searchCriteria->setPageSize(1);
             $searchCriteria->setCurrentPage(1);
             $customers = $this->customerRepository->getList($searchCriteria)->getItems();
-            $customer = $customers[0];
+
+            if (!empty($customers)) {
+                $customer = $customers[0];
+            }
         }
 
-        // Complete other customer fields
-        // @todo: This does not work because setPassword() is not found
-        //$customer->setPassword('p@$$w0rd');
+        if (empty($customer)) {
+            $phrase = $this->phraseFactory->create(['text' => 'Could not find any customer entity']);
+            throw new NoSuchEntityException($phrase);
+        }
 
         $mergedCustomerData = $this->customerRegistry->retrieveSecureData($customer->getId());
         $customerData = $this->dataObjectProcessor
-            ->buildOutputDataArray($customer, \Magento\Customer\Api\Data\CustomerInterface::class);
+            ->buildOutputDataArray($customer, CustomerInterface::class);
         $mergedCustomerData->addData($customerData);
         $mergedCustomerData->setData('name', $this->customerViewHelper->getCustomerName($customer));
 
@@ -111,7 +134,8 @@ class Customer implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     /**
      * @param int $customerId
      *
-     * @return false|\Magento\Customer\Api\Data\CustomerInterface
+     * @return false|CustomerInterface
+     * @throws LocalizedException
      */
     public function getCustomerById(int $customerId)
     {
@@ -123,7 +147,7 @@ class Customer implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 
         try {
             return $this->customerRepository->getById($customerId);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+        } catch (NoSuchEntityException $exception) {
             return false;
         }
     }
@@ -137,9 +161,9 @@ class Customer implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     }
 
     /**
-     * @param $order \Magento\Sales\Api\Data\OrderInterface
+     * @param $order OrderInterface
      */
-    public function setOrder(\Magento\Sales\Api\Data\OrderInterface $order)
+    public function setOrder(OrderInterface $order)
     {
         $this->order = $order;
     }

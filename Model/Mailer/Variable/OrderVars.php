@@ -8,9 +8,12 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
+
+use Magento\Framework\PhraseFactory;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Class OrderVars
@@ -35,9 +38,12 @@ class OrderVars implements \Yireo\EmailTester2\Model\Mailer\VariablesInterface
      * @param \Magento\Sales\Model\Order\Address\Renderer $addressRenderer
      */
     public function __construct(
-        \Magento\Sales\Model\Order\Address\Renderer $addressRenderer
-    ) {
+        \Magento\Sales\Model\Order\Address\Renderer $addressRenderer,
+        PhraseFactory $phraseFactory
+    )
+    {
         $this->addressRenderer = $addressRenderer;
+        $this->phraseFactory = $phraseFactory;
     }
 
     /**
@@ -45,6 +51,11 @@ class OrderVars implements \Yireo\EmailTester2\Model\Mailer\VariablesInterface
      */
     public function getVariables(): array
     {
+        if (empty($order)) {
+            $phrase = $this->phraseFactory->create(['text' => 'Could not find any order entity']);
+            throw new NoSuchEntityException($phrase);
+        }
+
         $variables = [];
         $variables['formattedShippingAddress'] = $this->getFormattedShippingAddress();
         $variables['formattedBillingAddress'] = $this->getFormattedBillingAddress();

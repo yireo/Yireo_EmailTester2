@@ -12,8 +12,19 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Data;
 
+use Magento\Backend\App\ConfigInterface;
+use Magento\Backend\Model\Auth\Session;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Customer\Api\Data\CustomerSearchResultsInterface;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Eav\Model\Entity\Collection\AbstractCollection;
+use Magento\Framework\Api\Search\SearchCriteriaBuilder;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Api\StoreRepositoryInterface;
+use Yireo\EmailTester2\Helper\Output;
 
 /**
  * Class Customer
@@ -21,22 +32,22 @@ use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 class Customer
 {
     /**
-     * @var \Magento\Backend\Model\Auth\Session
+     * @var Session
      */
     private $session;
 
     /**
-     * @var \Magento\Customer\Api\CustomerRepositoryInterface
+     * @var CustomerRepositoryInterface
      */
     private $customerRepository;
 
     /**
-     * @var \Magento\Framework\Api\Search\SearchCriteriaBuilder
+     * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
 
     /**
-     * @var \Magento\Framework\App\RequestInterface
+     * @var RequestInterface
      */
     private $request;
 
@@ -46,33 +57,34 @@ class Customer
     private $filterBuilder;
 
     /**
-     * @var \Yireo\EmailTester2\Helper\Output
+     * @var Output
      */
     private $outputHelper;
 
     /**
-     * @var \Magento\Backend\App\ConfigInterface
+     * @var ConfigInterface
      */
     private $config;
 
     /**
      * Customer constructor.
      *
-     * @param \Magento\Backend\Model\Auth\Session $session
-     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
-     * @param \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\Framework\App\RequestInterface $request
+     * @param Session $session
+     * @param CustomerRepositoryInterface $customerRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param RequestInterface $request
      * @param FilterBuilder $filterBuilder
+     * @param Output $outputHelper
+     * @param ConfigInterface $config
      */
     public function __construct(
-        \Magento\Backend\Model\Auth\Session $session,
-        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
-        \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Framework\App\RequestInterface $request,
+        Session $session,
+        CustomerRepositoryInterface $customerRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        RequestInterface $request,
         FilterBuilder $filterBuilder,
-        \Yireo\EmailTester2\Helper\Output $outputHelper,
-        \Magento\Store\Api\StoreRepositoryInterface $storeRepository,
-        \Magento\Backend\App\ConfigInterface $config
+        Output $outputHelper,
+        ConfigInterface $config
     ) {
         $this->session = $session;
         $this->customerRepository = $customerRepository;
@@ -86,13 +98,14 @@ class Customer
     /**
      * @param int $customerId
      *
-     * @return false|\Magento\Customer\Api\Data\CustomerInterface
+     * @return false|CustomerInterface
+     * @throws LocalizedException
      */
     public function getCustomer(int $customerId)
     {
         try {
             return $this->customerRepository->getById($customerId);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+        } catch (NoSuchEntityException $exception) {
             return false;
         }
     }
@@ -123,6 +136,7 @@ class Customer
      * Get an array of customer select options
      *
      * @return array
+     * @throws LocalizedException
      */
     public function getCustomerOptions() : array
     {
@@ -132,7 +146,7 @@ class Customer
         $customers = $this->getCustomerCollection();
 
         foreach ($customers as $customer) {
-            /** @var \Magento\Customer\Api\Data\CustomerInterface $customer */
+            /** @var CustomerInterface $customer */
             $value = $customer->getId();
             $label = '[' . $customer->getId() . '] ' . $this->outputHelper->getCustomerOutput($customer);
             $current = ($customer->getId() == $currentValue) ? true : false;
@@ -146,6 +160,7 @@ class Customer
      * Get current customer result
      *
      * @return string
+     * @throws LocalizedException
      */
     public function getCustomerSearch() : string
     {
@@ -155,10 +170,10 @@ class Customer
             return '';
         }
 
-        /** @var \Magento\Customer\Api\Data\CustomerInterface $customer */
+        /** @var CustomerInterface $customer */
         try {
             $customer = $this->customerRepository->getById($customerId);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+        } catch (NoSuchEntityException $exception) {
             return '';
         }
 
@@ -166,9 +181,10 @@ class Customer
     }
 
     /**
-     * @return \Magento\Customer\Api\Data\CustomerSearchResultsInterface
+     * @return CustomerSearchResultsInterface
+     * @throws LocalizedException
      */
-    private function getCustomerCollection() : \Magento\Customer\Api\Data\CustomerSearchResultsInterface
+    private function getCustomerCollection() : CustomerSearchResultsInterface
     {
         $searchCriteriaBuilder = $this->searchCriteriaBuilder;
         $searchCriteriaBuilder->addSortOrder('entity_id', AbstractCollection::SORT_ORDER_DESC);

@@ -14,8 +14,6 @@ namespace Yireo\EmailTester2\Behaviour;
 
 /**
  * EmailTester error trait
- * @todo: Log errors to log instead
- * @todo: Give exceptions
  */
 trait Errorable
 {
@@ -60,7 +58,15 @@ trait Errorable
     /**
      * @param string $error
      */
-    protected function addError(string $error)
+    public function setError(string $error)
+    {
+        $this->addError($error);
+    }
+
+    /**
+     * @param string $error
+     */
+    public function addError(string $error)
     {
         $this->errors[] = $error;
     }

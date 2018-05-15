@@ -11,6 +11,6 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Yireo_EmailTester2::index" title="Yireo Email Tester" module="Yireo_EmailTester2" sortOrder="50" parent="Magento_Backend::marketing_communications" resource="Yireo_EmailTester2::index" action="emailtester/index" />
+        <add id="Yireo_EmailTester2::index" title="Yireo Email Tester" module="Yireo_EmailTester2" sortOrder="50" parent="Magento_Backend::marketing_communications" resource="Yireo_EmailTester2::index" action="emailtester/index/index/form_id/0" />
     </menu>
 </config>

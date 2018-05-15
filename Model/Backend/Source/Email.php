@@ -12,14 +12,45 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Backend\Source;
 
+use Magento\Email\Model\ResourceModel\Template\Collection;
+use Magento\Email\Model\Template;
+use Magento\Email\Model\Template\Config;
+use Magento\Framework\Data\OptionSourceInterface;
+
 /**
  * Class Yireo\EmailTester2\Model\Backend\Source\Email
  */
-class Email
+class Email implements OptionSourceInterface
 {
+    /**
+     * @var array
+     */
+    protected $options;
+
+    /**
+     * @var array
+     */
+    protected $currentOptions = [];
+
+    /**
+     * @var Collection
+     */
+    private $emailTemplateCollection;
+
+    /**
+     * @var Config
+     */
+    private $emailConfig;
+
+    /**
+     * Email constructor.
+     *
+     * @param Collection $emailTemplateCollection
+     * @param Config $emailConfig
+     */
     public function __construct(
-        \Magento\Email\Model\ResourceModel\Template\Collection $emailTemplateCollection,
-        \Magento\Email\Model\Template\Config $emailConfig
+        Collection $emailTemplateCollection,
+        Config $emailConfig
     ) {
         $this->emailTemplateCollection = $emailTemplateCollection;
         $this->emailConfig = $emailConfig;
@@ -32,12 +63,16 @@ class Email
      */
     public function toOptionArray()
     {
+        if ($this->options !== null) {
+            return $this->options;
+        }
+
         $options = [];
         $collection = $this->emailTemplateCollection;
 
         if (!empty($collection)) {
             foreach ($collection as $template) {
-                /** @var \Magento\Email\Model\Template $templateCode */
+                /** @var Template $templateCode */
                 $templateCode = (string)$template->getTemplateCode();
                 if (empty($templateCode)) {
                     $templateCode = (string)$template->getData('orig_template_code');

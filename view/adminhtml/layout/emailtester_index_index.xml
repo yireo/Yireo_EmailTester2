@@ -5,26 +5,20 @@
  *
  * @package     Yireo_EmailTester2
  * @author      Yireo
- * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2018 Yireo (https://www.yireo.com/)
  * @license     Open Source License
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:View/Layout:etc/page_configuration.xsd">
     <head>
         <title>EmailTester Overview</title>
-        <css src="Yireo_EmailTester2/css/emailtester.css" />
-        <css src="Yireo_EmailTester2/css/jquery-ui.css" />
+        <css src="Yireo_EmailTester2/css/emailtester.css"/>
+        <css src="Yireo_EmailTester2/css/jquery-ui.css"/>
     </head>
     <body>
         <referenceContainer name="content">
-            <block class="Yireo\EmailTester2\Block\Adminhtml\Script"
-                   name="script"
-                   template="script.phtml">
-            </block>
-            <block class="Yireo\EmailTester2\Block\Adminhtml\Overview"
-                name="overview"
-                template="overview.phtml">
-            </block>
+            <block class="Magento\Backend\Block\Template" name="script" template="Yireo_EmailTester2::script.phtml"/>
+            <uiComponent name="emailtester_form"/>
         </referenceContainer>
     </body>
 </page>

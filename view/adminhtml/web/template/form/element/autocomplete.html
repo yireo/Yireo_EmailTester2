@@ -1,0 +1,22 @@
+<div class="admin__control-addon">
+    <input class="admin__control-text" type="text"
+           data-bind="
+        event: {change: userChanges},
+        value: value,
+        hasFocus: focused,
+        valueUpdate: valueUpdate,
+        autocomplete: autocompleteOptions,
+        attr: {
+            name: inputName,
+            placeholder: placeholder,
+            'aria-describedby': noticeId,
+            id: uid,
+            disabled: disabled,
+            maxlength: 255
+    }"/>
+    <label class="admin__addon-prefix">
+        <span>Search: </span>
+    </label>
+</div>
+
+

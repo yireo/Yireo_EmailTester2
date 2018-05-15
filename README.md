@@ -26,6 +26,9 @@ content deployment). Our module poses no difference to the regular deployment st
 
 ## Unit testing
 This extension ships with PHPUnit tests. The generic PHPUnit configuration in Magento 2 will pick up on these tests. To only
-test Yireo extensions, copy the file `phpunit.xml.yireo` to your Magento folder `dev/tests/unit`. Next, from within that folder run PHPUnit. For instance:
+test Yireo extensions, you can also run the following:
 
-    phpunit -c phpunit.xml.yireo
+    ./vendor/bin/phpunit -c ./vendor/yireo/magento2-emailtester2/phpunit.xml.yireo
+
+## Integration testing
+See the Magento document for the full procedure.

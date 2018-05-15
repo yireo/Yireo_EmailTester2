@@ -12,6 +12,8 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
+use Magento\Framework\Exception\NoSuchEntityException;
+
 /**
  * EmailTester Core model
  */
@@ -40,10 +42,12 @@ class Product implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
      */
     public function __construct(
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
+        \Magento\Framework\PhraseFactory $phraseFactory
     ) {
         $this->productRepository = $productRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->phraseFactory = $phraseFactory;
     }
 
     /**
@@ -62,6 +66,11 @@ class Product implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
             if (!empty($products)) {
                 $product = array_shift($products);
             }
+        }
+
+        if (empty($product)) {
+            $phrase = $this->phraseFactory->create(['text' => 'Could not find any customer entity']);
+            throw new NoSuchEntityException($phrase);
         }
 
         return $product;

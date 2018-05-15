@@ -12,10 +12,13 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Helper;
 
+use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Store\Model\ScopeInterface;
+
 /**
  * Class \Yireo\EmailTester2\Helper\Data
  */
-class Data extends \Magento\Framework\App\Helper\AbstractHelper
+class Data extends AbstractHelper
 {
     /**
      * Check whether the module is enabled
@@ -72,7 +75,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $value = $this->scopeConfig->getValue(
             'emailtester2/settings/' . $key,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            ScopeInterface::SCOPE_STORE
         );
 
         if (empty($value)) {

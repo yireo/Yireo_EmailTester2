@@ -4,28 +4,19 @@
  *
  * @package     Yireo_EmailTester2
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright (c) 2017 Yireo.com
+ * @copyright   Copyright (c) 2018 Yireo.com
  * @license     Open Software License
  */
 
-/** @var $block Yireo\EmailTester2\Block\Adminhtml\Script */
+/** @var $block Magento\Backend\Block\Template */
 ?>
-<script type="text/x-magento-init">
-{
-    "*": {
-        "emailtester" : {
-            "customer_ajax_url": "<?= $block->escapeUrl($block->getUrl('*/ajax/customer')) ?>",
-            "product_ajax_url": "<?= $block->escapeUrl($block->getUrl('*/ajax/product')) ?>",
-            "order_ajax_url": "<?= $block->escapeUrl($block->getUrl('*/ajax/order')) ?>"
-        }
-    }
-}
-</script>
-
 <script>
-    function submitEmailTesterFormToUrl(formId, url) {
-        var form = jQuery('#' + formId);
-        form.attr('action', url);
-        form.submit();
-    }
+    window.emailtester = {
+        "customerSearchAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/customerSearch')) ?>",
+        "productSearchAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/productSearch')) ?>",
+        "orderSearchAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/orderSearch')) ?>",
+        "customerIdAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/customerId')) ?>",
+        "productIdAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/productId')) ?>",
+        "orderIdAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/orderId')) ?>"
+    };
 </script>

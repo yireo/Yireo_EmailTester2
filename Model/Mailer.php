@@ -11,19 +11,31 @@
 declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model;
+
 use Exception;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\ResponseFactory;
+use Magento\Framework\DataObject;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Mail\Template\TransportBuilder;
+use Magento\Framework\PhraseFactory;
+use Magento\Framework\Translate\Inline\StateInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use Yireo\EmailTester2\Behaviour\Errorable;
+use Yireo\EmailTester2\Model\Mailer\Addressee;
+use Yireo\EmailTester2\Model\Mailer\Recipient;
 use Zend_Mime_Part;
 
 /**
  * EmailTester Core model
  */
-class Mailer extends \Magento\Framework\DataObject
+class Mailer extends DataObject
 {
     /**
      * Include the behaviour of handling errors
      */
-    use \Yireo\EmailTester2\Behaviour\Errorable;
+    use Errorable;
 
     /**
      * @var Mailer\AddresseeFactory
@@ -41,27 +53,27 @@ class Mailer extends \Magento\Framework\DataObject
     private $variableBuilder;
 
     /**
-     * @var  \Magento\Framework\Mail\Template\TransportBuilder
+     * @var  TransportBuilder
      */
     private $transportBuilder;
 
     /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     * @var ScopeConfigInterface
      */
     private $scopeConfig;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
     private $storeManager;
 
     /**
-     * @var \Magento\Framework\Translate\Inline\StateInterface
+     * @var StateInterface
      */
     private $inlineTranslation;
 
     /**
-     * @var \Magento\Framework\Event\ManagerInterface
+     * @var ManagerInterface
      */
     private $eventManager;
 
@@ -76,7 +88,7 @@ class Mailer extends \Magento\Framework\DataObject
     private $template;
 
     /**
-     * @var \Magento\Framework\PhraseFactory
+     * @var PhraseFactory
      */
     private $phraseFactory;
 
@@ -86,23 +98,24 @@ class Mailer extends \Magento\Framework\DataObject
      * @param Mailer\AddresseeFactory $addresseeFactory
      * @param Mailer\RecipientFactory $recipientFactory
      * @param Mailer\VariableBuilder $variableBuilder
-     * @param \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Framework\Translate\Inline\StateInterface $inlineTranslation
-     * @param \Magento\Framework\PhraseFactory $phraseFactory
+     * @param TransportBuilder $transportBuilder
+     * @param ScopeConfigInterface $scopeConfig
+     * @param StoreManagerInterface $storeManager
+     * @param StateInterface $inlineTranslation
+     * @param ManagerInterface $eventManager
+     * @param PhraseFactory $phraseFactory
      * @param array $data
      */
     public function __construct(
         Mailer\AddresseeFactory $addresseeFactory,
         Mailer\RecipientFactory $recipientFactory,
         Mailer\VariableBuilder $variableBuilder,
-        \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\Translate\Inline\StateInterface $inlineTranslation,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
-        \Magento\Framework\PhraseFactory $phraseFactory,
+        TransportBuilder $transportBuilder,
+        ScopeConfigInterface $scopeConfig,
+        StoreManagerInterface $storeManager,
+        StateInterface $inlineTranslation,
+        ManagerInterface $eventManager,
+        PhraseFactory $phraseFactory,
         array $data = []
     ) {
         $this->addresseeFactory = $addresseeFactory;
@@ -122,13 +135,12 @@ class Mailer extends \Magento\Framework\DataObject
      * Output the email
      *
      * @return string
+     * @throws Exception
      */
     public function getHtml() : string
     {
         $this->prepare();
 
-        // Send some extra headers just make sure the document is compliant
-        $this->sendHeaders();
         return $this->getRawContentFromTransportBuilder();
     }
 
@@ -181,21 +193,6 @@ class Mailer extends \Magento\Framework\DataObject
     }
 
     /**
-     * Send HTTP headers
-     *
-     * @return bool
-     */
-    private function sendHeaders(): bool
-    {
-        if (headers_sent()) {
-            return false;
-        }
-
-        header('Content-Type: text/html; charset=UTF-8');
-        return true;
-    }
-
-    /**
      *
      */
     private function processMailerErrors()
@@ -210,9 +207,9 @@ class Mailer extends \Magento\Framework\DataObject
     }
 
     /**
-     * @return \Yireo\EmailTester2\Model\Mailer\Recipient
+     * @return Recipient
      */
-    private function getRecipient()
+    private function getRecipient(): Recipient
     {
         $data = [
             'customer_id' => $this->getData('customer_id'),
@@ -239,7 +236,7 @@ class Mailer extends \Magento\Framework\DataObject
      */
     private function prepareTransportBuilder()
     {
-        /** @var \Yireo\EmailTester2\Model\Mailer\Addressee $sender */
+        /** @var Addressee $sender */
         $sender = $this->addresseeFactory->create();
 
         $recipient = $this->getRecipient();

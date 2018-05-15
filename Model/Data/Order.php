@@ -12,8 +12,19 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Data;
 
+use Magento\Backend\App\ConfigInterface;
+use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Eav\Model\Entity\Collection\AbstractCollection;
+use Magento\Framework\Api\Search\SearchCriteriaBuilder;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Api\Data\OrderSearchResultInterface;
+use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Sales\Model\Order as OrderModel;
+use Magento\Store\Api\StoreRepositoryInterface;
+use Yireo\EmailTester2\Helper\Output;
 
 /**
  * Class Yireo\EmailTester2\Model\Data\Order
@@ -21,22 +32,22 @@ use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 class Order
 {
     /**
-     * @var \Magento\Backend\Model\Auth\Session
+     * @var Session
      */
     private $session;
 
     /**
-     * @var \Magento\Framework\App\RequestInterface
+     * @var RequestInterface
      */
     private $request;
 
     /**
-     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     * @var OrderRepositoryInterface
      */
     private $orderRepository;
 
     /**
-     * @var \Magento\Framework\Api\Search\SearchCriteriaBuilder
+     * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
 
@@ -46,36 +57,34 @@ class Order
     private $filterBuilder;
 
     /**
-     * @var \Yireo\EmailTester2\Helper\Output
+     * @var Output
      */
     private $outputHelper;
 
     /**
-     * @var \Magento\Backend\App\ConfigInterface
+     * @var ConfigInterface
      */
     private $config;
 
     /**
      * Order constructor.
      *
-     * @param \Magento\Backend\Model\Auth\Session $session
-     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
-     * @param \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\Framework\App\RequestInterface $request
+     * @param Session $session
+     * @param OrderRepositoryInterface $orderRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param RequestInterface $request
      * @param FilterBuilder $filterBuilder
-     * @param \Yireo\EmailTester2\Helper\Output $outputHelper
-     * @param \Magento\Store\Api\StoreRepositoryInterface $storeRepository
-     * @param \Magento\Backend\App\ConfigInterface $config
+     * @param Output $outputHelper
+     * @param ConfigInterface $config
      */
     public function __construct(
-        \Magento\Backend\Model\Auth\Session $session,
-        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
-        \Magento\Framework\Api\Search\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Framework\App\RequestInterface $request,
+        Session $session,
+        OrderRepositoryInterface $orderRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        RequestInterface $request,
         FilterBuilder $filterBuilder,
-        \Yireo\EmailTester2\Helper\Output $outputHelper,
-        \Magento\Store\Api\StoreRepositoryInterface $storeRepository,
-        \Magento\Backend\App\ConfigInterface $config
+        Output $outputHelper,
+        ConfigInterface $config
     ) {
         $this->session = $session;
         $this->orderRepository = $orderRepository;
@@ -89,15 +98,11 @@ class Order
     /**
      * @param int $orderId
      *
-     * @return false|\Magento\Sales\Api\Data\OrderInterface
+     * @return false|OrderInterface
      */
     public function getOrder(int $orderId)
     {
-        try {
-            return $this->orderRepository->get($orderId);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
-            return false;
-        }
+        return $this->orderRepository->get($orderId);
     }
 
     /**
@@ -136,7 +141,7 @@ class Order
         $orders = $this->getOrderCollection();
 
         foreach ($orders as $order) {
-            /** @var \Magento\Sales\Model\Order $order */
+            /** @var OrderModel $order */
             $value = $order->getId();
             $label = '[' . $order->getId() . '] ' . $this->outputHelper->getOrderOutput($order);
             $current = ($order->getId() == $currentValue) ? true : false;
@@ -156,12 +161,8 @@ class Order
         $orderId = $this->getOrderId();
 
         if ($this->outputHelper->isValidId($orderId)) {
-            try {
-                /** @var \Magento\Sales\Model\Order $order */
-                $order = $this->orderRepository->get($orderId);
-            } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
-                return '';
-            }
+            /** @var OrderModel $order */
+            $order = $this->orderRepository->get($orderId);
 
             return (string)$this->outputHelper->getOrderOutput($order);
         }
@@ -170,9 +171,9 @@ class Order
     }
 
     /**
-     * @return \Magento\Sales\Api\Data\OrderSearchResultInterface
+     * @return OrderSearchResultInterface
      */
-    private function getOrderCollection() : \Magento\Sales\Api\Data\OrderSearchResultInterface
+    private function getOrderCollection() : OrderSearchResultInterface
     {
         $searchCriteriaBuilder = $this->searchCriteriaBuilder;
         $searchCriteriaBuilder->addSortOrder('entity_id', AbstractCollection::SORT_ORDER_DESC);

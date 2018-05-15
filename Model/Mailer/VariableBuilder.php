@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Yireo\EmailTester2\Model\Mailer;
 
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\EmailTester2\Model\Mailer\Variable\Billing;
 use Yireo\EmailTester2\Model\Mailer\Variable\Comment;
 use Yireo\EmailTester2\Model\Mailer\Variable\Creditmemo;
@@ -72,8 +73,7 @@ class VariableBuilder extends DataObject
         VariableFactory $variableFactory,
         VariableMethodFactory $variableMethodFactory,
         $data = []
-    )
-    {
+    ) {
         $this->variableFactory = $variableFactory;
         $this->variableMethodFactory = $variableMethodFactory;
 
@@ -109,7 +109,13 @@ class VariableBuilder extends DataObject
         $variables = [];
         foreach ($this->variableModelNames as $variableName => $variableModelName) {
             $variableModel = $this->variableFactory->create($variableModelName);
-            $variables = array_merge($variables, $this->callVariableModelMethods($variableModel, $variableName));
+
+            try {
+                $variables = array_merge($variables, $this->callVariableModelMethods($variableModel, $variableName));
+            } catch(NoSuchEntityException $e) {
+                continue;
+            }
+
         }
 
         return $variables;
@@ -118,6 +124,7 @@ class VariableBuilder extends DataObject
     /**
      * @param AbstractVariableInterface $variableModel
      * @param string $variableName
+     *
      * @return array
      */
     private function callVariableModelMethods(AbstractVariableInterface $variableModel, string $variableName): array
@@ -137,6 +144,7 @@ class VariableBuilder extends DataObject
     /**
      * @param AbstractVariableInterface $variableModel
      * @param string $variableName
+     *
      * @return array
      */
     private function retrieveVariables(AbstractVariableInterface $variableModel, string $variableName): array
@@ -157,7 +165,6 @@ class VariableBuilder extends DataObject
                     $variables[$variableName] = $variableValue;
                 }
             }
-
         }
 
         return $variables;

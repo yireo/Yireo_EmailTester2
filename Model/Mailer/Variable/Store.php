@@ -8,16 +8,21 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
+
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Api\StoreRepositoryInterface;
+use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
 /**
  * Class Store
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class Store implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
+class Store implements VariableInterface
 {
     /**
      * @var int
@@ -25,32 +30,31 @@ class Store implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     private $storeId;
 
     /**
-     * @var \Magento\Store\Api\StoreRepositoryInterface
+     * @var StoreRepositoryInterface
      */
     private $storeRepository;
 
     /**
      * Store constructor.
      *
-     * @param \Magento\Store\Api\StoreRepositoryInterface $storeRepository
+     * @param StoreRepositoryInterface $storeRepository
      */
     public function __construct(
-        \Magento\Store\Api\StoreRepositoryInterface $storeRepository
+        StoreRepositoryInterface $storeRepository
     ) {
         $this->storeRepository = $storeRepository;
     }
 
     /**
-     * @return false|\Magento\Store\Api\Data\StoreInterface
+     * @return false|StoreInterface
      */
     public function getVariable()
     {
         try {
             return $this->storeRepository->getById($this->storeId);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+        } catch (NoSuchEntityException $exception) {
             return false;
         }
-
     }
 
     /**

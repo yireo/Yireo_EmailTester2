@@ -12,14 +12,23 @@ declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Controller\Adminhtml\Ajax;
 
-use \Magento\Backend\App\Action;
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\SearchCriteria;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Request\Http;
+use Magento\Framework\Controller\Result\Json;
+use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Api\OrderRepositoryInterface;
 
 /**
- * Class Index
+ * Class OrderSearch
  *
  * @package Yireo\EmailTester2\Controller\Ajax
  */
-class Order extends Action
+class OrderSearch extends Action
 {
     /**
      * ACL resource
@@ -27,45 +36,45 @@ class Order extends Action
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
 
     /**
-     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     * @var OrderRepositoryInterface
      */
     private $orderRepository;
 
     /**
-     * @var \Magento\Framework\App\Request\Http
+     * @var Http
      */
     private $request;
 
     /**
-     * @var \Magento\Framework\Api\SearchCriteriaBuilder
+     * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
 
     /**
-     * @var \Magento\Framework\Api\FilterBuilder
+     * @var FilterBuilder
      */
     private $filterBuilder;
 
     /**
-     * @var \Magento\Framework\Controller\Result\JsonFactory
+     * @var JsonFactory
      */
     private $resultJsonFactory;
 
     /**
-     * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
-     * @param \Magento\Framework\App\Request\Http $request
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
-     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param Context $context
+     * @param OrderRepositoryInterface $orderRepository
+     * @param Http $request
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param FilterBuilder $filterBuilder
+     * @param JsonFactory $resultJsonFactory
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
-        \Magento\Framework\App\Request\Http $request,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Framework\Api\FilterBuilder $filterBuilder,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+        Context $context,
+        OrderRepositoryInterface $orderRepository,
+        Http $request,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        FilterBuilder $filterBuilder,
+        JsonFactory $resultJsonFactory
     ) {
         parent::__construct($context);
 
@@ -79,15 +88,15 @@ class Order extends Action
     /**
      * Index action
      *
-     * @return \Magento\Framework\Controller\Result\Json
+     * @return Json
      */
-    public function execute() : \Magento\Framework\Controller\Result\Json
+    public function execute() : Json
     {
         $orderData = [];
         $searchResults = $this->orderRepository->getList($this->loadSearchCriteria());
 
         foreach ($searchResults->getItems() as $order) {
-            /** @var $order \Magento\Sales\Api\Data\OrderInterface */
+            /** @var $order OrderInterface */
             $orderData[] = [
                 'value' => $order->getEntityId(),
                 'label' => $this->getOrderLabel($order),
@@ -108,19 +117,19 @@ class Order extends Action
     }
 
     /**
-     * @param \Magento\Sales\Api\Data\OrderInterface $order
+     * @param OrderInterface $order
      *
      * @return string
      */
-    private function getOrderLabel(\Magento\Sales\Api\Data\OrderInterface $order) : string
+    private function getOrderLabel(OrderInterface $order) : string
     {
         return $order->getIncrementId() . ' [' . $order->getCustomerEmail() . ']';
     }
 
     /**
-     * @return \Magento\Framework\Api\SearchCriteria
+     * @return SearchCriteria
      */
-    private function loadSearchCriteria() : \Magento\Framework\Api\SearchCriteria
+    private function loadSearchCriteria() : SearchCriteria
     {
         $this->searchCriteriaBuilder->setCurrentPage(0);
         $this->searchCriteriaBuilder->setPageSize(10);

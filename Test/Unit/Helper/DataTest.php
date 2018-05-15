@@ -8,7 +8,7 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Test\Unit\Helper;
 
@@ -76,7 +76,7 @@ class DataTest extends TestCase
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    private function _getContextStub()
+    private function getContextStub()
     {
         $scopeConfig = $this->_getScopeConfigStub();
 
@@ -96,7 +96,7 @@ class DataTest extends TestCase
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    private function _getScopeConfigStub()
+    private function getScopeConfigStub()
     {
         $scopeConfig = $this->getMockBuilder(\Magento\Framework\App\Config\ScopeConfigInterface::class)
             ->disableOriginalConstructor()

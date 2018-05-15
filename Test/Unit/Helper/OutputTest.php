@@ -12,6 +12,12 @@ declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Test\Unit\Helper;
 
+use InvalidArgumentException;
+use Magento\Backend\Model\Session;
+use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\Helper\Context;
+use Magento\Store\Model\StoreRepository;
 use Yireo\EmailTester2\Helper\Output as TargetHelper;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
 use PHPUnit\Framework\TestCase;
@@ -40,9 +46,9 @@ class OutputTest extends TestCase
     {
         $this->objectManagerHelper = new ObjectManagerHelper($this);
 
-        $context = $this->_getContextStub();
-        $session = $this->_getSessionStub();
-        $storeRepository = $this->_getStoreRepositoryStub();
+        $context = $this->getContextStub();
+        $session = $this->getSessionStub();
+        $storeRepository = $this->getStoreRepositoryStub();
 
         $this->targetHelper = new TargetHelper($session, $storeRepository, $context);
     }
@@ -64,7 +70,7 @@ class OutputTest extends TestCase
      */
     private function getCustomerStub($data)
     {
-        $customer = $this->getMockBuilder(\Magento\Customer\Api\Data\CustomerInterface::class)
+        $customer = $this->getMockBuilder(CustomerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -82,13 +88,13 @@ class OutputTest extends TestCase
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    private function _getContextStub()
+    private function getContextStub()
     {
-        $stub = $this->getMockBuilder(\Magento\Framework\App\Helper\Context::class)
+        $stub = $this->getMockBuilder(Context::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $scopeConfig = $this->_getScopeConfigStub();
+        $scopeConfig = $this->getScopeConfigStub();
         $stub
             ->method('getScopeConfig')
             ->will($this->returnValue($scopeConfig));
@@ -99,9 +105,9 @@ class OutputTest extends TestCase
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    private function _getScopeConfigStub()
+    private function getScopeConfigStub()
     {
-        $stub = $this->getMockBuilder(\Magento\Framework\App\Config\ScopeConfigInterface::class)
+        $stub = $this->getMockBuilder(ScopeConfigInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -126,7 +132,7 @@ class OutputTest extends TestCase
             return $defaultConfig[$hashName];
         }
 
-        throw new \InvalidArgumentException('Unknown id = ' . $hashName);
+        throw new InvalidArgumentException('Unknown id = ' . $hashName);
     }
 
     /**
@@ -134,9 +140,9 @@ class OutputTest extends TestCase
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    private function _getSessionStub()
+    private function getSessionStub()
     {
-        $stub = $this->getMockBuilder(\Magento\Backend\Model\Session::class)
+        $stub = $this->getMockBuilder(Session::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -148,9 +154,9 @@ class OutputTest extends TestCase
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    private function _getStoreRepositoryStub()
+    private function getStoreRepositoryStub()
     {
-        $stub = $this->getMockBuilder(\Magento\Store\Model\StoreRepository::class)
+        $stub = $this->getMockBuilder(StoreRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
 
