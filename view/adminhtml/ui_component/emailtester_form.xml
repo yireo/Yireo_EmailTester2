@@ -25,7 +25,7 @@
             </item>
         </argument>
         <settings>
-            <submitUrl path="emailtester/index/preview"/>
+            <submitUrl path="emailtester/index/index/form_id/0"/>
         </settings>
         <dataProvider class="Yireo\EmailTester2\Model\Form\DataProvider" name="emailtester_form_data_source">
             <settings>
