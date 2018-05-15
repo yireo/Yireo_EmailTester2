@@ -16,21 +16,27 @@ class PreviewTest extends AbstractBackendController
     public function setUp()
     {
         $this->resource = 'Yireo_EmailTester2::index';
-        $this->uri = 'backend/emailtester/preview';
+        $this->uri = 'backend/emailtester/index/preview';
+
         parent::setUp();
     }
 
     /**
      * Test whether the page contains valid body content
      *
-     * @magentoConfigFixture current_store emailtester2/settings/default_email info@example.com
      * @magentoConfigFixture current_store emailtester2/settings/default_transactional customer_create_account_email_template
      *
      * @magentoDataFixture Magento/Catalog/_files/product_simple.php
+     * @magentoDataFixture Magento/Customer/_files/customer.php
+     * @magentoDataFixture Magento/Customer/_files/customer_address.php
+     * @magentoDataFixture Magento/Sales/_files/order.php
+     * @magentoDataFixture Magento/Sales/_files/invoice.php
      */
     public function testValidBodyContent()
     {
-        $this->dispatch($this->uri);
+        $uri = $this->uri . '?template=customer_create_account_email_template';
+
+        $this->dispatch($uri);
         $body = $this->getResponse()->getBody();
         $this->assertContains('test', $body);
     }

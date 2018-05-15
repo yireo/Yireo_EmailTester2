@@ -80,13 +80,15 @@ class Customer implements VariableInterface
         SearchCriteriaBuilder $searchCriteriaBuilder,
         CustomerRegistry $customerRegistry,
         DataObjectProcessor $dataObjectProcessor,
-        View $customerViewHelper
+        View $customerViewHelper,
+        \Magento\Framework\PhraseFactory $phraseFactory
     ) {
         $this->customerRepository = $customerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->customerRegistry = $customerRegistry;
         $this->dataObjectProcessor = $dataObjectProcessor;
         $this->customerViewHelper = $customerViewHelper;
+        $this->phraseFactory = $phraseFactory;
     }
 
     /**
@@ -109,7 +111,15 @@ class Customer implements VariableInterface
             $searchCriteria->setPageSize(1);
             $searchCriteria->setCurrentPage(1);
             $customers = $this->customerRepository->getList($searchCriteria)->getItems();
-            $customer = $customers[0];
+
+            if (!empty($customers)) {
+                $customer = $customers[0];
+            }
+        }
+
+        if (empty($customer)) {
+            $phrase = $this->phraseFactory->create(['text' => 'Could not find any customer entity']);
+            throw new NoSuchEntityException($phrase);
         }
 
         $mergedCustomerData = $this->customerRegistry->retrieveSecureData($customer->getId());

@@ -9,7 +9,7 @@ use Yireo\EmailTester2\Model\Mailer;
  *
  * @package Yireo\EmailTester2\Test\Integration
  */
-class DiTest extends \PHPUnit_Framework_TestCase
+class DiTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test whether fetching the mailer through the Object Manager works

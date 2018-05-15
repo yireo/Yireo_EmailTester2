@@ -16,7 +16,7 @@ class OverviewTest extends AbstractBackendController
     public function setUp()
     {
         $this->resource = 'Yireo_EmailTester2::index';
-        $this->uri = 'backend/emailtester/index';
+        $this->uri = 'backend/emailtester/index/index';
         parent::setUp();
     }
 
@@ -29,9 +29,9 @@ class OverviewTest extends AbstractBackendController
         $body = $this->getResponse()->getBody();
         $this->assertContains('Send Email', $body);
         $this->assertContains('Preview Email', $body);
-        $this->assertContains('Store Scope', $body);
-        $this->assertContains('Customer ID', $body);
-        $this->assertContains('Product ID', $body);
-        $this->assertContains('Order ID', $body);
+        $this->assertContains('Store View', $body);
+        $this->assertContains('Customer Search', $body);
+        $this->assertContains('Product Search', $body);
+        $this->assertContains('Order Search', $body);
     }
 }
