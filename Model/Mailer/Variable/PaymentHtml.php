@@ -12,6 +12,8 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
+use Magento\Framework\Exception\NoSuchEntityException;
+
 /**
  * Class PaymentHtml
  *
@@ -40,9 +42,11 @@ class PaymentHtml implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
      * @param \Magento\Payment\Helper\Data $paymentHelper
      */
     public function __construct(
-        \Magento\Payment\Helper\Data $paymentHelper
+        \Magento\Payment\Helper\Data $paymentHelper,
+        \Magento\Framework\PhraseFactory $phraseFactory
     ) {
         $this->paymentHelper = $paymentHelper;
+        $this->phraseFactory = $phraseFactory;
     }
 
     /**
@@ -50,7 +54,11 @@ class PaymentHtml implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
      */
     public function getVariable()
     {
-        // Try to load the payment block
+        if (empty($this->order)) {
+            $phrase = $this->phraseFactory->create(['text' => 'Could not find any order entity']);
+            throw new NoSuchEntityException($phrase);
+        }
+
         try {
             $paymentBlockHtml = $this->getPaymentBlockHtml($this->order, $this->storeId);
         } catch (\Exception $e) {

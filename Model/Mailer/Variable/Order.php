@@ -71,12 +71,14 @@ class Order implements VariableInterface
         OrderRepositoryInterface $orderRepository,
         CustomerRepositoryInterface $customerRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        View $customerViewHelper
+        View $customerViewHelper,
+        \Magento\Framework\PhraseFactory $phraseFactory
     ) {
         $this->orderRepository = $orderRepository;
         $this->customerRepository = $customerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->customerViewHelper = $customerViewHelper;
+        $this->phraseFactory = $phraseFactory;
     }
 
     /**
@@ -112,6 +114,11 @@ class Order implements VariableInterface
             $order->setCustomerLastname($customer->getLastname());
             $order->setCustomerNote('Some customer note');
             $order->setCustomer($customer);
+        }
+
+        if (empty($order)) {
+            $phrase = $this->phraseFactory->create(['text' => 'Could not find any order entity']);
+            throw new NoSuchEntityException($phrase);
         }
 
         return $order;

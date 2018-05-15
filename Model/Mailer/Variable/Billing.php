@@ -12,6 +12,8 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
+use Magento\Framework\Exception\NoSuchEntityException;
+
 /**
  * Class Billing
  *
@@ -29,11 +31,23 @@ class Billing implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
      */
     private $order;
 
+    public function __construct(
+        \Magento\Framework\PhraseFactory $phraseFactory
+    )
+    {
+        $this->phraseFactory = $phraseFactory;
+    }
+
     /**
      * @return string
      */
     public function getVariable()
     {
+        if (empty($this->order)) {
+            $phrase = $this->phraseFactory->create(['text' => 'Could not find any order entity']);
+            throw new NoSuchEntityException($phrase);
+        }
+
         $billing = $this->order->getBillingAddress();
 
         return $billing;

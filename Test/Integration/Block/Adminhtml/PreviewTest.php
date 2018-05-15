@@ -34,9 +34,12 @@ class PreviewTest extends AbstractBackendController
      */
     public function testValidBodyContent()
     {
-        $uri = $this->uri . '?template=customer_create_account_email_template';
+        $postData = [
+            'template' => 'customer_create_account_email_template',
+        ];
+        $this->getRequest()->setParams($postData);
 
-        $this->dispatch($uri);
+        $this->dispatch($this->uri);
         $body = $this->getResponse()->getBody();
         $this->assertContains('test', $body);
     }

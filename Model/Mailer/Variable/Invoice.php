@@ -12,6 +12,8 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
+use Magento\Framework\Exception\NoSuchEntityException;
+
 /**
  * Class Invoice
  *
@@ -42,10 +44,12 @@ class Invoice implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
      */
     public function __construct(
         \Magento\Sales\Api\InvoiceRepositoryInterface $invoiceRepository,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
+        \Magento\Framework\PhraseFactory $phraseFactory
     ) {
         $this->invoiceRepository = $invoiceRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->phraseFactory = $phraseFactory;
     }
 
     /**
@@ -53,6 +57,11 @@ class Invoice implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
      */
     public function getVariable()
     {
+        if (empty($this->order)) {
+            $phrase = $this->phraseFactory->create(['text' => 'Could not find any order entity']);
+            throw new NoSuchEntityException($phrase);
+        }
+
         try {
             $this->searchCriteriaBuilder->addFilter('order_id', $this->order->getEntityId());
             $searchCriteria = $this->searchCriteriaBuilder->create();
