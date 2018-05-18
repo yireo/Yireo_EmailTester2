@@ -22,6 +22,8 @@ class OverviewTest extends AbstractBackendController
 
     /**
      * Test whether the page contains valid body content
+     *
+     * @magentoAppArea adminhtml
      */
     public function testValidBodyContent()
     {

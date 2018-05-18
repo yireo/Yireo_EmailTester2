@@ -31,6 +31,7 @@ class PreviewTest extends AbstractBackendController
      * @magentoDataFixture Magento/Customer/_files/customer_address.php
      * @magentoDataFixture Magento/Sales/_files/order.php
      * @magentoDataFixture Magento/Sales/_files/invoice.php
+     * @magentoAppArea adminhtml
      */
     public function testValidBodyContent()
     {
