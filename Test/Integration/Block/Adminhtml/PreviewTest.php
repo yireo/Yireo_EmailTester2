@@ -12,6 +12,8 @@ class PreviewTest extends AbstractBackendController
 {
     /**
      * Setup method
+     *
+     * @magentoConfigFixture current_store emailtester2/settings/default_transactional customer_create_account_email_template
      */
     public function setUp()
     {
@@ -19,6 +21,19 @@ class PreviewTest extends AbstractBackendController
         $this->uri = 'backend/emailtester/index/preview';
 
         parent::setUp();
+    }
+
+    /**
+     * Test ACL access
+     */
+    public function testAclHasAccess()
+    {
+        $postData = [
+            'template' => 'customer_create_account_email_template',
+        ];
+        $this->getRequest()->setParams($postData);
+
+        parent::testAclHasAccess();
     }
 
     /**
