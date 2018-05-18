@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Yireo\EmailTester2\Block\Adminhtml\Form;
 
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
-use Magento\Framework\UrlInterface;
 
 /**
  * Class SendButton

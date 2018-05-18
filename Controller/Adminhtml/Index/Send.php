@@ -11,6 +11,7 @@
 declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
+
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\Redirect;
@@ -39,10 +40,6 @@ class Send extends Action
      * @var Mailer
      */
     private $mailer;
-    /**
-     * @var Context
-     */
-    private $context;
 
     /**
      * @param Context $context
