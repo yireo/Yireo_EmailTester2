@@ -8,15 +8,17 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\Result\RedirectFactory;
-use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Message\ManagerInterface as MessageManager;
+use Magento\Store\Model\StoreManagerInterface;
 use Yireo\EmailTester2\Model\Mailer;
 
 /**
@@ -40,23 +42,38 @@ class Send extends Action
      * @var Mailer
      */
     private $mailer;
+    /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+    /**
+     * @var ProductRepositoryInterface
+     */
+    private $productRepository;
 
     /**
      * @param Context $context
      * @param RedirectFactory $redirectFactory
-     * @param ManagerInterface $messageManager
+     * @param MessageManager $messageManager
      * @param Mailer $mailer
+     * @param StoreManagerInterface $storeManager
+     * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
         Context $context,
         RedirectFactory $redirectFactory,
-        ManagerInterface $messageManager,
-        Mailer $mailer
-    ) {
+        MessageManager $messageManager,
+        Mailer $mailer,
+        StoreManagerInterface $storeManager,
+        ProductRepositoryInterface $productRepository
+    )
+    {
         parent::__construct($context);
         $this->redirectFactory = $redirectFactory;
         $this->mailer = $mailer;
         $this->messageManager = $messageManager;
+        $this->storeManager = $storeManager;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -72,7 +89,7 @@ class Send extends Action
         $this->mailer->setData($data);
         $this->mailer->send();
 
-        $this->messageManager->addNoticeMessage('Message sent to '.$data['email']);
+        $this->messageManager->addNoticeMessage('Message sent to ' . $data['email']);
         $redirect = $this->redirectFactory->create();
         $redirect->setPath('*/*/index', ['form_id' => 0]);
 
@@ -85,12 +102,12 @@ class Send extends Action
     private function getRequestData(): array
     {
         $data = [];
-        $data['store_id'] = (int) $this->_request->getParam('store_id');
-        $data['customer_id'] = (int) $this->_request->getParam('customer_id');
-        $data['product_id'] = (int) $this->_request->getParam('product_id');
-        $data['order_id'] = (int) $this->_request->getParam('order_id');
-        $data['template'] = (string) $this->_request->getParam('template');
-        $data['email'] = (string) $this->_request->getParam('email');
+        $data['store_id'] = (int)$this->_request->getParam('store_id');
+        $data['customer_id'] = (int)$this->_request->getParam('customer_id');
+        $data['product_id'] = (int)$this->_request->getParam('product_id');
+        $data['order_id'] = (int)$this->_request->getParam('order_id');
+        $data['template'] = (string)$this->_request->getParam('template');
+        $data['email'] = (string)$this->_request->getParam('email');
 
         return $data;
     }
