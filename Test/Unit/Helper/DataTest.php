@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Test\Unit\Helper;
 
+use InvalidArgumentException;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\Helper\Context;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
 use PHPUnit\Framework\TestCase;
 
@@ -39,8 +42,8 @@ class DataTest extends TestCase
     {
         $this->objectManagerHelper = new ObjectManagerHelper($this);
 
-        /** @var \Magento\Framework\App\Helper\Context $context */
-        $context = $this->_getContextStub();
+        /** @var Context $context */
+        $context = $this->getHelperContextStub();
         $this->targetHelper = new \Yireo\EmailTester2\Helper\Data($context);
     }
 
@@ -74,13 +77,13 @@ class DataTest extends TestCase
     /**
      * Get a stub for the $context parameter of the helper
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return Context
      */
-    private function getContextStub()
+    private function getHelperContextStub(): Context
     {
-        $scopeConfig = $this->_getScopeConfigStub();
+        $scopeConfig = $this->getScopeConfigStub();
 
-        $context = $this->getMockBuilder(\Magento\Framework\App\Helper\Context::class)
+        $context = $this->getMockBuilder(Context::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -94,11 +97,11 @@ class DataTest extends TestCase
     /**
      * Get a stub for the $scopeConfig with a $context
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return ScopeConfigInterface
      */
-    private function getScopeConfigStub()
+    private function getScopeConfigStub(): ScopeConfigInterface
     {
-        $scopeConfig = $this->getMockBuilder(\Magento\Framework\App\Config\ScopeConfigInterface::class)
+        $scopeConfig = $this->getMockBuilder(ScopeConfigInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -116,7 +119,7 @@ class DataTest extends TestCase
      *
      * @return mixed
      */
-    public function getScopeConfigMethodStub($hashName)
+    public function getScopeConfigMethodStub(string $hashName)
     {
         $defaultConfig = [
             'emailtester2/settings/enabled' => '1',
@@ -127,6 +130,6 @@ class DataTest extends TestCase
             return $defaultConfig[$hashName];
         }
 
-        throw new \InvalidArgumentException('Unknown id = ' . $hashName);
+        throw new InvalidArgumentException('Unknown id = ' . $hashName);
     }
 }
