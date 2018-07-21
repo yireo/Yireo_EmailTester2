@@ -14,6 +14,7 @@ namespace Yireo\EmailTester2\Model\Mailer;
 
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Helper\View;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\ObjectManagerInterface;
 
@@ -41,6 +42,8 @@ class RecipientFactory
 
     /**
      * @param ObjectManagerInterface $objectManager
+     * @param CustomerRepositoryInterface $customerRepository
+     * @param View $customerViewHelper
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
@@ -58,6 +61,7 @@ class RecipientFactory
      * @param array $data
      *
      * @return Recipient
+     * @throws LocalizedException
      */
     public function create(array $data = []): Recipient
     {
@@ -73,6 +77,7 @@ class RecipientFactory
      * @param array $data
      *
      * @return bool
+     * @throws LocalizedException
      */
     private function addCustomerData(Recipient &$recipient, array $data): bool
     {

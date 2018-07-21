@@ -11,39 +11,47 @@
 declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\PhraseFactory;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Api\Data\ShipmentInterface;
+use Magento\Sales\Api\ShipmentRepositoryInterface;
+use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
 /**
  * Class Shipment
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class Shipment implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
+class Shipment implements VariableInterface
 {
     /**
-     * @var \Magento\Sales\Api\Data\OrderInterface
+     * @var OrderInterface
      */
     private $order;
 
     /**
-     * @var \Magento\Sales\Api\ShipmentRepositoryInterface
+     * @var ShipmentRepositoryInterface
      */
     private $shipmentRepository;
 
     /**
-     * @var \Magento\Framework\Api\SearchCriteriaBuilder
+     * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
 
     /**
      * Shipment constructor.
      *
-     * @param \Magento\Sales\Api\ShipmentRepositoryInterface $shipmentRepository
+     * @param ShipmentRepositoryInterface $shipmentRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param PhraseFactory $phraseFactory
      */
     public function __construct(
-        \Magento\Sales\Api\ShipmentRepositoryInterface $shipmentRepository,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Framework\PhraseFactory $phraseFactory
+        ShipmentRepositoryInterface $shipmentRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        PhraseFactory $phraseFactory
     ) {
         $this->shipmentRepository = $shipmentRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -51,7 +59,8 @@ class Shipment implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     }
 
     /**
-     * @return \Magento\Sales\Api\Data\ShipmentInterface
+     * @return ShipmentInterface
+     * @throws NoSuchEntityException
      */
     public function getVariable()
     {
@@ -78,9 +87,9 @@ class Shipment implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     }
 
     /**
-     * @param $order \Magento\Sales\Api\Data\OrderInterface
+     * @param $order OrderInterface
      */
-    public function setOrder(\Magento\Sales\Api\Data\OrderInterface $order)
+    public function setOrder(OrderInterface $order)
     {
         $this->order = $order;
     }

@@ -19,6 +19,7 @@ class VariableMethodFactory
 {
     /**
      * @param string $name
+     * @param $object
      * @return string
      */
     public function create($name, $object)

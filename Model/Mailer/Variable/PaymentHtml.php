@@ -12,17 +12,22 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
+use Exception;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\PhraseFactory;
+use Magento\Payment\Helper\Data;
+use Magento\Sales\Api\Data\OrderInterface;
+use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
 /**
  * Class PaymentHtml
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class PaymentHtml implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
+class PaymentHtml implements VariableInterface
 {
     /**
-     * @var \Magento\Sales\Api\Data\OrderInterface
+     * @var OrderInterface
      */
     private $order;
 
@@ -32,18 +37,19 @@ class PaymentHtml implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     private $storeId;
 
     /**
-     * @var \Magento\Payment\Helper\Data
+     * @var Data
      */
     private $paymentHelper;
 
     /**
      * PaymentHtml constructor.
      *
-     * @param \Magento\Payment\Helper\Data $paymentHelper
+     * @param Data $paymentHelper
+     * @param PhraseFactory $phraseFactory
      */
     public function __construct(
-        \Magento\Payment\Helper\Data $paymentHelper,
-        \Magento\Framework\PhraseFactory $phraseFactory
+        Data $paymentHelper,
+        PhraseFactory $phraseFactory
     ) {
         $this->paymentHelper = $paymentHelper;
         $this->phraseFactory = $phraseFactory;
@@ -51,6 +57,7 @@ class PaymentHtml implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 
     /**
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getVariable()
     {
@@ -61,7 +68,7 @@ class PaymentHtml implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 
         try {
             $paymentBlockHtml = $this->getPaymentBlockHtml($this->order, $this->storeId);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $paymentBlockHtml = 'No payment-data available';
         }
 
@@ -71,25 +78,25 @@ class PaymentHtml implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     /**
      * Get the payment HTML block
      *
-     * @param $order \Magento\Sales\Api\Data\OrderInterface
+     * @param $order OrderInterface
      * @param $storeId int
      *
      * @return string
      */
-    public function getPaymentBlockHtml(\Magento\Sales\Api\Data\OrderInterface $order, int $storeId): string
+    public function getPaymentBlockHtml(OrderInterface $order, int $storeId): string
     {
         try {
             $paymentInfo = $order->getPayment();
             return (string)$this->paymentHelper->getInfoBlockHtml($paymentInfo, $storeId);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return '';
         }
     }
 
     /**
-     * @param $order \Magento\Sales\Api\Data\OrderInterface
+     * @param $order OrderInterface
      */
-    public function setOrder(\Magento\Sales\Api\Data\OrderInterface $order)
+    public function setOrder(OrderInterface $order)
     {
         $this->order = $order;
     }

@@ -14,16 +14,15 @@ namespace Yireo\EmailTester2\Model\Data;
 
 use Magento\Backend\App\ConfigInterface;
 use Magento\Backend\Model\Auth\Session;
-use Magento\Framework\Api\FilterBuilder;
-use Magento\Eav\Model\Entity\Collection\AbstractCollection;
-use Magento\Framework\Api\Search\SearchCriteriaBuilder;
-use Magento\Framework\App\RequestInterface;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\OrderSearchResultInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order as OrderModel;
-use Magento\Store\Api\StoreRepositoryInterface;
+use Magento\Eav\Model\Entity\Collection\AbstractCollection;
+use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\Search\SearchCriteriaBuilder;
+use Magento\Framework\App\RequestInterface;
+
 use Yireo\EmailTester2\Helper\Output;
 
 /**

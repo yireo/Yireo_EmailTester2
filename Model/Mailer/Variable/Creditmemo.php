@@ -12,40 +12,47 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\PhraseFactory;
+use Magento\Sales\Api\CreditmemoRepositoryInterface;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Model\Order\Creditmemo as CoreCreditmemo;
+use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
 /**
  * Class Creditmemo
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class Creditmemo implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
+class Creditmemo implements VariableInterface
 {
     /**
-     * @var \Magento\Sales\Api\Data\OrderInterface
+     * @var OrderInterface
      */
     private $order;
 
     /**
-     * @var \Magento\Sales\Api\CreditmemoRepositoryInterface
+     * @var CreditmemoRepositoryInterface
      */
     private $creditmemoRepository;
 
     /**
-     * @var \Magento\Framework\Api\SearchCriteriaBuilder
+     * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Sales\Api\CreditmemoRepositoryInterface $creditmemoRepository
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param CreditmemoRepositoryInterface $creditmemoRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param PhraseFactory $phraseFactory
      */
     public function __construct(
-        \Magento\Sales\Api\CreditmemoRepositoryInterface $creditmemoRepository,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Framework\PhraseFactory $phraseFactory
+        CreditmemoRepositoryInterface $creditmemoRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        PhraseFactory $phraseFactory
     ) {
         $this->creditmemoRepository = $creditmemoRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -53,7 +60,8 @@ class Creditmemo implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     }
 
     /**
-     * @return \Magento\Sales\Model\Order\Creditmemo|null
+     * @return CoreCreditmemo|null
+     * @throws NoSuchEntityException
      */
     public function getVariable()
     {
@@ -79,9 +87,9 @@ class Creditmemo implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     }
 
     /**
-     * @param $order \Magento\Sales\Api\Data\OrderInterface
+     * @param $order OrderInterface
      */
-    public function setOrder(\Magento\Sales\Api\Data\OrderInterface $order)
+    public function setOrder(OrderInterface $order)
     {
         $this->order = $order;
     }

@@ -17,13 +17,13 @@ use Magento\Backend\Model\Auth\Session;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Api\Data\CustomerSearchResultsInterface;
-use Magento\Framework\Api\FilterBuilder;
 use Magento\Eav\Model\Entity\Collection\AbstractCollection;
+
+use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\SearchCriteriaBuilder;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Store\Api\StoreRepositoryInterface;
 use Yireo\EmailTester2\Helper\Output;
 
 /**

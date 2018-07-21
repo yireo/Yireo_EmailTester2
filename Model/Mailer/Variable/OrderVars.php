@@ -14,31 +14,35 @@ namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
 use Magento\Framework\PhraseFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Model\Order\Address\Renderer;
+use Yireo\EmailTester2\Model\Mailer\VariablesInterface;
 
 /**
  * Class OrderVars
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class OrderVars implements \Yireo\EmailTester2\Model\Mailer\VariablesInterface
+class OrderVars implements VariablesInterface
 {
     /**
-     * @var \Magento\Sales\Api\Data\OrderInterface
+     * @var OrderInterface
      */
     private $order;
 
     /**
-     * @var \Magento\Sales\Model\Order\Address\Renderer
+     * @var Renderer
      */
     private $addressRenderer;
 
     /**
      * PaymentHtml constructor.
      *
-     * @param \Magento\Sales\Model\Order\Address\Renderer $addressRenderer
+     * @param Renderer $addressRenderer
+     * @param PhraseFactory $phraseFactory
      */
     public function __construct(
-        \Magento\Sales\Model\Order\Address\Renderer $addressRenderer,
+        Renderer $addressRenderer,
         PhraseFactory $phraseFactory
     )
     {
@@ -48,6 +52,7 @@ class OrderVars implements \Yireo\EmailTester2\Model\Mailer\VariablesInterface
 
     /**
      * @return array
+     * @throws NoSuchEntityException
      */
     public function getVariables(): array
     {
@@ -64,9 +69,9 @@ class OrderVars implements \Yireo\EmailTester2\Model\Mailer\VariablesInterface
     }
 
     /**
-     * @param $order \Magento\Sales\Api\Data\OrderInterface
+     * @param $order OrderInterface
      */
-    public function setOrder(\Magento\Sales\Api\Data\OrderInterface $order)
+    public function setOrder(OrderInterface $order)
     {
         $this->order = $order;
     }

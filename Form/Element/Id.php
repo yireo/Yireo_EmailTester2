@@ -25,8 +25,6 @@ class Id extends AbstractElement
      * @param CollectionFactory $factoryCollection
      * @param Escaper $escaper
      * @param array $data
-     *
-     * @throws LocalizedException
      */
     public function __construct(
         Factory $factoryElement,
@@ -44,7 +42,6 @@ class Id extends AbstractElement
      * Get the HTML
      *
      * @return mixed
-     * @throws LocalizedException
      */
     public function getElementHtml()
     {

@@ -2,9 +2,8 @@
 
 namespace Yireo\EmailTester2\Model\Form;
 
-use Magento\Framework\Api\Filter;
-use Magento\Framework\App\RequestInterface;
 use Magento\Ui\DataProvider\AbstractDataProvider;
+use Magento\Framework\Api\Filter;
 use Yireo\EmailTester2\Helper\Form as FormHelper;
 
 /**

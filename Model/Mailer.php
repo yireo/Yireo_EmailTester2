@@ -12,20 +12,21 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model;
 
-use Exception;
+use Magento\Framework\App\Area;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\ResponseFactory;
 use Magento\Framework\DataObject;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Framework\PhraseFactory;
 use Magento\Framework\Translate\Inline\StateInterface;
-use Magento\Store\Model\StoreManagerInterface;
+use Zend_Mime_Part;
+use Exception;
 use Yireo\EmailTester2\Behaviour\Errorable;
 use Yireo\EmailTester2\Model\Mailer\Addressee;
 use Yireo\EmailTester2\Model\Mailer\Recipient;
-use Zend_Mime_Part;
 
 /**
  * EmailTester Core model
@@ -76,16 +77,6 @@ class Mailer extends DataObject
      * @var ManagerInterface
      */
     private $eventManager;
-
-    /**
-     * @var int
-     */
-    private $storeId;
-
-    /**
-     * @var string
-     */
-    private $template;
 
     /**
      * @var PhraseFactory
@@ -148,6 +139,7 @@ class Mailer extends DataObject
      * Send the email
      *
      * @return bool
+     * @throws NoSuchEntityException
      */
     public function send() : bool
     {
@@ -208,6 +200,7 @@ class Mailer extends DataObject
 
     /**
      * @return Recipient
+     * @throws LocalizedException
      */
     private function getRecipient(): Recipient
     {
@@ -221,6 +214,8 @@ class Mailer extends DataObject
 
     /**
      * Prepare for the main action
+     *
+     * @throws NoSuchEntityException
      */
     private function prepare()
     {
@@ -246,7 +241,6 @@ class Mailer extends DataObject
 
         if (preg_match('/^([^\/]+)\/(.*)$/', $templateId, $match)) {
             $templateId = $match[1];
-            $theme = $match[2];
         }
 
         $this->eventManager->dispatch(
@@ -260,7 +254,7 @@ class Mailer extends DataObject
         );
 
         $this->transportBuilder->setTemplateIdentifier($templateId)
-            ->setTemplateOptions(['area' => \Magento\Framework\App\Area::AREA_FRONTEND, 'store' => $storeId])
+            ->setTemplateOptions(['area' => Area::AREA_FRONTEND, 'store' => $storeId])
             ->setTemplateVars($variables)
             ->setFrom($sender->getAsArray())
             ->addTo($recipient->getEmail(), $recipient->getName());
@@ -268,6 +262,8 @@ class Mailer extends DataObject
 
     /**
      * Make sure a valid store ID is set
+     *
+     * @throws NoSuchEntityException
      */
     private function setDefaultStoreId()
     {
@@ -308,21 +304,5 @@ class Mailer extends DataObject
     private function setStoreId(int $storeId)
     {
         $this->setData('store_id', $storeId);
-    }
-
-    /**
-     * @return string
-     */
-    private function getTemplate(): string
-    {
-        return $this->getData('template');
-    }
-
-    /**
-     * @param string $template
-     */
-    private function setTemplate(string $template)
-    {
-        $this->setData('template', $template);
     }
 }

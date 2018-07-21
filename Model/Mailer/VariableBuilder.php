@@ -115,7 +115,6 @@ class VariableBuilder extends DataObject
             } catch(NoSuchEntityException $e) {
                 continue;
             }
-
         }
 
         return $variables;

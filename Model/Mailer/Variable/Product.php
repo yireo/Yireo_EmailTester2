@@ -12,12 +12,17 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
+use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\PhraseFactory;
+use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
 /**
  * EmailTester Core model
  */
-class Product implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
+class Product implements VariableInterface
 {
     /**
      * @var int
@@ -25,25 +30,26 @@ class Product implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     private $productId;
 
     /**
-     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     * @var ProductRepositoryInterface
      */
     private $productRepository;
 
     /**
-     * @var \Magento\Framework\Api\SearchCriteriaBuilder
+     * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
 
     /**
      * Quote constructor.
      *
-     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param ProductRepositoryInterface $productRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param PhraseFactory $phraseFactory
      */
     public function __construct(
-        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Framework\PhraseFactory $phraseFactory
+        ProductRepositoryInterface $productRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        PhraseFactory $phraseFactory
     ) {
         $this->productRepository = $productRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -51,9 +57,10 @@ class Product implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     }
 
     /**
-     * @return \Magento\Catalog\Api\Data\ProductInterface
+     * @return ProductInterface
+     * @throws NoSuchEntityException
      */
-    public function getVariable(): \Magento\Catalog\Api\Data\ProductInterface
+    public function getVariable(): ProductInterface
     {
         $product = $this->getProductById((int)$this->productId);
 
@@ -79,7 +86,8 @@ class Product implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     /**
      * @param int $productId
      *
-     * @return bool|\Magento\Catalog\Api\Data\ProductInterface
+     * @return bool|ProductInterface
+     * @throws NoSuchEntityException
      */
     private function getProductById(int $productId)
     {
@@ -89,7 +97,7 @@ class Product implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 
         try {
             $product = $this->productRepository->getById($this->productId);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+        } catch (CoreNoSuchEntityException $exception) {
             return false;
         }
 

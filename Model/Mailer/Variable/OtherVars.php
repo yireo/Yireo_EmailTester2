@@ -12,33 +12,36 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Yireo\EmailTester2\Model\Mailer\VariablesInterface;
+
 /**
  * Class OtherVars
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class OtherVars implements \Yireo\EmailTester2\Model\Mailer\VariablesInterface
+class OtherVars implements VariablesInterface
 {
     /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     * @var ScopeConfigInterface
      */
     private $scopeConfig;
 
     /**
      * OtherVars constructor.
      *
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->scopeConfig = $scopeConfig;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getVariables()
+    public function getVariables(): array
     {
         $variables = [
             'store_phone' => $this->getStorePhone(),

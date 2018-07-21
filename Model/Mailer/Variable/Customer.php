@@ -20,6 +20,7 @@ use Magento\Customer\Model\Data\CustomerSecure;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\PhraseFactory;
 use Magento\Framework\Reflection\DataObjectProcessor;
 use Magento\Sales\Api\Data\OrderInterface;
 use Yireo\EmailTester2\Model\Mailer\VariableInterface;
@@ -74,6 +75,7 @@ class Customer implements VariableInterface
      * @param CustomerRegistry $customerRegistry
      * @param DataObjectProcessor $dataObjectProcessor
      * @param View $customerViewHelper
+     * @param PhraseFactory $phraseFactory
      */
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
@@ -81,7 +83,7 @@ class Customer implements VariableInterface
         CustomerRegistry $customerRegistry,
         DataObjectProcessor $dataObjectProcessor,
         View $customerViewHelper,
-        \Magento\Framework\PhraseFactory $phraseFactory
+        PhraseFactory $phraseFactory
     ) {
         $this->customerRepository = $customerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;

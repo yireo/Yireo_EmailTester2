@@ -12,40 +12,47 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\PhraseFactory;
+use Magento\Sales\Api\Data\InvoiceInterface;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Api\InvoiceRepositoryInterface;
+use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
 /**
  * Class Invoice
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class Invoice implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
+class Invoice implements VariableInterface
 {
     /**
-     * @var \Magento\Sales\Api\Data\OrderInterface
+     * @var OrderInterface
      */
     private $order;
 
     /**
-     * @var \Magento\Sales\Api\InvoiceRepositoryInterface
+     * @var InvoiceRepositoryInterface
      */
     private $invoiceRepository;
 
     /**
-     * @var \Magento\Framework\Api\SearchCriteriaBuilder
+     * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
 
     /**
      * Shipment constructor.
      *
-     * @param \Magento\Sales\Api\InvoiceRepositoryInterface $invoiceRepository
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param InvoiceRepositoryInterface $invoiceRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param PhraseFactory $phraseFactory
      */
     public function __construct(
-        \Magento\Sales\Api\InvoiceRepositoryInterface $invoiceRepository,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Framework\PhraseFactory $phraseFactory
+        InvoiceRepositoryInterface $invoiceRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        PhraseFactory $phraseFactory
     ) {
         $this->invoiceRepository = $invoiceRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -53,7 +60,8 @@ class Invoice implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     }
 
     /**
-     * @return \Magento\Sales\Api\Data\InvoiceInterface
+     * @return InvoiceInterface
+     * @throws NoSuchEntityException
      */
     public function getVariable()
     {
@@ -80,9 +88,9 @@ class Invoice implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     }
 
     /**
-     * @param $order \Magento\Sales\Api\Data\OrderInterface
+     * @param $order OrderInterface
      */
-    public function setOrder(\Magento\Sales\Api\Data\OrderInterface $order)
+    public function setOrder(OrderInterface $order)
     {
         $this->order = $order;
     }

@@ -18,6 +18,7 @@ use Magento\Customer\Helper\View;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\PhraseFactory;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Yireo\EmailTester2\Model\Mailer\VariableInterface;
@@ -66,13 +67,14 @@ class Order implements VariableInterface
      * @param CustomerRepositoryInterface $customerRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param View $customerViewHelper
+     * @param PhraseFactory $phraseFactory
      */
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         CustomerRepositoryInterface $customerRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         View $customerViewHelper,
-        \Magento\Framework\PhraseFactory $phraseFactory
+        PhraseFactory $phraseFactory
     ) {
         $this->orderRepository = $orderRepository;
         $this->customerRepository = $customerRepository;
@@ -83,6 +85,7 @@ class Order implements VariableInterface
 
     /**
      * @return OrderInterface
+     * @throws LocalizedException
      */
     public function getVariable()
     {

@@ -12,27 +12,36 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
+use Magento\Customer\Model\Data\Customer;
+use Magento\Customer\Model\Data\CustomerSecure;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\PhraseFactory;
+use Magento\Sales\Api\Data\OrderInterface;
+use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
 /**
  * Class Billing
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class Billing implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
+class Billing implements VariableInterface
 {
     /**
-     * @var \Magento\Customer\Model\Data\Customer
+     * @var Customer
      */
     private $customer;
 
     /**
-     * @var \Magento\Sales\Api\Data\OrderInterface
+     * @var OrderInterface
      */
     private $order;
 
+    /**
+     * Billing constructor.
+     * @param PhraseFactory $phraseFactory
+     */
     public function __construct(
-        \Magento\Framework\PhraseFactory $phraseFactory
+        PhraseFactory $phraseFactory
     )
     {
         $this->phraseFactory = $phraseFactory;
@@ -40,6 +49,7 @@ class Billing implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
 
     /**
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getVariable()
     {
@@ -54,17 +64,17 @@ class Billing implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
     }
 
     /**
-     * @param \Magento\Customer\Model\Data\CustomerSecure $customer
+     * @param CustomerSecure $customer
      */
-    public function setCustomer(\Magento\Customer\Model\Data\CustomerSecure $customer)
+    public function setCustomer(CustomerSecure $customer)
     {
         $this->customer = $customer;
     }
 
     /**
-     * @param \Magento\Sales\Api\Data\OrderInterface $order
+     * @param OrderInterface $order
      */
-    public function setOrder(\Magento\Sales\Api\Data\OrderInterface $order)
+    public function setOrder(OrderInterface $order)
     {
         $this->order = $order;
     }
