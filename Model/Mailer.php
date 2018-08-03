@@ -14,6 +14,7 @@ namespace Yireo\EmailTester2\Model;
 
 use Magento\Framework\App\Area;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Mail\Template\FactoryInterface as TemplateFactoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DataObject;
@@ -22,6 +23,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Framework\PhraseFactory;
 use Magento\Framework\Translate\Inline\StateInterface;
+use Magento\Email\Model\Template\Config as TemplateConfig;
 use Zend_Mime_Part;
 use Exception;
 use Yireo\EmailTester2\Behaviour\Errorable;
@@ -84,6 +86,15 @@ class Mailer extends DataObject
     private $phraseFactory;
 
     /**
+     * @var TemplateFactoryInterface
+     */
+    private $templateFactory;
+    /**
+     * @var TemplateConfig
+     */
+    private $templateConfig;
+
+    /**
      * Mailer constructor.
      *
      * @param Mailer\AddresseeFactory $addresseeFactory
@@ -95,6 +106,8 @@ class Mailer extends DataObject
      * @param StateInterface $inlineTranslation
      * @param ManagerInterface $eventManager
      * @param PhraseFactory $phraseFactory
+     * @param TemplateFactoryInterface $templateFactory
+     * @param TemplateConfig $templateConfig
      * @param array $data
      */
     public function __construct(
@@ -107,8 +120,11 @@ class Mailer extends DataObject
         StateInterface $inlineTranslation,
         ManagerInterface $eventManager,
         PhraseFactory $phraseFactory,
+        TemplateFactoryInterface $templateFactory,
+        TemplateConfig $templateConfig,
         array $data = []
     ) {
+        parent::__construct($data);
         $this->addresseeFactory = $addresseeFactory;
         $this->recipientFactory = $recipientFactory;
         $this->variableBuilder = $variableBuilder;
@@ -118,8 +134,8 @@ class Mailer extends DataObject
         $this->inlineTranslation = $inlineTranslation;
         $this->eventManager = $eventManager;
         $this->phraseFactory = $phraseFactory;
-
-        parent::__construct($data);
+        $this->templateFactory = $templateFactory;
+        $this->templateConfig = $templateConfig;
     }
 
     /**
@@ -243,6 +259,9 @@ class Mailer extends DataObject
             $templateId = $match[1];
         }
 
+        $template = $this->templateFactory->get($templateId);
+        $variables['subject'] = $template->getSubject();
+
         $this->eventManager->dispatch(
             'email_order_set_template_vars_before',
             ['sender' => $sender, 'transport' => $variables]
@@ -253,8 +272,10 @@ class Mailer extends DataObject
             ['variables' => &$variables]
         );
 
+        $area = $this->templateConfig->getTemplateArea($templateId);
+
         $this->transportBuilder->setTemplateIdentifier($templateId)
-            ->setTemplateOptions(['area' => Area::AREA_FRONTEND, 'store' => $storeId])
+            ->setTemplateOptions(['area' => $area, 'store' => $storeId])
             ->setTemplateVars($variables)
             ->setFrom($sender->getAsArray())
             ->addTo($recipient->getEmail(), $recipient->getName());

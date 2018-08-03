@@ -12,17 +12,20 @@ declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Model;
 
+use Magento\Framework\Mail\Message;
+use Magento\Framework\Mail\Template\TransportBuilder as OriginalTransportBuilder;
+
 /**
  * Class TransportBuilder
  *
  * @package Yireo\EmailTester2\Model
  */
-class TransportBuilder extends \Magento\Framework\Mail\Template\TransportBuilder
+class TransportBuilder extends OriginalTransportBuilder
 {
     /**
-     * @return \Magento\Framework\Mail\Message
+     * @return Message
      */
-    public function getMessage() : \Magento\Framework\Mail\Message
+    public function getMessage() : Message
     {
         $this->prepareMessage();
 
