@@ -10,6 +10,8 @@ use Magento\TestFramework\TestCase\AbstractBackendController;
  */
 class OverviewTest extends AbstractBackendController
 {
+    use \Yireo\EmailTester2\Test\Integration\Behaviors\CheckDatabaseStatistics;
+
     /**
      * Setup method
      */
@@ -27,6 +29,8 @@ class OverviewTest extends AbstractBackendController
      */
     public function testValidBodyContent()
     {
+        $this->startDatabaseStatistics();
+
         $this->dispatch($this->uri);
         $body = $this->getResponse()->getBody();
         $this->assertContains('Send Email', $body);
@@ -35,5 +39,7 @@ class OverviewTest extends AbstractBackendController
         $this->assertContains('Customer Search', $body);
         $this->assertContains('Product Search', $body);
         $this->assertContains('Order Search', $body);
+
+        $this->analyseDatabaseStatistics(['select' => 30]);
     }
 }
