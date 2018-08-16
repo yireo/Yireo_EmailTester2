@@ -12,12 +12,14 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
+use Yireo\EmailTester2\Model\Mailer\VariableInterface;
+
 /**
  * Class ShippingMsg
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class ShippingMsg implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
+class ShippingMsg implements VariableInterface
 {
     /**
      * @return string

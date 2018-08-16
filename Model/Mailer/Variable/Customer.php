@@ -23,14 +23,14 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\PhraseFactory;
 use Magento\Framework\Reflection\DataObjectProcessor;
 use Magento\Sales\Api\Data\OrderInterface;
-use Yireo\EmailTester2\Model\Mailer\VariableInterface;
+use Yireo\EmailTester2\Model\Mailer\VariablesInterface;
 
 /**
  * Class Customer
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class Customer implements VariableInterface
+class Customer implements VariablesInterface
 {
     /**
      * @var int
@@ -91,6 +91,23 @@ class Customer implements VariableInterface
         $this->dataObjectProcessor = $dataObjectProcessor;
         $this->customerViewHelper = $customerViewHelper;
         $this->phraseFactory = $phraseFactory;
+    }
+
+    /**
+     * @return array
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function getVariables(): array
+    {
+        $customer = $this->getVariable();
+
+        return [
+            'customerFirstName' => $customer->getFirstName(),
+            'customerLastName' => $customer->getLastName(),
+            'customerName' => $customer->getName(),
+            'customerEmail' => $customer->getEmail(),
+        ];
     }
 
     /**

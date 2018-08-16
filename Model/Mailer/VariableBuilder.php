@@ -25,6 +25,7 @@ use Yireo\EmailTester2\Model\Mailer\Variable\OtherVars;
 use Yireo\EmailTester2\Model\Mailer\Variable\PaymentHtml;
 use Yireo\EmailTester2\Model\Mailer\Variable\Product;
 use Yireo\EmailTester2\Model\Mailer\Variable\Quote;
+use Yireo\EmailTester2\Model\Mailer\Variable\Reason;
 use Yireo\EmailTester2\Model\Mailer\Variable\Shipment;
 use Yireo\EmailTester2\Model\Mailer\Variable\ShippingMsg;
 use Yireo\EmailTester2\Model\Mailer\Variable\Store;
@@ -51,6 +52,7 @@ class VariableBuilder extends DataObject
         'payment_html' => PaymentHtml::class,
         'order_vars' => OrderVars::class,
         'shipping_msg' => ShippingMsg::class,
+        'reason' => Reason::class,
         'other_vars' => OtherVars::class
     ];
 

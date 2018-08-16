@@ -46,6 +46,7 @@ class OtherVars implements VariablesInterface
         $variables = [
             'store_phone' => $this->getStorePhone(),
             'store_hours' => $this->getStoreHours(),
+            'checkoutType' => 'Dummy Checkout',
         ];
 
         return $variables;

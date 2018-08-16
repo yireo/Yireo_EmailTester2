@@ -12,10 +12,12 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
+use Yireo\EmailTester2\Model\Mailer\VariableInterface;
+
 /**
  * EmailTester Core model
  */
-class Quote implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
+class Quote implements VariableInterface
 {
     /**
      * @var \Magento\Sales\Api\Data\OrderInterface

@@ -276,6 +276,10 @@ class Mailer extends DataObject
 
         $variables['subject'] = $template->getSubject();
 
+        if ($template->getId() === 'checkout_payment_failed_template') {
+            $variables['customer'] = $variables['customerName'];
+        }
+
         $this->eventManager->dispatch(
             'email_order_set_template_vars_before',
             ['sender' => $sender, 'transport' => $variables]
@@ -291,7 +295,7 @@ class Mailer extends DataObject
             $area = $this->templateConfig->getTemplateArea($templateId);
         }
 
-        $this->transportBuilder->setTemplateIdentifier($templateId)
+        $this->transportBuilder->setTemplateIdentifier($template->getId())
             ->setTemplateOptions(['area' => $area, 'store' => $storeId])
             ->setTemplateVars($variables)
             ->setFrom($sender->getAsArray())
