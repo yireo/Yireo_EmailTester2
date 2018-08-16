@@ -21,6 +21,7 @@ use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Email\Model\BackendTemplateFactory;
+use Magento\Framework\Mail\TemplateInterface;
 use Magento\Framework\PhraseFactory;
 use Magento\Framework\Translate\Inline\StateInterface;
 use Magento\Email\Model\Template\Config as TemplateConfig;
@@ -268,15 +269,11 @@ class Mailer extends DataObject
             $templateId = $match[1];
         }
 
-        $template = $this->templateFactory->get($templateId);
-        if (preg_match('/^([0-9]+)$/', $templateId)) {
-            $template = $this->backendTemplateFactory->create();
-            $template->load($templateId);
-        }
+        $template = $this->loadTemplate($templateId);
 
         $variables['subject'] = $template->getSubject();
 
-        if ($template->getId() === 'checkout_payment_failed_template') {
+        if ($this->matchTemplate($template, 'checkout_payment_failed_template')) {
             $variables['customer'] = $variables['customerName'];
         }
 
@@ -300,6 +297,42 @@ class Mailer extends DataObject
             ->setTemplateVars($variables)
             ->setFrom($sender->getAsArray())
             ->addTo($recipient->getEmail(), $recipient->getName());
+    }
+
+    /**
+     * @param mixed $templateId
+     *
+     * @return TemplateInterface
+     */
+    private function loadTemplate($templateId): TemplateInterface
+    {
+        if (preg_match('/^([0-9]+)$/', $templateId)) {
+            $template = $this->backendTemplateFactory->create();
+            $template->load($templateId);
+            return $template;
+        }
+
+        $template = $this->templateFactory->get($templateId);
+        return $template;
+    }
+
+    /**
+     * @param TemplateInterface $template
+     * @param string $name
+     *
+     * @return bool
+     */
+    private function matchTemplate(TemplateInterface $template, string $name): bool
+    {
+        if ($template->getId() === $name) {
+            return true;
+        }
+
+        if ($template->getOrigTemplateCode() === $name) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

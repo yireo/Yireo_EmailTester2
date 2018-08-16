@@ -1,3 +1,8 @@
+# 1.0.4 (August 2018)
+- Supply extra variables
+- Fix `checkout_payment_failed_template` email
+- Add Integration Test to test all preview emails automatically
+
 # 1.0.3 (August 2018)
 - Bugfix for backend template email override not working
 - Add proper CHANGELOG.md

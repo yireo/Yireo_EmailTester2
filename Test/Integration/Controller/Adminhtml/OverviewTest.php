@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Yireo\EmailTester2\Test\Integration\Block\Adminhtml;
+namespace Yireo\EmailTester2\Test\Integration\Controller\Adminhtml;
 
 use Magento\TestFramework\TestCase\AbstractBackendController;
 
