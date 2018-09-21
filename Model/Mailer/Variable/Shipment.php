@@ -47,20 +47,27 @@ class Shipment implements VariableInterface
      * @var PhraseFactory
      */
     private $phraseFactory;
+    /**
+     * @var \Magento\Sales\Api\Data\ShipmentItemCreationInterfaceFactory
+     */
+    private $shipmentItemFactory;
 
     /**
      * Shipment constructor.
      *
      * @param ShipmentRepositoryInterface $shipmentRepository
+     * @param \Magento\Sales\Api\Data\ShipmentItemInterfaceFactory $shipmentItemFactory
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param PhraseFactory $phraseFactory
      */
     public function __construct(
         ShipmentRepositoryInterface $shipmentRepository,
+        \Magento\Sales\Api\Data\ShipmentItemInterfaceFactory $shipmentItemFactory,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         PhraseFactory $phraseFactory
     ) {
         $this->shipmentRepository = $shipmentRepository;
+        $this->shipmentItemFactory = $shipmentItemFactory;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->phraseFactory = $phraseFactory;
     }
@@ -84,13 +91,44 @@ class Shipment implements VariableInterface
             $shipments = $this->shipmentRepository->getList($searchCriteria)->getItems();
 
             if ($shipments) {
-                return $shipments[0];
+                $shipment = $shipments[0];
+                return $shipment;
             }
 
-            return $this->shipmentRepository->create();
+            return $this->createDummyShipment();
         } catch (Exception $e) {
-            return $this->shipmentRepository->create();
+            return $this->createDummyShipment();
         }
+    }
+
+    /**
+     * @return ShipmentInterface
+     */
+    private function createDummyShipment(): ShipmentInterface
+    {
+        $shipment = $this->shipmentRepository->create();
+        $shipmentItems = $this->getShipmentItems($this->order);
+        $shipment->setItems($shipmentItems);
+        return $shipment;
+    }
+
+    /**
+     * @param OrderInterface $order
+     * @return array
+     */
+    private function getShipmentItems(OrderInterface $order): array
+    {
+        $shipmentItems = [];
+        $orderItems = $order->getItems();
+        foreach ($orderItems as $orderItem) {
+            $item = $this->shipmentItemFactory->create();
+            $item->setData($orderItem->getData());
+            $item->setOrderItemId($orderItem->getId());
+            $item->setQty($orderItem->getQtyOrdered());
+            $shipmentItems[] = $item;
+        }
+
+        return $shipmentItems;
     }
 
     /**
