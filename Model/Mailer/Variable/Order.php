@@ -21,14 +21,15 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\PhraseFactory;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Yireo\EmailTester2\Model\Mailer\VariableInterface;
+use Magento\Sales\Model\Order\Address\Renderer;
+use Yireo\EmailTester2\Model\Mailer\VariablesInterface;
 
 /**
  * Class Order
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class Order implements VariableInterface
+class Order implements VariablesInterface
 {
     /**
      * @var int
@@ -59,6 +60,10 @@ class Order implements VariableInterface
      * @var View
      */
     private $customerViewHelper;
+    /**
+     * @var Renderer
+     */
+    private $addressRenderer;
 
     /**
      * Order constructor.
@@ -68,26 +73,44 @@ class Order implements VariableInterface
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param View $customerViewHelper
      * @param PhraseFactory $phraseFactory
+     * @param Renderer $addressRenderer
      */
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         CustomerRepositoryInterface $customerRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         View $customerViewHelper,
-        PhraseFactory $phraseFactory
+        PhraseFactory $phraseFactory,
+        Renderer $addressRenderer
     ) {
         $this->orderRepository = $orderRepository;
         $this->customerRepository = $customerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->customerViewHelper = $customerViewHelper;
         $this->phraseFactory = $phraseFactory;
+        $this->addressRenderer = $addressRenderer;
+    }
+
+    /**
+     * @return array
+     * @throws LocalizedException
+     */
+    public function getVariables(): array
+    {
+        $order = $this->getOrder();
+
+        return [
+            'order' => $order,
+            'formattedShippingAddress' => $this->addressRenderer->format($order->getShippingAddress(), 'html'),
+            'formattedBillingAddress' => $this->addressRenderer->format($order->getBillingAddress(), 'html'),
+        ];
     }
 
     /**
      * @return OrderInterface
      * @throws LocalizedException
      */
-    public function getVariable()
+    private function getOrder(): OrderInterface
     {
         $order = false;
 

@@ -11,6 +11,8 @@
 declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
+
+use Exception;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\PhraseFactory;
@@ -40,6 +42,11 @@ class Shipment implements VariableInterface
      * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
+
+    /**
+     * @var PhraseFactory
+     */
+    private $phraseFactory;
 
     /**
      * Shipment constructor.
@@ -81,7 +88,7 @@ class Shipment implements VariableInterface
             }
 
             return $this->shipmentRepository->create();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->shipmentRepository->create();
         }
     }
