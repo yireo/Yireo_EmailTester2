@@ -16,8 +16,11 @@ use Magento\Framework\Escaper;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Data\Form\Element\Factory;
 use Magento\Framework\Data\Form\Element\CollectionFactory;
-use Magento\Framework\Exception\LocalizedException;
 
+/**
+ * Class Id
+ * @package Yireo\EmailTester2\Form\Element
+ */
 class Id extends AbstractElement
 {
     /**
