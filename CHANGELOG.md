@@ -1,3 +1,7 @@
+# 1.0.5 (September 2018)
+- Fix shipment items in shipment email
+- Add addresses to shipment emails
+
 # 1.0.4 (August 2018)
 - Supply extra variables
 - Fix `checkout_payment_failed_template` email
