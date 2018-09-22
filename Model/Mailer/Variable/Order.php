@@ -60,10 +60,16 @@ class Order implements VariablesInterface
      * @var View
      */
     private $customerViewHelper;
+
     /**
      * @var Renderer
      */
     private $addressRenderer;
+
+    /**
+     * @var PhraseFactory
+     */
+    private $phraseFactory;
 
     /**
      * Order constructor.

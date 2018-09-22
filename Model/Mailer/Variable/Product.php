@@ -40,6 +40,11 @@ class Product implements VariableInterface
     private $searchCriteriaBuilder;
 
     /**
+     * @var PhraseFactory
+     */
+    private $phraseFactory;
+
+    /**
      * Quote constructor.
      *
      * @param ProductRepositoryInterface $productRepository

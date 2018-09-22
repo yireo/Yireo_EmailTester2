@@ -1,6 +1,11 @@
+# 1.1.0 (September 2018)
+- Add AlertGrid support
+- Tighten composer dependencies
+
 # 1.0.5 (September 2018)
 - Fix shipment items in shipment email
 - Add addresses to shipment emails
+- Testing with Magento 2.2.6 approved without any issues
 
 # 1.0.4 (August 2018)
 - Supply extra variables
