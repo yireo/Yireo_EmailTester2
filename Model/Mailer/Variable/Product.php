@@ -102,7 +102,7 @@ class Product implements VariableInterface
 
         try {
             $product = $this->productRepository->getById($this->productId);
-        } catch (CoreNoSuchEntityException $exception) {
+        } catch (NoSuchEntityException $exception) {
             return false;
         }
 
