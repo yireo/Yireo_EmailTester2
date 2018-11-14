@@ -1,3 +1,7 @@
+# 1.1.1 (November 2018)
+- Prevent invalid order ID to throw unwanted exception
+- Fix untested issue in product exception
+
 # 1.1.0 (September 2018)
 - Add AlertGrid support
 - Tighten composer dependencies

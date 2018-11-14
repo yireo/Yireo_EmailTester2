@@ -12,6 +12,7 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
+use InvalidArgumentException;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Helper\View;
@@ -130,7 +131,12 @@ class Order implements VariablesInterface
             $searchCriteria = $this->searchCriteriaBuilder->create();
             $searchCriteria->setPageSize(1);
             $searchCriteria->setCurrentPage(1);
-            $orders = $this->orderRepository->getList($searchCriteria)->getItems();
+
+            try {
+                $orders = $this->orderRepository->getList($searchCriteria)->getItems();
+            } catch (InvalidArgumentException $exception) {
+                $orders = null;
+            }
 
             if (!empty($orders)) {
                 return array_shift($orders);
@@ -169,6 +175,8 @@ class Order implements VariablesInterface
 
         try {
             $order = $this->orderRepository->get($orderId);
+        } catch (InvalidArgumentException $exception) {
+            return false;
         } catch (NoSuchEntityException $exception) {
             return false;
         }

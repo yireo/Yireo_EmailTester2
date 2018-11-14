@@ -138,9 +138,11 @@ class AlertGrid implements VariablesInterface
                 $layout = $layoutFactory->create();
                 $block = $layout->createBlock(Price::class);
 
-                foreach ($this->order->getItems() as $item) {
-                    $product = $this->productRepository->getById($item->getProductId());
-                    $block->addProduct($product);
+                if ($this->order) {
+                    foreach ($this->order->getItems() as $item) {
+                        $product = $this->productRepository->getById($item->getProductId());
+                        $block->addProduct($product);
+                    }
                 }
 
                 return $block->toHtml();
