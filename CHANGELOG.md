@@ -1,3 +1,6 @@
+# 1.1.2 (November 2018)
+- Minor CSS improvements
+
 # 1.1.1 (November 2018)
 - Prevent invalid order ID to throw unwanted exception
 - Fix untested issue in product exception
