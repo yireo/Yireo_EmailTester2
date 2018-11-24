@@ -26,7 +26,6 @@ use Magento\Framework\PhraseFactory;
 use Magento\Framework\Translate\Inline\StateInterface;
 use Magento\Email\Model\Template\Config as TemplateConfig;
 use Magento\Store\Model\StoreManagerInterface;
-use Zend_Mime_Part;
 use Exception;
 use Yireo\EmailTester2\Behaviour\Errorable;
 use Yireo\EmailTester2\Model\Mailer\Addressee;
@@ -195,7 +194,7 @@ class Mailer extends DataObject
      */
     protected function getRawContentFromTransportBuilder() : string
     {
-        /** @var Zend_Mime_Part $body */
+        /** @var \Zend_Mime_Part $body */
         $message = $this->transportBuilder->getMessage();
         $body = $message->getBody();
 
