@@ -1,3 +1,6 @@
+# 1.1.3 (November 2018)
+- Magento 2.3 compatibility
+
 # 1.1.2 (November 2018)
 - Minor CSS improvements
 
