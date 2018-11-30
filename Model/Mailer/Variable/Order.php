@@ -12,6 +12,7 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
+use InvalidArgumentException;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Helper\View;
@@ -21,14 +22,15 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\PhraseFactory;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Yireo\EmailTester2\Model\Mailer\VariableInterface;
+use Magento\Sales\Model\Order\Address\Renderer;
+use Yireo\EmailTester2\Model\Mailer\VariablesInterface;
 
 /**
  * Class Order
  *
  * @package Yireo\EmailTester2\Model\Mailer\Variable
  */
-class Order implements VariableInterface
+class Order implements VariablesInterface
 {
     /**
      * @var int
@@ -61,6 +63,16 @@ class Order implements VariableInterface
     private $customerViewHelper;
 
     /**
+     * @var Renderer
+     */
+    private $addressRenderer;
+
+    /**
+     * @var PhraseFactory
+     */
+    private $phraseFactory;
+
+    /**
      * Order constructor.
      *
      * @param OrderRepositoryInterface $orderRepository
@@ -68,26 +80,44 @@ class Order implements VariableInterface
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param View $customerViewHelper
      * @param PhraseFactory $phraseFactory
+     * @param Renderer $addressRenderer
      */
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         CustomerRepositoryInterface $customerRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         View $customerViewHelper,
-        PhraseFactory $phraseFactory
+        PhraseFactory $phraseFactory,
+        Renderer $addressRenderer
     ) {
         $this->orderRepository = $orderRepository;
         $this->customerRepository = $customerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->customerViewHelper = $customerViewHelper;
         $this->phraseFactory = $phraseFactory;
+        $this->addressRenderer = $addressRenderer;
+    }
+
+    /**
+     * @return array
+     * @throws LocalizedException
+     */
+    public function getVariables(): array
+    {
+        $order = $this->getOrder();
+
+        return [
+            'order' => $order,
+            'formattedShippingAddress' => $this->addressRenderer->format($order->getShippingAddress(), 'html'),
+            'formattedBillingAddress' => $this->addressRenderer->format($order->getBillingAddress(), 'html'),
+        ];
     }
 
     /**
      * @return OrderInterface
      * @throws LocalizedException
      */
-    public function getVariable()
+    private function getOrder(): OrderInterface
     {
         $order = false;
 
@@ -101,7 +131,12 @@ class Order implements VariableInterface
             $searchCriteria = $this->searchCriteriaBuilder->create();
             $searchCriteria->setPageSize(1);
             $searchCriteria->setCurrentPage(1);
-            $orders = $this->orderRepository->getList($searchCriteria)->getItems();
+
+            try {
+                $orders = $this->orderRepository->getList($searchCriteria)->getItems();
+            } catch (InvalidArgumentException $exception) {
+                $orders = null;
+            }
 
             if (!empty($orders)) {
                 return array_shift($orders);
@@ -140,6 +175,8 @@ class Order implements VariableInterface
 
         try {
             $order = $this->orderRepository->get($orderId);
+        } catch (InvalidArgumentException $exception) {
+            return false;
         } catch (NoSuchEntityException $exception) {
             return false;
         }

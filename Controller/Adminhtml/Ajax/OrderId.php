@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Controller\Adminhtml\Ajax;
 
+use InvalidArgumentException;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\Result\JsonFactory;
@@ -66,7 +67,11 @@ class OrderId extends AbstractId
             return 'No order found';
         }
 
-        $order = $this->orderRepository->get($id);
+        try {
+            $order = $this->orderRepository->get($id);
+        } catch (InvalidArgumentException $exception) {
+            return 'No order found';
+        }
 
         return $this->orderLabel->getLabel($order);
     }

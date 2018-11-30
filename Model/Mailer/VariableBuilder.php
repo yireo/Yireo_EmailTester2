@@ -14,6 +14,7 @@ namespace Yireo\EmailTester2\Model\Mailer;
 
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Yireo\EmailTester2\Model\Mailer\Variable\AlertGrid;
 use Yireo\EmailTester2\Model\Mailer\Variable\Billing;
 use Yireo\EmailTester2\Model\Mailer\Variable\Comment;
 use Yireo\EmailTester2\Model\Mailer\Variable\Creditmemo;
@@ -53,7 +54,8 @@ class VariableBuilder extends DataObject
         'order_vars' => OrderVars::class,
         'shipping_msg' => ShippingMsg::class,
         'reason' => Reason::class,
-        'other_vars' => OtherVars::class
+        'alertGrid' => AlertGrid::class,
+        'other_vars' => OtherVars::class,
     ];
 
     /**
@@ -114,7 +116,7 @@ class VariableBuilder extends DataObject
 
             try {
                 $variables = array_merge($variables, $this->callVariableModelMethods($variableModel, $variableName));
-            } catch(NoSuchEntityException $e) {
+            } catch (NoSuchEntityException $e) {
                 continue;
             }
         }
@@ -127,6 +129,7 @@ class VariableBuilder extends DataObject
      * @param string $variableName
      *
      * @return array
+     * @throws NoSuchEntityException
      */
     private function callVariableModelMethods(AbstractVariableInterface $variableModel, string $variableName): array
     {

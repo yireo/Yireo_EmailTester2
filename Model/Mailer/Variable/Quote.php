@@ -12,6 +12,10 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Quote\Api\Data\CartInterface;
+use Magento\Sales\Api\Data\OrderInterface;
 use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
 /**
@@ -20,28 +24,28 @@ use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 class Quote implements VariableInterface
 {
     /**
-     * @var \Magento\Sales\Api\Data\OrderInterface
+     * @var OrderInterface
      */
     private $order;
 
     /**
-     * @var \Magento\Quote\Api\CartRepositoryInterface
+     * @var CartRepositoryInterface
      */
     private $quoteRepository;
 
     /**
      * Quote constructor.
      *
-     * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
+     * @param CartRepositoryInterface $quoteRepository
      */
     public function __construct(
-        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
+        CartRepositoryInterface $quoteRepository
     ) {
         $this->quoteRepository = $quoteRepository;
     }
 
     /**
-     * @return false|\Magento\Quote\Api\Data\CartInterface
+     * @return false|CartInterface
      */
     public function getVariable()
     {
@@ -57,15 +61,15 @@ class Quote implements VariableInterface
 
         try {
             return $this->quoteRepository->get($quoteId);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $exception) {
+        } catch (NoSuchEntityException $exception) {
             return false;
         }
     }
 
     /**
-     * @param $order \Magento\Sales\Api\Data\OrderInterface
+     * @param $order OrderInterface
      */
-    public function setOrder(\Magento\Sales\Api\Data\OrderInterface $order)
+    public function setOrder(OrderInterface $order)
     {
         $this->order = $order;
     }

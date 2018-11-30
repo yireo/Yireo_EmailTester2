@@ -40,6 +40,11 @@ class Product implements VariableInterface
     private $searchCriteriaBuilder;
 
     /**
+     * @var PhraseFactory
+     */
+    private $phraseFactory;
+
+    /**
      * Quote constructor.
      *
      * @param ProductRepositoryInterface $productRepository
@@ -97,7 +102,7 @@ class Product implements VariableInterface
 
         try {
             $product = $this->productRepository->getById($this->productId);
-        } catch (CoreNoSuchEntityException $exception) {
+        } catch (NoSuchEntityException $exception) {
             return false;
         }
 

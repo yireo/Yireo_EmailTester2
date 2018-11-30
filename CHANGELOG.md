@@ -1,6 +1,24 @@
-# 1.0.5 (November 2018)
+# 1.1.4 (November 2018)
 - Rename "Email Tester" to "EmailTester" for marketplace
-- Confirm Magento 2.3 compatibility
+
+# 1.1.3 (November 2018)
+- Magento 2.3 compatibility
+
+# 1.1.2 (November 2018)
+- Minor CSS improvements
+
+# 1.1.1 (November 2018)
+- Prevent invalid order ID to throw unwanted exception
+- Fix untested issue in product exception
+
+# 1.1.0 (September 2018)
+- Add AlertGrid support
+- Tighten composer dependencies
+
+# 1.0.5 (September 2018)
+- Fix shipment items in shipment email
+- Add addresses to shipment emails
+- Testing with Magento 2.2.6 approved without any issues
 
 # 1.0.4 (August 2018)
 - Supply extra variables

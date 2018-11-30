@@ -37,13 +37,17 @@ class Billing implements VariableInterface
     private $order;
 
     /**
+     * @var PhraseFactory
+     */
+    private $phraseFactory;
+
+    /**
      * Billing constructor.
      * @param PhraseFactory $phraseFactory
      */
     public function __construct(
         PhraseFactory $phraseFactory
-    )
-    {
+    ) {
         $this->phraseFactory = $phraseFactory;
     }
 
