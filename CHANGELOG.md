@@ -1,3 +1,7 @@
+# 1.0.5 (November 2018)
+- Rename "Email Tester" to "EmailTester" for marketplace
+- Confirm Magento 2.3 compatibility
+
 # 1.0.4 (August 2018)
 - Supply extra variables
 - Fix `checkout_payment_failed_template` email
