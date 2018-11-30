@@ -15,7 +15,7 @@
             <resource id="Magento_Backend::admin">
                 <resource id="Magento_Backend::marketing">
                     <resource id="Magento_Backend::marketing_communications">
-                        <resource id="Yireo_EmailTester2::index" title="Yireo Email Tester" sortOrder="10" />
+                        <resource id="Yireo_EmailTester2::index" title="Yireo EmailTester" sortOrder="10" />
                     </resource>
                 </resource>
             </resource>
