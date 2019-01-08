@@ -116,10 +116,13 @@ class Order implements VariablesInterface
             $billingAddress = $shippingAddress;
         }
 
+        $shippingAddressHtml = ($shippingAddress) ? $this->addressRenderer->format($shippingAddress, 'html') : '';
+        $billingAddressHtml = ($billingAddress) ? $this->addressRenderer->format($billingAddress, 'html') : '';
+
         return [
             'order' => $order,
-            'formattedShippingAddress' => ($shippingAddress) ? $this->addressRenderer->format($shippingAddress, 'html') : '',
-            'formattedBillingAddress' => ($billingAddress) ? $this->addressRenderer->format($billingAddress, 'html') : '',
+            'formattedShippingAddress' => $shippingAddressHtml,
+            'formattedBillingAddress' => $billingAddressHtml,
         ];
     }
 
