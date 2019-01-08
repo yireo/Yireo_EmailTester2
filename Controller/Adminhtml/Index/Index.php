@@ -56,8 +56,8 @@ class Index extends Action
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('Yireo_EmailTester2::index');
-        $resultPage->addBreadcrumb(__('Yireo Email Tester'), __('Yireo Email Tester'));
-        $resultPage->getConfig()->getTitle()->prepend(__('Yireo Email Tester'));
+        $resultPage->addBreadcrumb(__('Yireo EmailTester'), __('Yireo EmailTester'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Yireo EmailTester'));
 
         return $resultPage;
     }

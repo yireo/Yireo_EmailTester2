@@ -34,7 +34,7 @@ class CheckFormTest extends AbstractBackendController
         $this->dispatch('backend/emailtester/index');
 
         $body = $this->getResponse()->getBody();
-        $this->assertContains('Yireo Email Tester', $body);
+        $this->assertContains('Yireo EmailTester', $body);
         $this->assertContains('Send Email', $body);
         //$this->assertContains('dummy@example.com', $body);
     }

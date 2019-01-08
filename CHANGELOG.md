@@ -1,3 +1,6 @@
+# 1.1.4 (November 2018)
+- Rename "Email Tester" to "EmailTester" for marketplace
+
 # 1.1.3 (November 2018)
 - Magento 2.3 compatibility
 

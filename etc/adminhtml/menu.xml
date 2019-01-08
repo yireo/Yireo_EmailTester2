@@ -12,7 +12,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
         <add id="Yireo_EmailTester2::index"
-             title="Yireo Email Tester"
+             title="Yireo EmailTester"
              module="Yireo_EmailTester2"
              resource="Yireo_EmailTester2::index"
              action="emailtester/index/index/form_id/0"
