@@ -13,6 +13,7 @@ class PreviewTest extends AbstractBackendController
     /**
      * Setup method
      *
+     * @codingStandardsIgnoreStart
      * @magentoConfigFixture current_store emailtester2/settings/default_transactional customer_create_account_email_template
      */
     public function setUp()
@@ -68,7 +69,7 @@ class PreviewTest extends AbstractBackendController
 
         try {
             $this->dispatch($this->uri);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $message = 'Error while fetching template '.$templateId.': '.$e->getMessage();
             $this->assertFalse(true, $message);
             return false;
@@ -114,3 +115,4 @@ class PreviewTest extends AbstractBackendController
         return $options;
     }
 }
+

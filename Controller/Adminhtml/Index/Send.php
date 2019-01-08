@@ -66,8 +66,7 @@ class Send extends Action
         Mailer $mailer,
         StoreManagerInterface $storeManager,
         ProductRepositoryInterface $productRepository
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->redirectFactory = $redirectFactory;
         $this->mailer = $mailer;

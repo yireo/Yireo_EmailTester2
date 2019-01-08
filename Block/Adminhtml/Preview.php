@@ -46,6 +46,7 @@ class Preview extends Text
 
     /**
      * Additional constructor
+     * @codingStandardsIgnoreStart
      */
     protected function _construct()
     {

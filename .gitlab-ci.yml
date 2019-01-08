@@ -28,7 +28,7 @@ php-7.2-phpcs:
   stage: basic
   image: yireo/php-testbox:7.2
   script:
-    - phpcs --colors --standard=PSR2 --report=full .
+    - phpcs --colors --standard=PSR2 --report=full --extensions=php,phtml .
     - composer validate
 
 # Magento MEQP2 validation

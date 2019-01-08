@@ -144,7 +144,6 @@ class Mailer extends DataObject
         $this->templateFactory = $templateFactory;
         $this->templateConfig = $templateConfig;
         $this->backendTemplateFactory = $backendTemplateFactory;
-
     }
 
     /**

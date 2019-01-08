@@ -44,8 +44,7 @@ class OrderVars implements VariablesInterface
     public function __construct(
         Renderer $addressRenderer,
         PhraseFactory $phraseFactory
-    )
-    {
+    ) {
         $this->addressRenderer = $addressRenderer;
         $this->phraseFactory = $phraseFactory;
     }

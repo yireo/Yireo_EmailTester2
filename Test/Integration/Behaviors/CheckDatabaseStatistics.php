@@ -47,8 +47,11 @@ trait CheckDatabaseStatistics
             $sqlDifferences[$sqlStatName] = $sqlStats[$sqlStatName] - $this->sqlStats[$sqlStatName];
         }
 
-        $this->assertLessThan($expections['update'], $sqlDifferences['com_update'], 'Amount of UPDATE queries needed for this test is more than expected');
-        $this->assertLessThan($expections['select'], $sqlDifferences['com_select'], 'Amount of SELECT queries needed for this test is more than expected');
+        $msg = 'Amount of UPDATE queries needed for this test is more than expected';
+        $this->assertLessThan($expections['update'], $sqlDifferences['com_update'], $msg);
+
+        $msg = 'Amount of SELECT queries needed for this test is more than expected';
+        $this->assertLessThan($expections['select'], $sqlDifferences['com_select'], $msg);
     }
 
     private function fetchSqlStats(): array
