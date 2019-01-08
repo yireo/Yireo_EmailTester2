@@ -37,7 +37,7 @@ magento-eqp2-basic:
   image: yireo/php-testbox:7.1
   script:
     - composer create-project --repository=https://repo.magento.com magento/marketplace-eqp /tmp/meqp2
-    - /tmp/meqp2/vendor/bin/phpcs . --standard=MEQP2 --severity=10 --extensions=php,phtml
+    - php /tmp/meqp2/vendor/bin/phpcs . --standard=MEQP2 --severity=10 --extensions=php,phtml
 
 # Magento 2.1 testing
 magento-2.1-validation:
