@@ -1,3 +1,6 @@
+# 1.1.5 (January 2019)
+- Try to load proper address before formatting it
+
 # 1.1.4 (November 2018)
 - Rename "Email Tester" to "EmailTester" for marketplace
 
