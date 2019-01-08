@@ -1,0 +1,128 @@
+stages:
+  - basic
+  - fullinstall
+
+# PHP 7.0 simple linting
+php-7.0-linting:
+  stage: basic
+  image: php:7.0
+  script:
+    - sh -c 'if find . -name "*.php" -exec php -l {} 2>&1 \; | grep -v "^No syntax errors detected"; then exit 1; fi'
+
+# PHP 7.1 simple linting
+php-7.1-linting:
+  stage: basic
+  image: php:7.1
+  script:
+    - sh -c 'if find . -name "*.php" -exec php -l {} 2>&1 \; | grep -v "^No syntax errors detected"; then exit 1; fi'
+
+# PHP 7.2 simple linting
+php-7.2-linting:
+  stage: basic
+  image: php:7.2
+  script:
+    - sh -c 'if find . -name "*.php" -exec php -l {} 2>&1 \; | grep -v "^No syntax errors detected"; then exit 1; fi'
+
+# PHP 7.2 codesniffing
+php-7.2-phpcs:
+  stage: basic
+  image: yireo/php-testbox:7.2
+  script:
+    - phpcs --colors --standard=PSR2 --report=full .
+    - composer validate
+
+# Magento MEQP2 validation
+magento-eqp2-basic:
+  stage: basic
+  image: yireo/php-testbox:7.1
+  script:
+    - composer create-project --repository=https://repo.magento.com magento/marketplace-eqp /tmp/meqp2
+    - /tmp/meqp2/vendor/bin/phpcs . --standard=MEQP2 --severity=10 --extensions=php,phtml
+
+# Magento 2.1 testing
+magento-2.1-validation:
+  stage: fullinstall
+  image: yireo/magento2ci:7.0
+  script:
+    - git clone https://gitlab.yireo.com/tools/magento2devbox.git; rm -rf /shared; mv magento2devbox/magento /shared
+    - /shared/scripts/install-magento.sh
+    - /shared/scripts/gitlab-ci.sh
+  variables:
+    MAGENTO_VERSION: "2.1.12"
+    RUN_PHPUNIT_UNIT_TESTS: "0"
+    RUN_PHPUNIT_INTEGRATION_TESTS: "0"
+    RUN_YIREO_EXTENSIONCHECKER: "0"
+  services:
+    - name: mysql:5.7
+    - name: redis
+
+# Magento 2.2 testing
+magento-2.2-validation:
+  image: yireo/magento2ci:7.1
+  stage: fullinstall
+  script:
+    - git clone https://gitlab.yireo.com/tools/magento2devbox.git; rm -rf /shared; mv magento2devbox/magento /shared
+    - /shared/scripts/install-magento.sh
+    - /shared/scripts/gitlab-ci.sh
+  variables:
+    MAGENTO_VERSION: "2.2.7"
+  services:
+    - name: mysql:5.7
+    - name: redis
+
+# Magento 2.3 testing
+magento-2.3-validation:
+  image: yireo/magento2ci:7.2
+  stage: fullinstall
+  script:
+    - git clone https://gitlab.yireo.com/tools/magento2devbox.git
+    - mv magento2devbox/magento /shared
+    - /shared/scripts/install-magento.sh
+    - /shared/scripts/gitlab-ci.sh
+  variables:
+    MAGENTO_VERSION: "2.3.0"
+  services:
+    - name: mysql:5.7
+    - name: redis
+
+# Global variables
+variables:
+  # Magento Marketplace authentication and other Composer handies
+  COMPOSER_AUTH: '{"http-basic":{"repo.magento.com":{"username":"d2eb3c98428210463077e4ca2b806e90","password":"bf5d07ecb44854e94d7f78ef969d9470"}}}'
+  COMPOSER_CACHE_DIR: "/cache"
+  COMPOSER_ALLOW_SUPERUSER: "1"
+
+  # Custom webfolder
+  WEB_DIR: "/tmp"
+  DOCKER_DRIVER: overlay2
+
+  # Simple flags to speed up deployment
+  MAGENTO_ADD_SAMPLE_DATA: "0"
+  MAGENTO_ADD_CRON: "0"
+  MAGENTO_REMOVE_3PO: "0"
+  DB_DUMP: "0"
+
+  # MySQL variables, also needed by the MySQL service
+  MYSQL_HOST: "mysql"
+  MYSQL_USER: "magento2"
+  MYSQL_PASSWORD: "magento2"
+  MYSQL_DATABASE: "magento2"
+  MYSQL_ROOT_PASSWORD: "root"
+  MYSQL_SQL_TO_RUN: 'GRANT ALL ON *.* TO "magento2"@"%";'
+
+  # CI purpose
+  EXTENSION_VENDOR: "Yireo"
+  EXTENSION_NAME: "TaxRatesManager2"
+  RUN_PHPCS_EQP2: "1"
+  RUN_PHPCS_EXTDN: "1"
+  RUN_YIREO_EXTENSIONCHECKER: "1"
+  RUN_PHPUNIT_UNIT_TESTS: "1"
+  RUN_PHPUNIT_INTEGRATION_TESTS: "1"
+
+cache:
+  key: "$CI_JOB_NAME"
+  paths:
+    - /cache
+    - /tmp/vendor
+    - vendor/
+    - .composer/
