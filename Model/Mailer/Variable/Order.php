@@ -105,11 +105,21 @@ class Order implements VariablesInterface
     public function getVariables(): array
     {
         $order = $this->getOrder();
+        $shippingAddress = $order->getShippingAddress();
+        $billingAddress = $order->getBillingAddress();
+
+        if (!$shippingAddress) {
+            $shippingAddress = $billingAddress;
+        }
+        
+        if (!$billingAddress) {
+            $billingAddress = $shippingAddress;
+        }
 
         return [
             'order' => $order,
-            'formattedShippingAddress' => $this->addressRenderer->format($order->getShippingAddress(), 'html'),
-            'formattedBillingAddress' => $this->addressRenderer->format($order->getBillingAddress(), 'html'),
+            'formattedShippingAddress' => ($shippingAddress) ? $this->addressRenderer->format($shippingAddress, 'html') : '',
+            'formattedBillingAddress' => ($billingAddress) ? $this->addressRenderer->format($billingAddress, 'html') : '',
         ];
     }
 
