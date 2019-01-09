@@ -1,4 +1,5 @@
 # 1.1.5 (January 2019)
+- Add complete GitLab pipeline with live Magento checks
 - Try to load proper address before formatting it
 
 # 1.1.4 (November 2018)
