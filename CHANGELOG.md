@@ -1,3 +1,6 @@
+# 1.1.6 (January 2019)
+- Passing array to email_order_set_template_vars_before causes Fatal Error
+
 # 1.1.5 (January 2019)
 - Add complete GitLab pipeline with live Magento checks
 - Try to load proper address before formatting it
