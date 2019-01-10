@@ -49,12 +49,12 @@ magento-2.1-validation:
     - /tmp/magento2devbox/magento/scripts/gitlab-ci.sh
   variables:
     MAGENTO_VERSION: "2.1.12"
+    MAGENTO_ADD_REDIS: "0"
     RUN_PHPUNIT_UNIT_TESTS: "0"
     RUN_PHPUNIT_INTEGRATION_TESTS: "0"
     RUN_YIREO_EXTENSIONCHECKER: "0"
   services:
     - name: mysql:5.7
-    - name: redis
 
 # Magento 2.2 testing
 magento-2.2-validation:
