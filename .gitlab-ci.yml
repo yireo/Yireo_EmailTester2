@@ -62,8 +62,8 @@ magento-2.2-validation:
   image: yireo/magento2ci:7.1
   stage: fullinstall
   script:
-    - source .gitlab-ci.env && test "$RUN_MAGENTO_22" -eq "1" &&
-      git clone https://gitlab.yireo.com/tools/magento2devbox.git /tmp/magento2devbox &&
+    - source .gitlab-ci.env && test "$RUN_MAGENTO_22" -eq "0" && exit 0
+    - git clone https://gitlab.yireo.com/tools/magento2devbox.git /tmp/magento2devbox &&
       /tmp/magento2devbox/magento/scripts/install-magento.sh &&
       /tmp/magento2devbox/magento/scripts/gitlab-ci.sh
   variables:
@@ -77,8 +77,8 @@ magento-2.3-validation:
   image: yireo/magento2ci:7.2
   stage: fullinstall
   script:
-    - source .gitlab-ci.env && test "$RUN_MAGENTO_23" -eq "1" &&
-      git clone https://gitlab.yireo.com/tools/magento2devbox.git /tmp/magento2devbox &&
+    - source .gitlab-ci.env && test "$RUN_MAGENTO_23" -eq "0" && exit 0
+    - git clone https://gitlab.yireo.com/tools/magento2devbox.git /tmp/magento2devbox &&
       /tmp/magento2devbox/magento/scripts/install-magento.sh &&
       /tmp/magento2devbox/magento/scripts/gitlab-ci.sh
   variables:
