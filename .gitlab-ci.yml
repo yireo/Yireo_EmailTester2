@@ -86,8 +86,7 @@ magento-2.3-validation:
 
 # Global variables
 variables:
-  # Magento Marketplace authentication and other Composer handies
-  COMPOSER_AUTH: '{"http-basic":{"repo.magento.com":{"username":"d2eb3c98428210463077e4ca2b806e90","password":"bf5d07ecb44854e94d7f78ef969d9470"}}}'
+  # Composer handies
   COMPOSER_CACHE_DIR: "/cache"
   COMPOSER_ALLOW_SUPERUSER: "1"
 
@@ -110,8 +109,6 @@ variables:
   MYSQL_SQL_TO_RUN: 'GRANT ALL ON *.* TO "magento2"@"%";'
 
   # CI purpose
-  EXTENSION_VENDOR: "Yireo"
-  EXTENSION_NAME: "EmailTester2"
   RUN_PHPCS_EQP2: "1"
   RUN_PHPCS_EXTDN: "1"
   RUN_YIREO_EXTENSIONCHECKER: "1"
