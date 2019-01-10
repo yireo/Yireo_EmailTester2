@@ -44,8 +44,8 @@ magento-2.1-validation:
   stage: fullinstall
   image: yireo/magento2ci:7.0
   script:
-    - source .gitlab-ci.env && test "$RUN_MAGENTO_21" -eq "1" &&
-      git clone https://gitlab.yireo.com/tools/magento2devbox.git /tmp/magento2devbox &&
+    - source .gitlab-ci.env && test "$RUN_MAGENTO_21" -eq "0" && exit 0
+    - git clone https://gitlab.yireo.com/tools/magento2devbox.git /tmp/magento2devbox &&
       /tmp/magento2devbox/magento/scripts/install-magento.sh &&
       /tmp/magento2devbox/magento/scripts/gitlab-ci.sh
   variables:
@@ -90,7 +90,7 @@ magento-2.3-validation:
 # Global variables
 variables:
   # Composer handies
-  COMPOSER_CACHE_DIR: "/cache"
+  COMPOSER_CACHE_DIR: "/build/cache"
   COMPOSER_ALLOW_SUPERUSER: "1"
 
   # Custom webfolder
@@ -126,5 +126,5 @@ variables:
 cache:
   key: "$CI_JOB_NAME"
   paths:
-    - /cache/
+    - /build/cache/
     - vendor/
