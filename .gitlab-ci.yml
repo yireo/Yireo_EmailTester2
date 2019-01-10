@@ -44,9 +44,10 @@ magento-2.1-validation:
   stage: fullinstall
   image: yireo/magento2ci:7.0
   script:
-    - git clone https://gitlab.yireo.com/tools/magento2devbox.git /tmp/magento2devbox
-    - /tmp/magento2devbox/magento/scripts/install-magento.sh
-    - /tmp/magento2devbox/magento/scripts/gitlab-ci.sh
+    - source .gitlab-ci.env && test "$RUN_MAGENTO_21" -eq "1" &&
+      git clone https://gitlab.yireo.com/tools/magento2devbox.git /tmp/magento2devbox &&
+      /tmp/magento2devbox/magento/scripts/install-magento.sh &&
+      /tmp/magento2devbox/magento/scripts/gitlab-ci.sh
   variables:
     MAGENTO_VERSION: "2.1.12"
     MAGENTO_ADD_REDIS: "0"
@@ -61,9 +62,10 @@ magento-2.2-validation:
   image: yireo/magento2ci:7.1
   stage: fullinstall
   script:
-    - git clone https://gitlab.yireo.com/tools/magento2devbox.git /tmp/magento2devbox
-    - /tmp/magento2devbox/magento/scripts/install-magento.sh
-    - /tmp/magento2devbox/magento/scripts/gitlab-ci.sh
+    - source .gitlab-ci.env && test "$RUN_MAGENTO_22" -eq "1" &&
+      git clone https://gitlab.yireo.com/tools/magento2devbox.git /tmp/magento2devbox &&
+      /tmp/magento2devbox/magento/scripts/install-magento.sh &&
+      /tmp/magento2devbox/magento/scripts/gitlab-ci.sh
   variables:
     MAGENTO_VERSION: "2.2.7"
   services:
@@ -75,9 +77,10 @@ magento-2.3-validation:
   image: yireo/magento2ci:7.2
   stage: fullinstall
   script:
-    - git clone https://gitlab.yireo.com/tools/magento2devbox.git /tmp/magento2devbox
-    - /tmp/magento2devbox/magento/scripts/install-magento.sh
-    - /tmp/magento2devbox/magento/scripts/gitlab-ci.sh
+    - source .gitlab-ci.env && test "$RUN_MAGENTO_23" -eq "1" &&
+      git clone https://gitlab.yireo.com/tools/magento2devbox.git /tmp/magento2devbox &&
+      /tmp/magento2devbox/magento/scripts/install-magento.sh &&
+      /tmp/magento2devbox/magento/scripts/gitlab-ci.sh
   variables:
     MAGENTO_VERSION: "2.3.0"
   services:
@@ -93,6 +96,11 @@ variables:
   # Custom webfolder
   WEB_DIR: "/magento"
   DOCKER_DRIVER: overlay2
+
+  # Magento runs
+  RUN_MAGENTO_21: "1"
+  RUN_MAGENTO_22: "1"
+  RUN_MAGENTO_23: "1"
 
   # Simple flags to speed up deployment
   MAGENTO_ADD_SAMPLE_DATA: "0"
