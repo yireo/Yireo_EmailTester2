@@ -278,7 +278,11 @@ class Mailer extends DataObject
         $eventTransport = new DataObject($variables);
         $this->eventManager->dispatch(
             'email_order_set_template_vars_before',
-            ['sender' => $sender, 'transport' => $eventTransport]
+            [
+                'sender' => $sender,
+                'transport' => $eventTransport,
+                'transportObject' => $eventTransport,
+            ]
         );
 
         $this->eventManager->dispatch(

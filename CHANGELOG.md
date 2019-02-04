@@ -1,3 +1,6 @@
+# 1.1.7 (February 2019)
+- Fix issue with changed event email_order_set_template_vars_before in M2.3
+
 # 1.1.6 (January 2019)
 - Passing array to email_order_set_template_vars_before causes Fatal Error
 
