@@ -15,6 +15,7 @@ namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
 use \Magento\Backend\App\Action;
 use \Magento\Backend\App\Action\Context;
 use \Magento\Framework\View\Result\PageFactory;
+use Yireo\EmailTester2\Block\Adminhtml\Preview as PreviewBlock;
 
 /**
  * Class Index
@@ -61,7 +62,8 @@ class Preview extends Action
         $update->removeHandle('default');
         $update->addHandle('emailtester_index_preview');
 
-        $previewBlock = $layout->createBlock('\Yireo\EmailTester2\Block\Adminhtml\Preview');
+        /** @var PreviewBlock $previewBlock */
+        $previewBlock = $layout->createBlock(PreviewBlock::class);
         $resultPage->addContent($previewBlock);
 
         return $resultPage;

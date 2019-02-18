@@ -8,7 +8,7 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Model;
 
@@ -22,7 +22,6 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Email\Model\BackendTemplateFactory;
 use Magento\Framework\Mail\TemplateInterface;
-use Magento\Framework\PhraseFactory;
 use Magento\Framework\Translate\Inline\StateInterface;
 use Magento\Email\Model\Template\Config as TemplateConfig;
 use Magento\Store\Model\StoreManagerInterface;
@@ -82,18 +81,15 @@ class Mailer extends DataObject
     private $eventManager;
 
     /**
-     * @var PhraseFactory
-     */
-    private $phraseFactory;
-
-    /**
      * @var TemplateFactoryInterface
      */
     private $templateFactory;
+
     /**
      * @var TemplateConfig
      */
     private $templateConfig;
+
     /**
      * @var BackendTemplateFactory
      */
@@ -110,7 +106,6 @@ class Mailer extends DataObject
      * @param StoreManagerInterface $storeManager
      * @param StateInterface $inlineTranslation
      * @param ManagerInterface $eventManager
-     * @param PhraseFactory $phraseFactory
      * @param TemplateFactoryInterface $templateFactory
      * @param BackendTemplateFactory $backendTemplateFactory
      * @param TemplateConfig $templateConfig
@@ -125,7 +120,6 @@ class Mailer extends DataObject
         StoreManagerInterface $storeManager,
         StateInterface $inlineTranslation,
         ManagerInterface $eventManager,
-        PhraseFactory $phraseFactory,
         TemplateFactoryInterface $templateFactory,
         BackendTemplateFactory $backendTemplateFactory,
         TemplateConfig $templateConfig,
@@ -140,7 +134,6 @@ class Mailer extends DataObject
         $this->storeManager = $storeManager;
         $this->inlineTranslation = $inlineTranslation;
         $this->eventManager = $eventManager;
-        $this->phraseFactory = $phraseFactory;
         $this->templateFactory = $templateFactory;
         $this->templateConfig = $templateConfig;
         $this->backendTemplateFactory = $backendTemplateFactory;
@@ -152,7 +145,7 @@ class Mailer extends DataObject
      * @return string
      * @throws Exception
      */
-    public function getHtml() : string
+    public function getHtml(): string
     {
         $this->prepare();
 
@@ -165,7 +158,7 @@ class Mailer extends DataObject
      * @return bool
      * @throws NoSuchEntityException
      */
-    public function send() : bool
+    public function send(): bool
     {
         $this->prepare();
         $transport = $this->transportBuilder->getTransport();
@@ -187,13 +180,12 @@ class Mailer extends DataObject
     }
 
     /**
-     * @return string
      *
-     * @throws Exception
+     * @return string
      */
-    protected function getRawContentFromTransportBuilder() : string
+    protected function getRawContentFromTransportBuilder(): string
     {
-        /** @var \Zend_Mime_Part $body */
+        /** @var \Zend\Mime\Message $body */
         $message = $this->transportBuilder->getMessage();
         $body = $message->getBody();
 
@@ -205,7 +197,13 @@ class Mailer extends DataObject
             return $body->getRawContent();
         }
 
-        throw new LocalizedException($this->phraseFactory->create('Unexpected body type'));
+        $content = '';
+        $parts = $body->getParts();
+        foreach ($parts as $part) {
+            $content .= $part->getContent();
+        }
+
+        return $content;
     }
 
     /**

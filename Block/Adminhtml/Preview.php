@@ -8,7 +8,7 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types = 1);
+//declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Block\Adminhtml;
 
@@ -27,7 +27,7 @@ class Preview extends Text
     /**
      * @var Mailer
      */
-    private $mailer;
+    protected $mailer;
 
     /**
      * @param Mailer $mailer
@@ -39,7 +39,6 @@ class Preview extends Text
         Context $context,
         array $data = []
     ) {
-
         $this->mailer = $mailer;
         parent::__construct($context, $data);
     }
@@ -70,15 +69,15 @@ class Preview extends Text
     /**
      * @return array
      */
-    private function getRequestData() : array
+    private function getRequestData(): array
     {
         $data = [];
-        $data['store_id'] = (int) $this->_request->getParam('store_id');
-        $data['customer_id'] = (int) $this->_request->getParam('customer_id');
-        $data['product_id'] = (int) $this->_request->getParam('product_id');
-        $data['order_id'] = (int) $this->_request->getParam('order_id');
-        $data['template'] = (string) $this->_request->getParam('template');
-        $data['email'] = (string) $this->_request->getParam('email');
+        $data['store_id'] = (int)$this->_request->getParam('store_id');
+        $data['customer_id'] = (int)$this->_request->getParam('customer_id');
+        $data['product_id'] = (int)$this->_request->getParam('product_id');
+        $data['order_id'] = (int)$this->_request->getParam('order_id');
+        $data['template'] = (string)$this->_request->getParam('template');
+        $data['email'] = (string)$this->_request->getParam('email');
 
         return $data;
     }
