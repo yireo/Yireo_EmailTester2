@@ -123,8 +123,6 @@ class AlertGrid implements VariablesInterface
      */
     private function getAlertGrid(): string
     {
-        $this->appEmulation->startEnvironmentEmulation($this->storeId);
-
         $store = $this->storeRepository->getById($this->storeId);
         $layoutFactory = $this->layoutFactory;
 
@@ -149,7 +147,6 @@ class AlertGrid implements VariablesInterface
             }
         );
 
-        $this->appEmulation->stopEnvironmentEmulation();
         return (string)$alertGrid;
     }
 

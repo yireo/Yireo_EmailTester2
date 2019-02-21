@@ -1,3 +1,6 @@
+# 1.1.9 (February 2019)
+- Duplicate environment emulation in alertGrid caused "theme_dir" error
+
 # 1.1.8 (February 2019)
 - Refactoring of Zend Mime to ZF3 causes failure
 
