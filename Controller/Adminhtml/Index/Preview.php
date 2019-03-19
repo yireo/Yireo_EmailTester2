@@ -8,13 +8,14 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
 
-use \Magento\Backend\App\Action;
-use \Magento\Backend\App\Action\Context;
-use \Magento\Framework\View\Result\PageFactory;
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\View\Page\Config;
+use Magento\Framework\View\Result\PageFactory;
 use Yireo\EmailTester2\Block\Adminhtml\Preview as PreviewBlock;
 
 /**
@@ -35,16 +36,23 @@ class Preview extends Action
     private $resultPageFactory;
 
     /**
+     * @var Config
+     */
+    private $pageConfig;
+
+    /**
      * @param Context $context
      * @param PageFactory $resultPageFactory
+     * @param Config $pageConfig
      */
     public function __construct(
         Context $context,
-        PageFactory $resultPageFactory
+        PageFactory $resultPageFactory,
+        Config $pageConfig
     ) {
         parent::__construct($context);
-
         $this->resultPageFactory = $resultPageFactory;
+        $this->pageConfig = $pageConfig;
     }
 
     /**
@@ -57,15 +65,25 @@ class Preview extends Action
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
 
+        $this->pageConfig->getTitle()->set($this->getTemplateName());
         $layout = $resultPage->getLayout();
+
         $update = $layout->getUpdate();
         $update->removeHandle('default');
         $update->addHandle('emailtester_index_preview');
 
-        /** @var PreviewBlock $previewBlock */
+        /** @var $previewBlock PreviewBlock */
         $previewBlock = $layout->createBlock(PreviewBlock::class);
         $resultPage->addContent($previewBlock);
 
         return $resultPage;
+    }
+
+    /**
+     * @return string
+     */
+    private function getTemplateName(): string
+    {
+        return (string)$this->_request->getParam('template');
     }
 }
