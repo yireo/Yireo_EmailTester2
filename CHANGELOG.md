@@ -1,3 +1,7 @@
+# 1.1.10 (March 2019)
+- Better switch between stock and price alerts
+- Add current template to page title in a preview
+
 # 1.1.9 (February 2019)
 - Duplicate environment emulation in alertGrid caused "theme_dir" error
 
