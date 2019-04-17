@@ -13,9 +13,7 @@ declare(strict_types = 1);
 namespace Yireo\EmailTester2\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\ScopeInterface;
-use Yireo\EmailTester2\Config\Config;
 
 /**
  * Class \Yireo\EmailTester2\Helper\Data
@@ -23,29 +21,9 @@ use Yireo\EmailTester2\Config\Config;
 class Data extends AbstractHelper
 {
     /**
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * Data constructor.
-     *
-     * @param Config $config
-     * @param Context $context
-     */
-    public function __construct(
-        Config $config,
-        Context $context
-    ) {
-        parent::__construct($context);
-        $this->config = $config;
-    }
-
-    /**
      * Check whether the module is enabled
      *
      * @return bool
-     * @deprecated Use \Yireo\EmailTester2\Config\Config instead
      */
     public function isEnabled() : bool
     {
@@ -56,7 +34,6 @@ class Data extends AbstractHelper
      * Check whether the module is in debugging mode
      *
      * @return bool
-     * @deprecated Use \Yireo\EmailTester2\Config\Config instead
      */
     public function isDebug() : bool
     {
@@ -93,7 +70,6 @@ class Data extends AbstractHelper
      * @param mixed $defaultValue
      *
      * @return mixed
-     * @deprecated Use \Yireo\EmailTester2\Config\Config instead
      */
     public function getConfigValue(string $key = '', $defaultValue = null)
     {

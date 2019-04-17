@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Converted CHANGELOG to KeepAChangelog format
-- Add Config class to deprecate helper
 
 ## [1.1.9] - February 2019
 ### Changed
