@@ -128,14 +128,6 @@ class Order
     }
 
     /**
-     * @return string
-     */
-    public function getOrderIncrementId(): string
-    {
-        return (string)$this->getOrder()->getIncrementId();
-    }
-
-    /**
      * Get an array of order select options
      *
      * @return array

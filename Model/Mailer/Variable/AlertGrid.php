@@ -20,7 +20,6 @@ use Magento\Framework\App\State;
 use Magento\Framework\View\DesignInterface;
 use Magento\Framework\View\LayoutFactory;
 use Magento\ProductAlert\Block\Email\Price;
-use Magento\ProductAlert\Block\Email\Stock;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Store\Model\App\Emulation;
@@ -37,11 +36,6 @@ class AlertGrid implements VariablesInterface
      * @var OrderInterface
      */
     private $order;
-
-    /**
-     * @var string
-     */
-    private $template;
 
     /**
      * @var State
@@ -112,7 +106,6 @@ class AlertGrid implements VariablesInterface
     }
 
     /**
-     *
      * @return array
      * @throws Exception
      */
@@ -125,7 +118,6 @@ class AlertGrid implements VariablesInterface
     }
 
     /**
-     *
      * @return string
      * @throws Exception
      */
@@ -142,7 +134,7 @@ class AlertGrid implements VariablesInterface
             function () use ($store, $layoutFactory) {
                 /** @var Price $block */
                 $layout = $layoutFactory->create();
-                $block = $layout->createBlock($this->getBlockClass());
+                $block = $layout->createBlock(Price::class);
 
                 if ($this->order) {
                     foreach ($this->order->getItems() as $item) {
@@ -159,20 +151,6 @@ class AlertGrid implements VariablesInterface
     }
 
     /**
-     *
-     * @return string
-     */
-    private function getBlockClass(): string
-    {
-        if (strstr($this->template, 'stock')) {
-            return Stock::class;
-        }
-
-        return Price::class;
-    }
-
-    /**
-     *
      * @param int $storeId
      */
     public function setStoreId(int $storeId)
@@ -181,20 +159,10 @@ class AlertGrid implements VariablesInterface
     }
 
     /**
-     *
-     * @param OrderInterface $order
+     * @param $order OrderInterface
      */
     public function setOrder(OrderInterface $order)
     {
         $this->order = $order;
-    }
-
-    /**
-     *
-     * @param string $template
-     */
-    public function setTemplate(string $template)
-    {
-        $this->template = $template;
     }
 }
