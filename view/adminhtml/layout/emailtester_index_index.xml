@@ -17,8 +17,13 @@
     </head>
     <body>
         <referenceContainer name="content">
-            <block class="Magento\Backend\Block\Template" name="script" template="Yireo_EmailTester2::script.phtml"/>
+            <block name="script" template="Yireo_EmailTester2::script.phtml"/>
             <uiComponent name="emailtester_form"/>
+            <block name="version" template="Yireo_EmailTester2::version.phtml" after="-">
+                <arguments>
+                    <argument name="version_view_model" xsi:type="object">Yireo\EmailTester2\ViewModel\Version</argument>
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>

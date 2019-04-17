@@ -5,8 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.2.0] - April 2019
 ### Changed
 - Converted CHANGELOG to KeepAChangelog format
+
+### Added
+- Add Config class to phase out data-helper
+- Add suggestion of entering config values
+- Add some UI improvements for using autocomplete field
+- Add module version to main page 
 
 ## [1.1.9] - February 2019
 ### Changed

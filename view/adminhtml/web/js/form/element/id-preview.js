@@ -15,8 +15,17 @@ define([
                 this._super();
 
                 this.disabled(true);
+
                 this.searchValue = ko.observable();
                 this.previewValue = ko.observable();
+
+                this.toggleDisability = function() {
+                    this.disabled(!this.disabled());
+                };
+
+                this.toggleButtonLabel = ko.computed(function() {
+                    return (this.disabled()) ? '-' : '+';
+                }, this);
 
                 this.loadPreviewData = ko.computed(function () {
                     var self = this;

@@ -4,7 +4,7 @@
         event: {change: userChanges},
         value: value,
         hasFocus: focused,
-        valueUpdate: valueUpdate,
+        valueUpdate: ['keyup', 'change', 'blur', 'mouseleave'],
         autocomplete: autocompleteOptions,
         attr: {
             name: inputName,
