@@ -33,7 +33,6 @@ class Config
      * Check whether the module is enabled
      *
      * @return bool
-     * @deprecated Use \Yireo\EmailTester2\Config\Config instead
      */
     public function isEnabled(): bool
     {
@@ -44,11 +43,20 @@ class Config
      * Check whether the module is in debugging mode
      *
      * @return bool
-     * @deprecated Use \Yireo\EmailTester2\Config\Config instead
      */
     public function isDebug(): bool
     {
         return (bool)$this->getConfigValue('debug');
+    }
+
+    /**
+     * Enable jQuery UI
+     *
+     * @return bool
+     */
+    public function enableJqueryUi(): bool
+    {
+        return (bool)$this->getConfigValue('enable_jqueryui');
     }
 
     /**
@@ -57,6 +65,86 @@ class Config
     public function getDefaultEmail(): string
     {
         return (string)$this->getConfigValue('default_email');
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultTransactional(): string
+    {
+        return (string)$this->getConfigValue('default_transactional');
+    }
+
+    /**
+     * @return int
+     */
+    public function getDefaultCustomer(): int
+    {
+        return (int)$this->getConfigValue('default_customer');
+    }
+
+    /**
+     * @return int
+     */
+    public function getDefaultProduct(): int
+    {
+        return (int)$this->getConfigValue('default_product');
+    }
+
+    /**
+     * @return int
+     */
+    public function getDefaultOrder(): int
+    {
+        return (int)$this->getConfigValue('default_order');
+    }
+
+    /**
+     * @return int
+     */
+    public function getLimitCustomer(): int
+    {
+        return (int)$this->getConfigValue('limit_customer');
+    }
+
+    /**
+     * @return int
+     */
+    public function getLimitProduct(): int
+    {
+        return (int)$this->getConfigValue('limit_product');
+    }
+
+    /**
+     * @return int
+     */
+    public function getLimitOrder(): int
+    {
+        return (int)$this->getConfigValue('limit_order');
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomOrder(): string
+    {
+        return (string)$this->getConfigValue('custom_order');
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomCustomer(): string
+    {
+        return (string)$this->getConfigValue('custom_customer');
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomProduct(): string
+    {
+        return (string)$this->getConfigValue('custom_product');
     }
 
     /**
