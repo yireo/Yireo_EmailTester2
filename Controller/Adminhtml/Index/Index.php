@@ -8,13 +8,17 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\View\Result\Page;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\View\Result\PageFactory;
+use Yireo\EmailTester2\Config\Config;
 
 /**
  * Class Index
@@ -32,6 +36,10 @@ class Index extends Action
      * @var PageFactory
      */
     private $resultPageFactory;
+    /**
+     * @var Config
+     */
+    private $config;
 
     /**
      * @param Context $context
@@ -39,21 +47,41 @@ class Index extends Action
      */
     public function __construct(
         Context $context,
-        PageFactory $resultPageFactory
+        PageFactory $resultPageFactory,
+        ManagerInterface $messageManager,
+        Config $config
     ) {
         parent::__construct($context);
-
         $this->resultPageFactory = $resultPageFactory;
+        $this->messageManager = $messageManager;
+        $this->config = $config;
+    }
+
+    /**
+     * @param RequestInterface $request
+     *
+     * @return \Magento\Framework\App\ResponseInterface
+     */
+    public function dispatch(RequestInterface $request)
+    {
+        $email = $this->config->getDefaultEmail();
+        if (empty($email)) {
+            $msg = 'Tip: Add default values via Stores > Configuration > Advanced > Yireo EmailTester';
+            $this->messageManager->addNoticeMessage($msg);
+        }
+
+
+        return parent::dispatch($request);
     }
 
     /**
      * Index action
      *
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return Page
      */
-    public function execute() : \Magento\Backend\Model\View\Result\Page
+    public function execute(): Page
     {
-        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
+        /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('Yireo_EmailTester2::index');
         $resultPage->addBreadcrumb(__('Yireo EmailTester'), __('Yireo EmailTester'));

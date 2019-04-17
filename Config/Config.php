@@ -35,7 +35,7 @@ class Config
      * @return bool
      * @deprecated Use \Yireo\EmailTester2\Config\Config instead
      */
-    public function isEnabled() : bool
+    public function isEnabled(): bool
     {
         return (bool)$this->getConfigValue('enabled', false);
     }
@@ -46,9 +46,17 @@ class Config
      * @return bool
      * @deprecated Use \Yireo\EmailTester2\Config\Config instead
      */
-    public function isDebug() : bool
+    public function isDebug(): bool
     {
         return (bool)$this->getConfigValue('debug');
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultEmail(): string
+    {
+        return (string)$this->getConfigValue('default_email');
     }
 
     /**
