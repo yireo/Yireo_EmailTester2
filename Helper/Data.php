@@ -24,6 +24,7 @@ class Data extends AbstractHelper
      * Check whether the module is enabled
      *
      * @return bool
+     * @deprecated Use \Yireo\EmailTester2\Config\Config instead
      */
     public function isEnabled() : bool
     {
@@ -34,6 +35,7 @@ class Data extends AbstractHelper
      * Check whether the module is in debugging mode
      *
      * @return bool
+     * @deprecated Use \Yireo\EmailTester2\Config\Config instead
      */
     public function isDebug() : bool
     {
@@ -47,6 +49,7 @@ class Data extends AbstractHelper
      * @param string $variable
      *
      * @return bool
+     * @deprecated Use \Yireo\EmailTester2\Config\Config instead
      */
     public function debug(string $string, $variable = '') : bool
     {
@@ -70,6 +73,7 @@ class Data extends AbstractHelper
      * @param mixed $defaultValue
      *
      * @return mixed
+     * @deprecated Use \Yireo\EmailTester2\Config\Config instead
      */
     public function getConfigValue(string $key = '', $defaultValue = null)
     {
