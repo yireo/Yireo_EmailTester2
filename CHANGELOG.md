@@ -10,9 +10,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Converted CHANGELOG to KeepAChangelog format
 
-### Removed
-- Compatibility with 2.1 in favor of ViewModels
-
 ### Added
 - Add Config class to phase out data-helper
 - Add suggestion of entering config values
@@ -94,6 +91,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Magento ECG compliance 
 - Add unit testing and integration testing 
 - Only compatible with Magento 2.2 and up
+
+### Removed
+- Compatibility with 2.1 in favor of ViewModels
 
 ## [0.2.12] - May 2018
 ### Changed
