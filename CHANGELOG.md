@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Converted CHANGELOG to KeepAChangelog format
 
+### Removed
+- Compatibility with 2.1 in favor of ViewModels
+
 ### Added
 - Add Config class to phase out data-helper
 - Add suggestion of entering config values
