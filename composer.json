@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "license": "OSL-3.0",
   "type": "magento2-module",
-  "homepage": "https://www.yireo.com/software/magento-extensions/emailtester",
+  "homepage": "https://www.yireo.com/software/magento-extensions/emailtester2",
   "description": "Preview transactional emails and test send them in your backend",
   "keywords": [
     "composer-installer",

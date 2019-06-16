@@ -4,13 +4,14 @@ declare(strict_types=1);
 namespace Yireo\EmailTester2\Test\Integration\Controller\Adminhtml;
 
 use Magento\TestFramework\TestCase\AbstractBackendController;
+use Yireo\EmailTester2\Test\Integration\Behaviors\CheckDatabaseStatistics;
 
 /**
  * @magentoAppArea adminhtml
  */
 class OverviewTest extends AbstractBackendController
 {
-    use \Yireo\EmailTester2\Test\Integration\Behaviors\CheckDatabaseStatistics;
+    use CheckDatabaseStatistics;
 
     /**
      * Setup method
@@ -40,6 +41,6 @@ class OverviewTest extends AbstractBackendController
         $this->assertContains('Product Search', $body);
         $this->assertContains('Order Search', $body);
 
-        $this->analyseDatabaseStatistics(['select' => 30]);
+        $this->analyseDatabaseStatistics(['select' => 100]);
     }
 }

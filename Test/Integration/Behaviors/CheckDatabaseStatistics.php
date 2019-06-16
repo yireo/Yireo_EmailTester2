@@ -3,13 +3,16 @@ declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Test\Integration\Behaviors;
 
+/**
+ * Trait CheckDatabaseStatistics
+ * @package Yireo\EmailTester2\Test\Integration\Behaviors
+ */
 trait CheckDatabaseStatistics
 {
     /**
      * @var array
      */
     private $sqlStats = [];
-
 
     /**
      * Collect database statistics
@@ -32,7 +35,7 @@ trait CheckDatabaseStatistics
         }
 
         if (!isset($expections['select'])) {
-            $expections['select'] = 25;
+            $expections['select'] = 100;
         }
 
         $sqlStats = $this->fetchSqlStats();
@@ -54,6 +57,9 @@ trait CheckDatabaseStatistics
         $this->assertLessThan($expections['select'], $sqlDifferences['com_select'], $msg);
     }
 
+    /**
+     * @return array
+     */
     private function fetchSqlStats(): array
     {
         $resource = $this->_objectManager->get(\Magento\Framework\App\ResourceConnection::class);

@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Test\Integration\Controller\Adminhtml;
 
+use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\TestCase\AbstractBackendController;
+
+use Yireo\EmailTester2\Model\Backend\Source\Email;
 
 /**
  * @magentoAppArea adminhtml
@@ -88,8 +91,8 @@ class PreviewTest extends AbstractBackendController
      */
     public function getTemplateIds(): array
     {
-        $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
-        $emailSource = $objectManager->get(\Yireo\EmailTester2\Model\Backend\Source\Email::class);
+        $objectManager = Bootstrap::getObjectManager();
+        $emailSource = $objectManager->get(Email::class);
         $emailTemplates = $emailSource->toOptionArray();
         $templateIds = [];
 
@@ -115,4 +118,3 @@ class PreviewTest extends AbstractBackendController
         return $options;
     }
 }
-
