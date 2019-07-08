@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - July 2019
+### Added
+- Add missing `etc/config.xml`
+- Move configuration to separate **Yireo** section
+
 ## [1.2.0] - April 2019
 ### Changed
 - Converted CHANGELOG to KeepAChangelog format
