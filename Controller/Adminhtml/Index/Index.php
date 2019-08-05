@@ -66,7 +66,7 @@ class Index extends Action
     {
         $email = $this->config->getDefaultEmail();
         if (empty($email)) {
-            $msg = 'Tip: Add default values via Stores > Configuration > Advanced > Yireo EmailTester';
+            $msg = 'Tip: Add default values via Stores > Configuration > Yireo > Yireo EmailTester';
             $this->messageManager->addNoticeMessage($msg);
         }
 
