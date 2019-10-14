@@ -5,7 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.3.0] - October 2019
+### Fixed
+- Fix issue with return value in M2.3.3
 - Remove PHP requirement in composer
+- Remember form values in forms
 
 ## [1.2.2] - September 2019
 ### Added

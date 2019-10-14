@@ -8,12 +8,13 @@
  * @license     Open Source License (OSL v3)
  */
 
-//declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Block\Adminhtml;
 
 use Exception;
 use Magento\Backend\Block\Template\Context;
+use Magento\Backend\Model\Session;
 use Magento\Framework\View\Element\Text;
 use Yireo\EmailTester2\Model\Mailer;
 
@@ -30,16 +31,24 @@ class Preview extends Text
     protected $mailer;
 
     /**
+     * @var Session
+     */
+    protected $backendSession;
+
+    /**
      * @param Mailer $mailer
      * @param Context $context
+     * @param Session $backendSession
      * @param array $data
      */
     public function __construct(
         Mailer $mailer,
         Context $context,
+        Session $backendSession,
         array $data = []
     ) {
         $this->mailer = $mailer;
+        $this->backendSession = $backendSession;
         parent::__construct($context, $data);
     }
 
@@ -87,6 +96,6 @@ class Preview extends Text
      */
     private function saveToSession(array $data)
     {
-        $this->_session->setEmailtesterValues($data);
+        $this->backendSession->setEmailtesterValues($data);
     }
 }

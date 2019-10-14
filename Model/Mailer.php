@@ -157,6 +157,7 @@ class Mailer extends DataObject
      *
      * @return bool
      * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
     public function send(): bool
     {
@@ -203,7 +204,16 @@ class Mailer extends DataObject
             $content .= $part->getContent();
         }
 
-        return $content;
+        return $this->cleanContent($content);
+    }
+
+    /**
+     * @param string $content
+     * @return string
+     */
+    private function cleanContent(string $content): string
+    {
+        return quoted_printable_decode($content);
     }
 
     /**

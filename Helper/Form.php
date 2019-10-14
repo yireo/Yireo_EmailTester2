@@ -8,13 +8,14 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Helper;
 
 use Magento\Backend\Model\Session;
 use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\StoreManagerInterface;
+use Yireo\EmailTester2\Config\Config;
 
 /**
  * Class \Yireo\EmailTester2\Helper\Form
@@ -30,35 +31,41 @@ class Form extends Data
      * @var Session
      */
     private $backendSession;
+    /**
+     * @var Config
+     */
+    private $config;
 
     /**
      * @param Context $context
      * @param StoreManagerInterface $storeManager
      * @param Session $backendSession
+     * @param Config $config
      */
     public function __construct(
         Context $context,
         StoreManagerInterface $storeManager,
-        Session $backendSession
+        Session $backendSession,
+        Config $config
     ) {
+        parent::__construct($context);
         $this->storeManager = $storeManager;
         $this->backendSession = $backendSession;
-
-        parent::__construct($context);
+        $this->config = $config;
     }
 
     /**
      * @return array
      */
-    public function getFormData() : array
+    public function getFormData(): array
     {
         $data = [
             'store_id' => $this->getDefaultStoreId(),
-            'email' => $this->getConfigValue('default_email'),
-            'template' => $this->getConfigValue('default_transactional'),
-            'customer_id' => $this->getConfigValue('default_customer'),
-            'order_id' => $this->getConfigValue('default_order'),
-            'product_id' => $this->getConfigValue('default_product'),
+            'email' => $this->config->getDefaultEmail(),
+            'template' => $this->config->getDefaultTransactional(),
+            'customer_id' => $this->config->getDefaultCustomer(),
+            'order_id' => $this->config->getDefaultOrder(),
+            'product_id' => $this->config->getDefaultProduct(),
         ];
 
         $data['product_search'] = $data['product_id'];
@@ -72,6 +79,18 @@ class Form extends Data
                 if (isset($data[$sessionName]) && !empty($sessionValue)) {
                     $data[$sessionName] = $sessionValue;
                 }
+
+                if ($sessionName === 'customer_id' && !empty($sessionValue)) {
+                    $data['customer_search'] = $sessionValue;
+                }
+
+                if ($sessionName === 'product_id' && !empty($sessionValue)) {
+                    $data['product_search'] = $sessionValue;
+                }
+
+                if ($sessionName === 'order_id' && !empty($sessionValue)) {
+                    $data['order_search'] = $sessionValue;
+                }
             }
         }
 
@@ -81,16 +100,16 @@ class Form extends Data
     /**
      * @return array
      */
-    private function getDataFromSession() : array
+    private function getDataFromSession(): array
     {
-        return (array) $this->backendSession->getData('emailtester_values');
+        return (array)$this->backendSession->getData('emailtester_values');
     }
 
     /**
      * @return int
      */
-    private function getDefaultStoreId() : int
+    private function getDefaultStoreId(): int
     {
-        return (int) $this->storeManager->getDefaultStoreView()->getId();
+        return (int)$this->storeManager->getDefaultStoreView()->getId();
     }
 }
