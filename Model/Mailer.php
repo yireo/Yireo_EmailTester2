@@ -201,6 +201,7 @@ class Mailer extends DataObject
         $content = '';
         $parts = $body->getParts();
         foreach ($parts as $part) {
+            $part->setEncoding('');
             $content .= $part->getContent();
         }
 
