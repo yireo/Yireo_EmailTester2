@@ -12,7 +12,8 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
-use Magento\Framework\Api\SearchCriteriaBuilder;
+use Exception;
+use Magento\Framework\Api\SearchCriteriaBuilderFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\PhraseFactory;
 use Magento\Sales\Api\Data\InvoiceInterface;
@@ -38,24 +39,29 @@ class Invoice implements VariableInterface
     private $invoiceRepository;
 
     /**
-     * @var SearchCriteriaBuilder
+     * @var SearchCriteriaBuilderFactory
      */
-    private $searchCriteriaBuilder;
+    private $searchCriteriaBuilderFactory;
+
+    /**
+     * @var PhraseFactory
+     */
+    private $phraseFactory;
 
     /**
      * Shipment constructor.
      *
      * @param InvoiceRepositoryInterface $invoiceRepository
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory
      * @param PhraseFactory $phraseFactory
      */
     public function __construct(
         InvoiceRepositoryInterface $invoiceRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
+        SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory,
         PhraseFactory $phraseFactory
     ) {
         $this->invoiceRepository = $invoiceRepository;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->searchCriteriaBuilderFactory = $searchCriteriaBuilderFactory;
         $this->phraseFactory = $phraseFactory;
     }
 
@@ -71,20 +77,40 @@ class Invoice implements VariableInterface
         }
 
         try {
-            $this->searchCriteriaBuilder->addFilter('order_id', $this->order->getEntityId());
-            $searchCriteria = $this->searchCriteriaBuilder->create();
+            $searchCriteriaBuilder = $this->searchCriteriaBuilderFactory->create();
+            $searchCriteriaBuilder->addFilter('order_id', $this->order->getEntityId());
+            $searchCriteria = $searchCriteriaBuilder->create();
             $searchCriteria->setCurrentPage(1);
             $searchCriteria->setPageSize(1);
-            $invoices = $this->invoiceRepository->getList($searchCriteria);
+            $searchResult = $this->invoiceRepository->getList($searchCriteria);
 
-            if ($invoices) {
-                return array_shift($invoices->getItems());
+            if ($searchResult) {
+                $invoices = $searchResult->getItems();
+                return array_shift($invoices);
             }
 
-            return $this->invoiceRepository->create();
-        } catch (\Exception $e) {
-            return $this->invoiceRepository->create();
+            return $this->getAnyInvoice();
+        } catch (Exception $e) {
+            return $this->getAnyInvoice();
         }
+    }
+
+    /**
+     * @return InvoiceInterface
+     */
+    private function getAnyInvoice(): InvoiceInterface
+    {
+        $searchCriteriaBuilder = $this->searchCriteriaBuilderFactory->create();
+        $searchCriteria = $searchCriteriaBuilder->create();
+        $searchCriteria->setCurrentPage(1);
+        $searchCriteria->setPageSize(1);
+        $searchResult = $this->invoiceRepository->getList($searchCriteria);
+        if ($searchResult) {
+            $invoices = $searchResult->getItems();
+            return array_shift($invoices);
+        }
+
+        return $this->invoiceRepository->create();
     }
 
     /**

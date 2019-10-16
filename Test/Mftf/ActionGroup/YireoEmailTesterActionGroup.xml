@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="goToYireoEmailTesterPage">
+        <amOnPage url="{{YireoEmailTesterFormPage.url}}" stepKey="amOnAdminCategoryPage"/>
+        <scrollToTopOfPage stepKey="scrollToTopOfPage"/>
+        <waitForPageLoad stepKey="waitForPageLoad"/>
+    </actionGroup>
+</actionGroups>

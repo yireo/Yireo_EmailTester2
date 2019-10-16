@@ -6,11 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.3.0] - October 2019
+## [1.3.1] - 16 October 2019
+### Fixed
+- Fix issue with invoice items not showing in table
+
+### Added
+- Support for event email_shipment_set_template_vars_before`
+
+## [1.3.0] - 12 October 2019
 ### Fixed
 - Fix issue with return value in M2.3.3
 - Remove PHP requirement in composer
 - Remember form values in forms
+
+### Added
+- Basic MFTF support
 
 ## [1.2.2] - September 2019
 ### Added

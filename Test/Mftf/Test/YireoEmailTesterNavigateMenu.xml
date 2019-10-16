@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="YireoEmailTesterNavigateMenu">
+        <annotations>
+            <features value="EmailTester"/>
+            <stories value="Menu Navigation"/>
+            <title value="Navigate to EmailTester page"/>
+            <description value="Admin should be able to navigate to Marketing > Yireo EmailTester"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="EMAILTESTER-1"/>
+            <group value="yireo" />
+            <group value="emailtester2" />
+            <group value="menu"/>
+        </annotations>
+        <before>
+            <actionGroup ref="LoginAsAdmin" stepKey="LoginAsAdmin"/>
+        </before>
+        <after>
+            <actionGroup ref="logout" stepKey="logout"/>
+        </after>
+        <actionGroup ref="AdminNavigateMenuActionGroup" stepKey="navigateToEmailTesterPage">
+            <argument name="menuUiId" value="{{AdminMenuMarketing.dataUiId}}"/>
+            <argument name="submenuUiId" value="{{AdminMenuMarketingEmailTester.dataUiId}}"/>
+        </actionGroup>
+        <actionGroup ref="AdminAssertPageTitleActionGroup" stepKey="seePageTitle">
+            <argument name="title" value="{{AdminMenuMarketingEmailTester.pageTitle}}"/>
+        </actionGroup>
+    </test>
+</tests>

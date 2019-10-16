@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="YireoEmailTesterPreviewCurrencyImportErrorEmailTemplate">
+        <annotations>
+            <features value="EmailTester"/>
+            <stories value="Transactional Email Preview currency_import_error_email_template"/>
+            <title value="Preview email currency_import_error_email_template"/>
+            <description value="Admin should be able to preview the mail currency_import_error_email_template"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="EMAILTESTER-1"/>
+            <group value="extdn"/>
+            <group value="yireo"/>
+            <group value="emailtester2"/>
+            <group value="email"/>
+        </annotations>
+        <before>
+            <createData entity="YireoEmailTesterProductSample" stepKey="YireoEmailTesterProductSample"/>
+            <actionGroup ref="LoginAsAdmin" stepKey="LoginAsAdmin"/>
+        </before>
+        <after>
+            <actionGroup ref="logout" stepKey="logout"/>
+            <deleteData createDataKey="YireoEmailTesterProductSample" stepKey="deleteProduct"/>
+        </after>
+        <actionGroup ref="goToYireoEmailTesterPage" stepKey="goToYireoEmailTesterPage"/>
+        <fillField stepKey="enterEmailValue" selector="{{YireoEmailTesterFormSection.email}}" userInput="info@example.org"/>
+        <selectOption stepKey="selectTemplateValue" selector="{{YireoEmailTesterFormSection.template}}" userInput="currency_import_error_email_template"/>
+        <fillField stepKey="searchProductValue" selector="{{YireoEmailTesterFormSection.product_search}}" userInput="$$YireoEmailTesterProductSample.sku$$"/>
+        <click stepKey="clickPreviewButton" selector="{{YireoEmailTesterFormSection.previewButton}}"/>
+        <see stepKey="checkEmailTemplate" userInput="Currency Update Warnings" />
+    </test>
+</tests>

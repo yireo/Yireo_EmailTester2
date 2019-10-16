@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="YireoEmailTesterFormSection">
+        <element name="email" type="text" selector="input[name=email]" timeout="30"/>
+        <element name="template" type="select" selector="select[name=template]" timeout="30"/>
+        <element name="product_search" type="text" selector="input[name=product_search]" timeout="30"/>
+        <element name="customer_search" type="text" selector="input[name=customer_search]" timeout="30"/>
+        <element name="order_search" type="text" selector="input[name=order_search]" timeout="30"/>
+        <element name="previewButton" type="button" selector="Preview Email" timeout="30"/>
+    </section>
+</sections>

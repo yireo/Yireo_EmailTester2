@@ -283,20 +283,9 @@ class Mailer extends DataObject
             $variables['customer'] = $variables['customerName'];
         }
 
-        $eventTransport = new DataObject($variables);
-        $this->eventManager->dispatch(
-            'email_order_set_template_vars_before',
-            [
-                'sender' => $sender,
-                'transport' => $eventTransport,
-                'transportObject' => $eventTransport,
-            ]
-        );
-
-        $this->eventManager->dispatch(
-            'emailtester_variables',
-            ['variables' => &$variables]
-        );
+        $this->dispatchEventEmailOrderSetTemplateVarsBefore($variables, $sender);
+        $this->dispatchEventEmailtesterVariables($variables);
+        $this->dispatchEventEmailShipmentSetTemplateVarsBefore($variables);
 
         $area = Area::AREA_FRONTEND;
         if (!preg_match('/^([0-9]+)$/', $templateId)) {
@@ -308,6 +297,48 @@ class Mailer extends DataObject
             ->setTemplateVars($variables)
             ->setFrom($sender->getAsArray())
             ->addTo($recipient->getEmail(), $recipient->getName());
+    }
+
+    /**
+     * @param array $variables
+     * @param $sender
+     */
+    private function dispatchEventEmailOrderSetTemplateVarsBefore(array &$variables, $sender)
+    {
+        $eventTransport = new DataObject($variables);
+        $this->eventManager->dispatch(
+            'email_order_set_template_vars_before',
+            [
+                'sender' => $sender,
+                'transport' => $eventTransport,
+                'transportObject' => $eventTransport,
+            ]
+        );
+    }
+
+    /**
+     * @param array $variables
+     */
+    private function dispatchEventEmailtesterVariables(array &$variables)
+    {
+        $this->eventManager->dispatch(
+            'emailtester_variables',
+            ['variables' => &$variables]
+        );
+    }
+
+    /**
+     * @param array $variables
+     */
+    private function dispatchEventEmailShipmentSetTemplateVarsBefore(array &$variables)
+    {
+        $transport = new DataObject($variables);
+        $this->eventManager->dispatch(
+            'email_shipment_set_template_vars_before',
+            ['sender' => $this, 'transport' => $variables, 'transportObject' => $transport]
+        );
+
+        $variables = $transport->getData();
     }
 
     /**
