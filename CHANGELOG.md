@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.3] - 28 October 2019
+### Fixed
+- Remove debugging statement
+
 ## [1.3.2] - 28 October 2019
 ### Fixed
 - Make sure "store_phone" (and other variables) switch per scope (Website) properly
