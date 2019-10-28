@@ -285,8 +285,6 @@ class Mailer extends DataObject
         $template = $this->getTemplate();
         $recipient = $this->getRecipient();
         $sender = $this->getSender()->getAsArray();
-        print_r($sender);
-        exit;
 
         $this->transportBuilder->setTemplateIdentifier($template->getId())
             ->setTemplateOptions($this->getTemplateOptions())
