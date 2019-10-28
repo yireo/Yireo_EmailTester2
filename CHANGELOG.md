@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.2] - 28 October 2019
+### Fixed
+- Make sure "store_phone" (and other variables) switch per scope (Website) properly
+- Allow to set *Sender* in Store Configuration and/or form
+
 ## [1.3.1] - 16 October 2019
 ### Fixed
 - Fix issue with invoice items not showing in table

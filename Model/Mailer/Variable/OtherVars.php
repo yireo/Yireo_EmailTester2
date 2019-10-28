@@ -8,7 +8,7 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
@@ -28,6 +28,11 @@ class OtherVars implements VariablesInterface
     private $scopeConfig;
 
     /**
+     * @var int
+     */
+    private $storeId = 0;
+
+    /**
      * OtherVars constructor.
      *
      * @param ScopeConfigInterface $scopeConfig
@@ -44,27 +49,36 @@ class OtherVars implements VariablesInterface
     public function getVariables(): array
     {
         $variables = [
-            'store_phone' => $this->getStorePhone(),
-            'store_hours' => $this->getStoreHours(),
             'checkoutType' => 'Dummy Checkout',
         ];
+
+        foreach ($this->getScopeConfigVariables() as $name => $path) {
+            $variables[$name] = (string)$this->scopeConfig->getValue($path, 'store', $this->storeId);
+        }
 
         return $variables;
     }
 
     /**
-     * @return string
+     * This method is made public to serve as a way to extend things using DI plugins
+     *
+     * @return array
      */
-    private function getStoreHours(): string
+    public function getScopeConfigVariables(): array
     {
-        return (string)$this->scopeConfig->getValue('general/store_information/hours');
+        return [
+            'store_hours' => 'general/store_information/hours',
+            'store_phone' => 'general/store_information/phone',
+        ];
     }
 
     /**
-     * @return string
+     * This method is called from the VariableBuilder to insert the current Store ID
+     *
+     * @param $storeId int
      */
-    private function getStorePhone(): string
+    public function setStoreId(int $storeId)
     {
-        return (string)$this->scopeConfig->getValue('general/store_information/phone');
+        $this->storeId = $storeId;
     }
 }

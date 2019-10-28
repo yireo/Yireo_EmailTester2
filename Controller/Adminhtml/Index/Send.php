@@ -17,6 +17,8 @@ use Magento\Backend\App\Action\Context;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface as MessageManager;
 use Magento\Store\Model\StoreManagerInterface;
 use Yireo\EmailTester2\Model\Mailer;
@@ -42,10 +44,12 @@ class Send extends Action
      * @var Mailer
      */
     private $mailer;
+
     /**
      * @var StoreManagerInterface
      */
     private $storeManager;
+
     /**
      * @var ProductRepositoryInterface
      */
@@ -79,6 +83,8 @@ class Send extends Action
      * Index action
      *
      * @return Redirect
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function execute()
     {
@@ -107,6 +113,7 @@ class Send extends Action
         $data['order_id'] = (int)$this->_request->getParam('order_id');
         $data['template'] = (string)$this->_request->getParam('template');
         $data['email'] = (string)$this->_request->getParam('email');
+        $data['sender'] = (string)$this->_request->getParam('sender');
 
         return $data;
     }

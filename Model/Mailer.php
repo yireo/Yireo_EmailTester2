@@ -186,6 +186,7 @@ class Mailer extends DataObject
      */
     protected function getRawContentFromTransportBuilder(): string
     {
+        /** @var \Magento\Framework\Mail\Message $message */
         /** @var \Zend\Mime\Message $body */
         $message = $this->transportBuilder->getMessage();
         $body = $message->getBody();
@@ -246,9 +247,25 @@ class Mailer extends DataObject
     }
 
     /**
+     * @return Addressee
+     */
+    private function getSender(): Addressee
+    {
+        $addressee = $this->addresseeFactory->create();
+
+        $sender = (string)$this->getData('sender');
+        if ($sender) {
+            $addressee->setEmail($sender);
+        }
+
+        return $addressee;
+    }
+
+    /**
      * Prepare for the main action
      *
      * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
     private function prepare()
     {
@@ -261,60 +278,132 @@ class Mailer extends DataObject
 
     /**
      * Prepare the transport builder
+     * @throws LocalizedException
      */
     private function prepareTransportBuilder()
     {
-        /** @var Addressee $sender */
-        $sender = $this->addresseeFactory->create();
-
+        $template = $this->getTemplate();
         $recipient = $this->getRecipient();
-        $templateId = $this->getData('template');
-        $storeId = $this->getStoreId();
-        $variables = $this->buildVariables();
+        $sender = $this->getSender()->getAsArray();
+        print_r($sender);
+        exit;
+
+        $this->transportBuilder->setTemplateIdentifier($template->getId())
+            ->setTemplateOptions($this->getTemplateOptions())
+            ->setTemplateVars($this->getTemplateVariables())
+            ->setFrom($this->getSender()->getAsArray())
+            ->addTo($recipient->getEmail(), $recipient->getName());
+    }
+
+    /**
+     * @return string
+     */
+    private function getTemplateId(): string
+    {
+        $templateId = (string)$this->getData('template');
 
         if (preg_match('/^([^\/]+)\/(.*)$/', $templateId, $match)) {
-            $templateId = $match[1];
+            $templateId = (string)$match[1];
         }
 
-        $template = $this->loadTemplate($templateId);
+        return $templateId;
+    }
 
+    /**
+     * @return TemplateInterface
+     */
+    private function getTemplate()
+    {
+        return $this->loadTemplate($this->getTemplateId());
+    }
+
+    /**
+     * @return array
+     */
+    private function getTemplateVariables(): array
+    {
+        $template = $this->getTemplate();
+        $variables = $this->buildVariables();
         $variables['subject'] = $template->getSubject();
 
         if ($this->matchTemplate($template, 'checkout_payment_failed_template')) {
             $variables['customer'] = $variables['customerName'];
         }
 
-        $this->dispatchEventEmailOrderSetTemplateVarsBefore($variables, $sender);
-        $this->dispatchEventEmailtesterVariables($variables);
+        $this->dispatchEventEmailOrderSetTemplateVarsBefore($variables);
         $this->dispatchEventEmailShipmentSetTemplateVarsBefore($variables);
+        $this->dispatchEventEmailCreditmemoSetTemplateVarsBefore($variables);
+        $this->dispatchEventEmailtesterVariables($variables);
 
+        return $variables;
+    }
+
+    /**
+     * @return array
+     */
+    private function getTemplateOptions(): array
+    {
+        $templateId = $this->getTemplateId();
         $area = Area::AREA_FRONTEND;
         if (!preg_match('/^([0-9]+)$/', $templateId)) {
             $area = $this->templateConfig->getTemplateArea($templateId);
         }
 
-        $this->transportBuilder->setTemplateIdentifier($template->getId())
-            ->setTemplateOptions(['area' => $area, 'store' => $storeId])
-            ->setTemplateVars($variables)
-            ->setFrom($sender->getAsArray())
-            ->addTo($recipient->getEmail(), $recipient->getName());
+        return ['area' => $area, 'store' => $this->getStoreId()];
     }
 
     /**
      * @param array $variables
-     * @param $sender
      */
-    private function dispatchEventEmailOrderSetTemplateVarsBefore(array &$variables, $sender)
+    private function dispatchEventEmailOrderSetTemplateVarsBefore(array &$variables)
     {
         $eventTransport = new DataObject($variables);
         $this->eventManager->dispatch(
             'email_order_set_template_vars_before',
             [
-                'sender' => $sender,
+                'sender' => $this,
                 'transport' => $eventTransport,
                 'transportObject' => $eventTransport,
             ]
         );
+
+        $variables = $eventTransport->getData();
+    }
+
+    /**
+     * @param array $variables
+     */
+    private function dispatchEventEmailShipmentSetTemplateVarsBefore(array &$variables)
+    {
+        $transport = new DataObject($variables);
+        $this->eventManager->dispatch(
+            'email_shipment_set_template_vars_before',
+            [
+                'sender' => $this,
+                'transport' => $variables,
+                'transportObject' => $transport
+            ]
+        );
+
+        $variables = $transport->getData();
+    }
+
+    /**
+     * @param array $variables
+     */
+    private function dispatchEventEmailCreditmemoSetTemplateVarsBefore(array &$variables)
+    {
+        $transport = new DataObject($variables);
+        $this->eventManager->dispatch(
+            'email_creditmemo_set_template_vars_before',
+            [
+                'sender' => $this,
+                'transport' => $variables,
+                'transportObject' => $transport
+            ]
+        );
+
+        $variables = $transport->getData();
     }
 
     /**
@@ -326,20 +415,6 @@ class Mailer extends DataObject
             'emailtester_variables',
             ['variables' => &$variables]
         );
-    }
-
-    /**
-     * @param array $variables
-     */
-    private function dispatchEventEmailShipmentSetTemplateVarsBefore(array &$variables)
-    {
-        $transport = new DataObject($variables);
-        $this->eventManager->dispatch(
-            'email_shipment_set_template_vars_before',
-            ['sender' => $this, 'transport' => $variables, 'transportObject' => $transport]
-        );
-
-        $variables = $transport->getData();
     }
 
     /**

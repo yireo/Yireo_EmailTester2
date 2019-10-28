@@ -87,6 +87,24 @@
             </settings>
         </field>
 
+        <field name="sender" sortOrder="1" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Cms\Ui\Component\Listing\Column\Cms\Options</item>
+                <item name="config" xsi:type="array">
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <required>1</required>
+                <dataType>text</dataType>
+                <label translate="true">Mail From</label>
+                <placeholder>Email Address</placeholder>
+                <dataScope>sender</dataScope>
+            </settings>
+        </field>
+
         <field name="email" sortOrder="1" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Magento\Cms\Ui\Component\Listing\Column\Cms\Options</item>

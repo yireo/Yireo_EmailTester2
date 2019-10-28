@@ -70,7 +70,6 @@ class Index extends Action
             $this->messageManager->addNoticeMessage($msg);
         }
 
-
         return parent::dispatch($request);
     }
 

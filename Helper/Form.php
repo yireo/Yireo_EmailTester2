@@ -61,6 +61,7 @@ class Form extends Data
     {
         $data = [
             'store_id' => $this->getDefaultStoreId(),
+            'sender' => $this->config->getDefaultSender(),
             'email' => $this->config->getDefaultEmail(),
             'template' => $this->config->getDefaultTransactional(),
             'customer_id' => $this->config->getDefaultCustomer(),

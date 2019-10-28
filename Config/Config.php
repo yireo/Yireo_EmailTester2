@@ -50,13 +50,11 @@ class Config
     }
 
     /**
-     * Enable jQuery UI
-     *
-     * @return bool
+     * @return string
      */
-    public function enableJqueryUi(): bool
+    public function getDefaultSender(): string
     {
-        return (bool)$this->getConfigValue('enable_jqueryui');
+        return (string)$this->getConfigValue('default_sender');
     }
 
     /**

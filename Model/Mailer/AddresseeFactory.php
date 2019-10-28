@@ -41,7 +41,7 @@ class AddresseeFactory
      *
      * @param array $data
      *
-     * @return Config
+     * @return Addressee
      */
     public function create(array $data = [])
     {

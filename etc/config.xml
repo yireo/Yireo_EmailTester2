@@ -13,6 +13,7 @@
     <default>
         <emailtester2>
             <settings>
+                <default_sender/>
                 <default_email/>
                 <default_transactional/>
                 <default_product/>
