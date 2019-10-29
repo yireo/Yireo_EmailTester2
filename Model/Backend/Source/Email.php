@@ -28,11 +28,6 @@ class Email implements OptionSourceInterface
     protected $options;
 
     /**
-     * @var array
-     */
-    protected $currentOptions = [];
-
-    /**
      * @var Collection
      */
     private $emailTemplateCollection;

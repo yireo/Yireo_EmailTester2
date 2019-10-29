@@ -5,7 +5,7 @@
  *
  * @package     Yireo_EmailTester
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2019 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 -->
@@ -14,6 +14,15 @@
     <type name="Yireo\EmailTester2\Model\Mailer">
         <arguments>
             <argument name="transportBuilder" xsi:type="object">Yireo\EmailTester2\Model\TransportBuilder</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="emailtester2_list" xsi:type="object">Yireo\EmailTester2\Console\Command\ListCommand</item>
+                <item name="emailtester2_send" xsi:type="object">Yireo\EmailTester2\Console\Command\SendCommand</item>
+            </argument>
         </arguments>
     </type>
 </config>
