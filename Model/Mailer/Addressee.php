@@ -68,6 +68,10 @@ class Addressee
      */
     public function setName(string $name)
     {
+        if (preg_match('/^(.*)\<(.*)\>$/', $name, $match)) {
+            die($name);
+        }
+
         $this->name = $name;
     }
 

@@ -30,6 +30,11 @@ class Product implements VariableInterface
     private $productId;
 
     /**
+     * @var int
+     */
+    private $storeId;
+
+    /**
      * @var ProductRepositoryInterface
      */
     private $productRepository;
@@ -101,7 +106,7 @@ class Product implements VariableInterface
         }
 
         try {
-            $product = $this->productRepository->getById($this->productId);
+            $product = $this->productRepository->getById($this->productId, false, $this->storeId);
         } catch (NoSuchEntityException $exception) {
             return false;
         }
@@ -119,5 +124,15 @@ class Product implements VariableInterface
     public function setProductId(int $productId)
     {
         $this->productId = $productId;
+    }
+
+    /**
+     * This method is called from the VariableBuilder to insert the current Store ID
+     *
+     * @param $storeId int
+     */
+    public function setStoreId(int $storeId)
+    {
+        $this->storeId = $storeId;
     }
 }

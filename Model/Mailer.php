@@ -14,6 +14,7 @@ namespace Yireo\EmailTester2\Model;
 
 use Magento\Framework\App\Area;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Mail\Message;
 use Magento\Framework\Mail\Template\FactoryInterface as TemplateFactoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DataObject;
@@ -22,6 +23,8 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Email\Model\BackendTemplateFactory;
 use Magento\Framework\Mail\TemplateInterface;
+use Magento\Framework\Phrase;
+use Magento\Framework\Phrase\RendererInterface;
 use Magento\Framework\Translate\Inline\StateInterface;
 use Magento\Email\Model\Template\Config as TemplateConfig;
 use Magento\Store\Model\StoreManagerInterface;
@@ -29,6 +32,7 @@ use Exception;
 use Yireo\EmailTester2\Behaviour\Errorable;
 use Yireo\EmailTester2\Model\Mailer\Addressee;
 use Yireo\EmailTester2\Model\Mailer\Recipient;
+use Zend\Mime\Message as MessageAlias;
 
 /**
  * EmailTester Core model
@@ -96,6 +100,11 @@ class Mailer extends DataObject
     private $backendTemplateFactory;
 
     /**
+     * @var RendererInterface
+     */
+    private $renderer;
+
+    /**
      * Mailer constructor.
      *
      * @param Mailer\AddresseeFactory $addresseeFactory
@@ -109,6 +118,7 @@ class Mailer extends DataObject
      * @param TemplateFactoryInterface $templateFactory
      * @param BackendTemplateFactory $backendTemplateFactory
      * @param TemplateConfig $templateConfig
+     * @param RendererInterface $renderer
      * @param array $data
      */
     public function __construct(
@@ -123,6 +133,7 @@ class Mailer extends DataObject
         TemplateFactoryInterface $templateFactory,
         BackendTemplateFactory $backendTemplateFactory,
         TemplateConfig $templateConfig,
+        RendererInterface $renderer,
         array $data = []
     ) {
         parent::__construct($data);
@@ -137,6 +148,7 @@ class Mailer extends DataObject
         $this->templateFactory = $templateFactory;
         $this->templateConfig = $templateConfig;
         $this->backendTemplateFactory = $backendTemplateFactory;
+        $this->renderer = $renderer;
     }
 
     /**
@@ -174,10 +186,10 @@ class Mailer extends DataObject
 
         if ($sent === false) {
             $this->processMailerErrors();
-            return false;
         }
 
-        return true;
+        $this->wrapUp();
+        return $sent;
     }
 
     /**
@@ -186,8 +198,8 @@ class Mailer extends DataObject
      */
     protected function getRawContentFromTransportBuilder(): string
     {
-        /** @var \Magento\Framework\Mail\Message $message */
-        /** @var \Zend\Mime\Message $body */
+        /** @var Message $message */
+        /** @var MessageAlias $body */
         $message = $this->transportBuilder->getMessage();
         $body = $message->getBody();
 
@@ -272,7 +284,16 @@ class Mailer extends DataObject
         $this->setDefaultStoreId();
 
         $this->inlineTranslation->suspend();
+        Phrase::setRenderer($this->renderer);
+
         $this->prepareTransportBuilder();
+    }
+
+    /**
+     * Wrapup the main action
+     */
+    private function wrapUp()
+    {
         $this->inlineTranslation->resume();
     }
 
@@ -284,7 +305,6 @@ class Mailer extends DataObject
     {
         $template = $this->getTemplate();
         $recipient = $this->getRecipient();
-        $sender = $this->getSender()->getAsArray();
 
         $this->transportBuilder->setTemplateIdentifier($template->getId())
             ->setTemplateOptions($this->getTemplateOptions())

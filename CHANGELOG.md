@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.1] - 30 October 2019
+### Fixed
+- New CLI did not properly translate per Store View
+
 ## [1.4.0] - 29 October 2019
 ### Added
 - List all available transactional emails via the CLI (`bin/magento yireo_emailtester2:list`)
