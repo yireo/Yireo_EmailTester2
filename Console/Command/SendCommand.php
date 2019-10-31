@@ -159,8 +159,11 @@ class SendCommand extends Command
         $data['order_id'] = (int)$input->getOption('order_id');
 
         $this->state->setAreaCode(Area::AREA_FRONTEND);
-        $storeCode = $this->storeManager->getStore($data['store_id'])->getCode();
-        $this->storeManager->setCurrentStore($storeCode);
+
+        if ($data['store_id'] > 0) {
+            $storeCode = $this->storeManager->getStore($data['store_id'])->getCode();
+            $this->storeManager->setCurrentStore($storeCode);
+        }
 
         $this->mailer->setData($data);
         $this->mailer->send();

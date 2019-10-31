@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.2] - 31 October 2019
+### Fixed
+- Fix CLI when `store_id` is set to 0
+
 ## [1.4.1] - 30 October 2019
 ### Fixed
 - New CLI did not properly translate per Store View

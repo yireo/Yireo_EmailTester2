@@ -34,7 +34,7 @@ class PaymentHtml implements VariableInterface
     /**
      * @var int
      */
-    private $storeId;
+    private $storeId = 0;
 
     /**
      * @var Data

@@ -480,7 +480,7 @@ class Mailer extends DataObject
     {
         $storeId = $this->getStoreId();
 
-        if (empty($storeId)) {
+        if (!$storeId > 0) {
             $storeId = (int)$this->storeManager->getStore()->getId();
             $this->setStoreId($storeId);
         }
