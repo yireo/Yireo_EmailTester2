@@ -14,6 +14,7 @@ namespace Yireo\EmailTester2\Model\Mailer;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
+use Psr\Log\InvalidArgumentException;
 
 /**
  * Class Addressee
@@ -65,11 +66,12 @@ class Addressee
 
     /**
      * @param string $name
+     * @throws InvalidArgumentException
      */
     public function setName(string $name)
     {
         if (preg_match('/^(.*)\<(.*)\>$/', $name, $match)) {
-            die($name);
+            throw new InvalidArgumentException('Invalid name: ' . $name);
         }
 
         $this->name = $name;
