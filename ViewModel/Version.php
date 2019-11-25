@@ -9,8 +9,6 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 /**
  * Class Version
- *
- * @package Yireo\EmailTester2\ViewModel
  */
 class Version implements ArgumentInterface
 {

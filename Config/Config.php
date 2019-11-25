@@ -8,8 +8,6 @@ use Magento\Store\Model\ScopeInterface;
 
 /**
  * Class Config
- *
- * @package Yireo\EmailTester2\Config
  */
 class Config
 {

@@ -5,7 +5,6 @@ namespace Yireo\EmailTester2\Test\Integration\Behaviors;
 
 /**
  * Trait CheckDatabaseStatistics
- * @package Yireo\EmailTester2\Test\Integration\Behaviors
  */
 trait CheckDatabaseStatistics
 {

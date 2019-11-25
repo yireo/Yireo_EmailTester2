@@ -2,7 +2,6 @@
 /**
  * EmailTester2 plugin for Magento
  *
- * @package     Yireo_EmailTester2
  * @author      Yireo (https://www.yireo.com/)
  * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
@@ -27,8 +26,6 @@ use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class CustomerSearch
- *
- * @package Yireo\EmailTester2\Controller\Ajax
  */
 class CustomerSearch extends Action
 {

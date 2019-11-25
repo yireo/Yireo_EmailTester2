@@ -2,7 +2,6 @@
 /**
  * EmailTester2 plugin for Magento
  *
- * @package     Yireo_EmailTester2
  * @author      Yireo (https://www.yireo.com/)
  * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
@@ -21,8 +20,6 @@ use Yireo\EmailTester2\Model\Label\Order as OrderLabel;
 
 /**
  * Class OrderId
- *
- * @package Yireo\EmailTester2\Controller\Ajax
  */
 class OrderId extends AbstractId
 {

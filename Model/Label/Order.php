@@ -7,8 +7,6 @@ use Magento\Sales\Api\Data\OrderInterface;
 
 /**
  * Class Order
- *
- * @package Yireo\EmailTester2\Model\Label
  */
 class Order
 {

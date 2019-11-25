@@ -2,7 +2,6 @@
 /**
  * EmailTester2 plugin for Magento
  *
- * @package     Yireo_EmailTester2
  * @author      Yireo (https://www.yireo.com/)
  * @copyright   Copyright 2018 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
@@ -17,8 +16,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class DatacontainableTest
- *
- * @package Yireo\EmailTester2\Test\Unit\Behaviour
  */
 class DatacontainableTest extends TestCase
 {

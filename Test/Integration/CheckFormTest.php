@@ -8,8 +8,6 @@ use Magento\TestFramework\TestCase\AbstractBackendController;
 
 /**
  * Class CheckFormTest
- *
- * @package Yireo\EmailTester2\Test\Integration
  */
 class CheckFormTest extends AbstractBackendController
 {
