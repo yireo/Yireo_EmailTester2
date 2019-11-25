@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.4.2] - 31 October 2019
 ### Fixed
 - Fix CLI when `store_id` is set to 0
+- Add checks to make sure customers, products and orders are created before using this module
 
 ## [1.4.1] - 30 October 2019
 ### Fixed
