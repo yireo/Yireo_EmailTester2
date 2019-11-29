@@ -50,6 +50,44 @@
             </argument>
         </field>
 
+        <field name="email" sortOrder="1" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-email" xsi:type="boolean">true</item>
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <required>1</required>
+                <dataType>text</dataType>
+                <elementTmpl>ui/form/element/email</elementTmpl>
+                <label translate="true">Mail To</label>
+                <placeholder>Email Address</placeholder>
+                <dataScope>email</dataScope>
+            </settings>
+        </field>
+
+        <field name="sender" sortOrder="1" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-email" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <required>1</required>
+                <dataType>string</dataType>
+                <elementTmpl>ui/form/element/email</elementTmpl>
+                <label translate="true">Mail From</label>
+                <placeholder>Email Address</placeholder>
+                <dataScope>sender</dataScope>
+            </settings>
+        </field>
+
         <field name="store_id">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Magento\Cms\Ui\Component\Listing\Column\Cms\Options</item>
@@ -84,42 +122,6 @@
                 <dataType>string</dataType>
                 <label translate="true">Email Template</label>
                 <dataScope>template</dataScope>
-            </settings>
-        </field>
-
-        <field name="sender" sortOrder="1" formElement="input">
-            <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">Magento\Cms\Ui\Component\Listing\Column\Cms\Options</item>
-                <item name="config" xsi:type="array">
-                    <item name="validation" xsi:type="array">
-                        <item name="required-entry" xsi:type="boolean">true</item>
-                    </item>
-                </item>
-            </argument>
-            <settings>
-                <required>1</required>
-                <dataType>text</dataType>
-                <label translate="true">Mail From</label>
-                <placeholder>Email Address</placeholder>
-                <dataScope>sender</dataScope>
-            </settings>
-        </field>
-
-        <field name="email" sortOrder="1" formElement="input">
-            <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">Magento\Cms\Ui\Component\Listing\Column\Cms\Options</item>
-                <item name="config" xsi:type="array">
-                    <item name="validation" xsi:type="array">
-                        <item name="required-entry" xsi:type="boolean">true</item>
-                    </item>
-                </item>
-            </argument>
-            <settings>
-                <required>1</required>
-                <dataType>text</dataType>
-                <label translate="true">Mail To</label>
-                <placeholder>Email Address</placeholder>
-                <dataScope>email</dataScope>
             </settings>
         </field>
     </fieldset>
