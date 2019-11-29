@@ -14,6 +14,7 @@ namespace Yireo\EmailTester2\Model;
 use Magento\Framework\App\Area;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Mail\Message;
+use Magento\Framework\Mail\MimePart;
 use Magento\Framework\Mail\Template\FactoryInterface as TemplateFactoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DataObject;
@@ -213,7 +214,11 @@ class Mailer extends DataObject
         $content = '';
         $parts = $body->getParts();
         foreach ($parts as $part) {
-            $part->setEncoding('');
+            /** @var MimePart $part */
+            if (method_exists($part, 'setEncoding')) {
+                $part->setEncoding('');
+            }
+
             $content .= $part->getContent();
         }
 

@@ -132,7 +132,11 @@ class AlertGrid implements VariablesInterface
         $layoutFactory = $this->layoutFactory;
 
         $themeId = $this->scopeConfig->getValue(DesignInterface::XML_PATH_THEME_ID, 'store', $store);
-        $this->design->setDesignTheme($themeId);
+        if (!$themeId) {
+            $themeId = $this->design->getConfigurationDesignTheme(Area::AREA_FRONTEND);
+        }
+
+        $this->design->setDesignTheme($themeId, Area::AREA_FRONTEND);
 
         $alertGrid = $this->appState->emulateAreaCode(
             Area::AREA_FRONTEND,
