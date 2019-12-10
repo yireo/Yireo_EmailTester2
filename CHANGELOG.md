@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.3] - 10 December 2019
+### Fixed
+- Performance fix for checking if there are any products, customers or orders
+- Add default value 50 for limiting collections
+
 ## [1.4.2] - 31 October 2019
 ### Fixed
 - Fix CLI when `store_id` is set to 0
