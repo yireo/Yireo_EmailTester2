@@ -60,6 +60,7 @@ class Form implements ArgumentInterface
     public function hasCustomers(): bool
     {
         $searchCriteriaBuilder = $this->searchCriteriaBuilderFactory->create();
+        $searchCriteriaBuilder->setPageSize(1);
         $searchResult = $this->customerRepository->getList($searchCriteriaBuilder->create());
         $items = $searchResult->getItems();
         return (bool)count($items);
@@ -71,6 +72,7 @@ class Form implements ArgumentInterface
     public function hasProducts(): bool
     {
         $searchCriteriaBuilder = $this->searchCriteriaBuilderFactory->create();
+        $searchCriteriaBuilder->setPageSize(1);
         $searchCriteria = $searchCriteriaBuilder->create();
         $searchResult = $this->productRepository->getList($searchCriteria);
         $items = $searchResult->getItems();
@@ -83,6 +85,7 @@ class Form implements ArgumentInterface
     public function hasOrders(): bool
     {
         $searchCriteriaBuilder = $this->searchCriteriaBuilderFactory->create();
+        $searchCriteriaBuilder->setPageSize(1);
         $searchResult = $this->orderRepository->getList($searchCriteriaBuilder->create());
         $items = $searchResult->getItems();
         return (bool)count($items);
