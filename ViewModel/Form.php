@@ -71,7 +71,8 @@ class Form implements ArgumentInterface
     public function hasProducts(): bool
     {
         $searchCriteriaBuilder = $this->searchCriteriaBuilderFactory->create();
-        $searchResult = $this->productRepository->getList($searchCriteriaBuilder->create());
+        $searchCriteria = $searchCriteriaBuilder->create();
+        $searchResult = $this->productRepository->getList($searchCriteria);
         $items = $searchResult->getItems();
         return (bool)count($items);
     }

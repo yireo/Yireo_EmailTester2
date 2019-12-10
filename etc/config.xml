@@ -18,9 +18,9 @@
                 <default_product/>
                 <default_customer/>
                 <default_order/>
-                <limit_product>0</limit_product>
-                <limit_customer>0</limit_customer>
-                <limit_order>0</limit_order>
+                <limit_product>50</limit_product>
+                <limit_customer>50</limit_customer>
+                <limit_order>50</limit_order>
                 <custom_product/>
                 <custom_customer/>
                 <custom_order/>
@@ -30,4 +30,3 @@
         </emailtester2>
     </default>
 </config>
-
