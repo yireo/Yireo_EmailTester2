@@ -12,11 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add default value 50 for limiting collections
 
 ## [1.4.2] - 31 October 2019
-### Fixed
-- Fix CLI when `store_id` is set to 0
-- Add checks to make sure customers, products and orders are created before using this module
-- Fixed issue with empty theme ID in configuration throwing error
-- Fix issue with `setEncoding()` missing in PHP 7.1
+
 
 ## [1.4.1] - 30 October 2019
 ### Fixed
