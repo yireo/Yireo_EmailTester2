@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 21 April 2020
+### Added
+- Major rewrite of UiComponents using React to increase usability of searching for products, customers and orders
+
 ## [1.4.3] - 10 December 2019
 ### Fixed
 - Performance fix for checking if there are any products, customers or orders
