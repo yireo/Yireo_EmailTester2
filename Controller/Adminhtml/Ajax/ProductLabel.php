@@ -11,65 +11,62 @@ declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Controller\Adminhtml\Ajax;
 
-use InvalidArgumentException;
 use Magento\Backend\App\Action\Context;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Sales\Api\OrderRepositoryInterface;
-use Yireo\EmailTester2\Model\Label\Order as OrderLabel;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\NotFoundException;
 
 /**
- * Class OrderId
+ * Class ProductLabel
  */
-class OrderId extends AbstractId
+class ProductLabel extends AbstractLabel
 {
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
 
     /**
-     * @var OrderRepositoryInterface
+     * @var ProductRepositoryInterface
      */
-    private $orderRepository;
-
-    /**
-     * @var OrderLabel
-     */
-    private $orderLabel;
+    private $productRepository;
 
     /**
      * @param Context $context
+     * @param ProductRepositoryInterface $productRepository
      * @param Http $request
      * @param JsonFactory $resultJsonFactory
-     * @param OrderLabel $orderLabel
-     * @param OrderRepositoryInterface $orderRepository
      */
     public function __construct(
         Context $context,
+        ProductRepositoryInterface $productRepository,
         Http $request,
-        JsonFactory $resultJsonFactory,
-        OrderLabel $orderLabel,
-        OrderRepositoryInterface $orderRepository
+        JsonFactory $resultJsonFactory
     ) {
         parent::__construct($context, $request, $resultJsonFactory);
-        $this->orderRepository = $orderRepository;
-        $this->orderLabel = $orderLabel;
+        $this->productRepository = $productRepository;
     }
 
     /**
      * @return string
+     * @throws NoSuchEntityException
      */
     protected function getLabel(): string
     {
         $id = $this->getId();
         if (!$id > 0) {
-            return 'No order found';
+            throw new NoSuchEntityException(__('Empty ID'));
         }
 
-        try {
-            $order = $this->orderRepository->get($id);
-        } catch (InvalidArgumentException $exception) {
-            return 'No order found';
-        }
+        $product = $this->productRepository->getById($id);
 
-        return $this->orderLabel->getLabel($order);
+        return $product->getName() . ' (' . $product->getSku() . ')';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getEmptyLabel(): string
+    {
+        return 'No product found';
     }
 }

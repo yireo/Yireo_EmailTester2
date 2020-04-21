@@ -95,8 +95,10 @@ class OrderSearch extends Action
         foreach ($searchResults->getItems() as $order) {
             /** @var $order OrderInterface */
             $orderData[] = [
-                'value' => $order->getEntityId(),
-                'label' => $this->getOrderLabel($order),
+                'id' => $order->getEntityId(),
+                'increment_id' => $order->getIncrementId(),
+                'customer_email' => $order->getCustomerEmail(),
+                'created_at' => $order->getCreatedAt(),
             ];
         }
 
@@ -109,18 +111,8 @@ class OrderSearch extends Action
      */
     private function getSearchQuery() : string
     {
-        $search = (string) $this->request->getParam('term');
-        return $search;
-    }
+        return (string) $this->request->getParam('search');
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return string
-     */
-    private function getOrderLabel(OrderInterface $order) : string
-    {
-        return $order->getIncrementId() . ' [' . $order->getCustomerEmail() . ']';
     }
 
     /**

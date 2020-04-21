@@ -95,8 +95,9 @@ class CustomerSearch extends Action
         foreach ($searchResults->getItems() as $customer) {
             /** @var $customer CustomerModel */
             $customerData[] = [
-                'value' => $customer->getId(),
-                'label' => $this->getCustomerLabel($customer),
+                'id' => $customer->getId(),
+                'name' => $this->getCustomerName($customer),
+                'email' => $customer->getEmail(),
             ];
         }
 
@@ -108,8 +109,7 @@ class CustomerSearch extends Action
      */
     private function getSearchQuery(): string
     {
-        $search = (string) $this->request->getParam('term');
-        return $search;
+        return (string) $this->request->getParam('search');
     }
 
     /**
@@ -117,9 +117,9 @@ class CustomerSearch extends Action
      *
      * @return string
      */
-    private function getCustomerLabel(CustomerInterface $customer): string
+    private function getCustomerName(CustomerInterface $customer): string
     {
-        return $customer->getFirstname() . ' ' . $customer->getLastname() . ' [' . $customer->getEmail() . ']';
+        return $customer->getFirstname() . ' ' . $customer->getLastname();
     }
 
     /**

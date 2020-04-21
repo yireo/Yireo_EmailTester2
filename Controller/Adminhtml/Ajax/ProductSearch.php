@@ -91,8 +91,9 @@ class ProductSearch extends Action
         foreach ($searchResults->getItems() as $product) {
             /** @var $product ProductInterface */
             $productData[] = [
-                'value' => $product->getId(),
-                'label' => $this->getProductLabel($product),
+                'id' => $product->getId(),
+                'sku' => $product->getSku(),
+                'name' => $product->getName()
             ];
         }
 
@@ -106,18 +107,8 @@ class ProductSearch extends Action
      */
     private function getSearchQuery() : string
     {
-        $search = (string) $this->request->getParam('term');
-        return $search;
-    }
+        return (string) $this->request->getParam('search');
 
-    /**
-     * @param ProductInterface $product
-     *
-     * @return string
-     */
-    private function getProductLabel(ProductInterface $product) : string
-    {
-        return $product->getName() . ' ['.$product->getSku().']';
     }
 
     /**

@@ -11,38 +11,39 @@ declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Controller\Adminhtml\Ajax;
 
+use InvalidArgumentException;
 use Magento\Backend\App\Action\Context;
-use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Sales\Api\OrderRepositoryInterface;
 
 /**
- * Class ProductId
+ * Class OrderLabel
  */
-class ProductId extends AbstractId
+class OrderLabel extends AbstractLabel
 {
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
 
     /**
-     * @var ProductRepositoryInterface
+     * @var OrderRepositoryInterface
      */
-    private $productRepository;
+    private $orderRepository;
 
     /**
      * @param Context $context
-     * @param ProductRepositoryInterface $productRepository
      * @param Http $request
      * @param JsonFactory $resultJsonFactory
+     * @param OrderRepositoryInterface $orderRepository
      */
     public function __construct(
         Context $context,
-        ProductRepositoryInterface $productRepository,
         Http $request,
-        JsonFactory $resultJsonFactory
+        JsonFactory $resultJsonFactory,
+        OrderRepositoryInterface $orderRepository
     ) {
         parent::__construct($context, $request, $resultJsonFactory);
-        $this->productRepository = $productRepository;
+        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -53,11 +54,23 @@ class ProductId extends AbstractId
     {
         $id = $this->getId();
         if (!$id > 0) {
-            return 'No product found';
+            throw new NoSuchEntityException(__('Empty ID'));
         }
 
-        $product = $this->productRepository->getById($id);
+        try {
+            $order = $this->orderRepository->get($id);
+        } catch (InvalidArgumentException $exception) {
+            throw new NoSuchEntityException(__('Order not found'));
+        }
 
-        return $product->getSku() . ': '.$product->getName();
+        return $order->getIncrementId() . ' (' . $order->getCreatedAt() . ' / ' . $order->getCustomerEmail() . ')';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getEmptyLabel(): string
+    {
+        return 'No order found';
     }
 }

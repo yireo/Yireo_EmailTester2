@@ -19,9 +19,9 @@ use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
- * Class AbstractId
+ * Class AbstractLabel
  */
-abstract class AbstractId extends Action
+abstract class AbstractLabel extends Action
 {
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
 
@@ -65,8 +65,8 @@ abstract class AbstractId extends Action
         } catch (NoSuchEntityException $e) {
             $data = [
                 'id' => 0,
-                'label' => 'No entry found',
-            ];
+                'label' => $this->getEmptyLabel(),
+            ];;
         }
 
         return $this->resultJsonFactory->create()->setData(
@@ -81,6 +81,11 @@ abstract class AbstractId extends Action
     {
         return (int)$this->request->getParam('id');
     }
+
+    /**
+     * @return string
+     */
+    abstract protected function getEmptyLabel(): string;
 
     /**
      * @return string

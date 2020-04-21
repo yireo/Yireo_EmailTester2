@@ -4,7 +4,7 @@
  * EmailTester plugin for Magento 2
  *
  * @author      Yireo
- * @copyright   Copyright 2018 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2020 Yireo (https://www.yireo.com/)
  * @license     Open Source License
  */
 -->
@@ -13,6 +13,7 @@
         <title>EmailTester Overview</title>
         <css src="Yireo_EmailTester2/css/emailtester.css"/>
         <css src="Yireo_EmailTester2/css/jquery-ui.css"/>
+        <script src="Yireo_EmailTester2/js/react.js"/>
     </head>
     <body>
         <referenceContainer name="content">
