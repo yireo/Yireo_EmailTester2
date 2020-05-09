@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.0] - 9 May 2020
+### Added
+- Open a tab when previewing
+- Reuse `react_loader.html` Knockout HTML
+- Initialize components via UiComponent XML
+
 ## [1.5.0] - 21 April 2020
 ### Added
 - Major rewrite of UiComponents using React to increase usability of searching for products, customers and orders

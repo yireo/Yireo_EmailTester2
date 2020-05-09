@@ -29,5 +29,8 @@
     "webpack": "^4.35.3",
     "webpack-cli": "^3.3.5",
     "whatwg-fetch": "^3.0.0"
+  },
+  "dependencies": {
+    "babel-plugin-syntax-dynamic-import": "^6.18.0"
   }
 }

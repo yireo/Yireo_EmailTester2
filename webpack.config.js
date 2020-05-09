@@ -7,8 +7,7 @@ var config = env => {
         entry: "./view/adminhtml/react/index.jsx",
         output: {
             path: path.resolve("view/adminhtml/web/js"),
-            filename: "react.js",
-            publicPath: "/"
+            filename: "react.js"
         },
         devServer: {
             overlay: true

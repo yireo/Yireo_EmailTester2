@@ -8,12 +8,9 @@ const AbstractSearch = (props) => {
     const [showSearchPanel, setShowSearchPanel] = useState(false);
 
     const setLabelViaAjax = (id) => {
-        if (!id > 0) {
-            return false;
-        }
+        if (!id > 0) return false;
 
         const searchUrl = props.labelAjaxUrl + "?id=" + id;
-        console.log(searchUrl);
         fetch(searchUrl)
             .then((response) => {
                 if (!response.ok) {

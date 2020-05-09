@@ -1,0 +1,3 @@
+<div data-bind="attr: {id: elementId}" afterRender="function (target, viewModel) {
+    window.renderReactComponent(viewModel.reactComponentPath, viewModel.elementId, {id: viewModel.value()});
+}">Loading ...</div>

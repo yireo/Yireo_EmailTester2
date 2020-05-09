@@ -134,7 +134,9 @@
         <field name="customer_id" sortOrder="2" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="elementTmpl" xsi:type="string">Yireo_EmailTester2/customer_search</item>
+                    <item name="elementId" xsi:type="string">customer_search</item>
+                    <item name="reactComponentPath" xsi:type="string">CustomerSearch</item>
+                    <item name="elementTmpl" xsi:type="string">Yireo_EmailTester2/react_loader.html</item>
                 </item>
             </argument>
             <settings>
@@ -153,8 +155,9 @@
         <field name="product_id" sortOrder="2" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="elementTmpl" xsi:type="string">Yireo_EmailTester2/product_search</item>
-                </item>
+                    <item name="elementId" xsi:type="string">product_search</item>
+                    <item name="reactComponentPath" xsi:type="string">ProductSearch</item>
+                    <item name="elementTmpl" xsi:type="string">Yireo_EmailTester2/react_loader.html</item>                </item>
             </argument>
             <settings>
                 <dataType>text</dataType>
@@ -171,8 +174,9 @@
         <field name="order_id" sortOrder="2" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="elementTmpl" xsi:type="string">Yireo_EmailTester2/order_search</item>
-                </item>
+                    <item name="elementId" xsi:type="string">order_search</item>
+                    <item name="reactComponentPath" xsi:type="string">OrderSearch</item>
+                    <item name="elementTmpl" xsi:type="string">Yireo_EmailTester2/react_loader.html</item>                </item>
             </argument>
             <settings>
                 <dataType>text</dataType>
