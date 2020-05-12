@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.1] - 12 May 2020
+### Fixed
+- Fix issue with admin keys for Preview page
+- Fix order_data not working, with empty greeting in order emails
+
 ## [1.6.0] - 9 May 2020
 ### Added
 - Open a tab when previewing

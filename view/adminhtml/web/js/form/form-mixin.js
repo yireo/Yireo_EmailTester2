@@ -1,6 +1,7 @@
 define([
-    'Magento_Ui/js/form/adapter'
-], function (adapter) {
+    'Magento_Ui/js/form/adapter',
+    'mage/url'
+], function (adapter, url) {
     'use strict';
 
     var replaceUrl = function(url, replace) {
@@ -21,18 +22,17 @@ define([
             function convertObjectToQueryString(object)
             {
                 return Object.keys(object).map(function(key) {
+                    if (!object[key]) {
+                        return;
+                    }
                     return key + '=' + object[key];
                 }).join('&');
             }
 
             var formValues = this.source.data;
-            formValues.form_key = window.FORM_KEY;
-            var redirectUrl = replaceUrl(this.source.submit_url, 'preview');
+            var redirectUrl = window.emailtester.previewUrl;
             redirectUrl += '?' + convertObjectToQueryString(formValues);
             window.open(redirectUrl,'_blank');
-            return;
-            //this.source.client.urls.save = replaceUrl(this.source.submit_url, 'preview');
-            //return this.save(redirect, data);
         },
         submitToSend: function (redirect, data) {
             this.source.client.urls.save = replaceUrl(this.source.submit_url, 'send');

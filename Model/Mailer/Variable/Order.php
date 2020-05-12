@@ -179,6 +179,7 @@ class Order implements VariablesInterface
 
         return [
             'order' => $order,
+            'order_data' => $order,
             'formattedShippingAddress' => $shippingAddressHtml,
             'formattedBillingAddress' => $billingAddressHtml,
         ];
