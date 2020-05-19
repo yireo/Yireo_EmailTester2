@@ -9,6 +9,9 @@
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-blank" xsi:noNamespaceSchemaLocation="urn:magento:module:View/Layout:etc/page_configuration.xsd">
+    <head>
+        <css src="Yireo_EmailTester2/css/emailtester-preview.css"/>
+    </head>
     <body>
         <referenceContainer name="menu.wrapper" remove="true"/>
     </body>

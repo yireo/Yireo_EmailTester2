@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.2] - 19 May 2020
+### Added
+- Little footer in preview to show email subject
+
 ## [1.6.1] - 12 May 2020
 ### Fixed
 - Fix issue with admin keys for Preview page

@@ -152,6 +152,21 @@ class Mailer extends DataObject
     }
 
     /**
+     * @return string
+     * @throws LocalizedException
+     */
+    public function getSubject(): string
+    {
+        $transport = $this->transportBuilder->getTransport();
+        $subject = (string)$transport->getMessage()->getSubject();
+        if ($subject) {
+            return $subject;
+        }
+
+        return 'No subject';
+    }
+
+    /**
      * Output the email
      *
      * @return string
