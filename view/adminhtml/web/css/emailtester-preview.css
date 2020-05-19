@@ -1,0 +1,14 @@
+body {
+    padding-bottom: 80px !important;
+}
+
+.meta-info {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff6dc;
+    border: 1px solid #ccc;
+    margin-bottom: 0;
+    padding: 10px;
+}
