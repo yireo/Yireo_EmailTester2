@@ -44,38 +44,6 @@
                     <label>Default Sales Order</label>
                     <comment><![CDATA[Numerical ID of sales order entity]]></comment>
                 </field>
-
-                <field id="limit_product" translate="label" sortOrder="11" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Limit Product List</label>
-                    <comment><![CDATA[Set list size; Use 0 for unlimited]]></comment>
-                </field>
-                <field id="limit_customer" translate="label" sortOrder="12" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Limit Customer List</label>
-                    <comment><![CDATA[Set list size; Use 0 for unlimited]]></comment>
-                </field>
-                <field id="limit_order" translate="label" sortOrder="13" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Limit Sales Order List</label>
-                    <comment><![CDATA[Set list size; Use 0 for unlimited]]></comment>
-                </field>
-
-                <field id="custom_product" type="textarea" translate="label" sortOrder="21" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Custom Product List</label>
-                    <comment><![CDATA[CSV-list of entity IDs]]></comment>
-                </field>
-                <field id="custom_customer" type="textarea" translate="label" sortOrder="22" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Custom Customer List</label>
-                    <comment><![CDATA[CSV-list of entity IDs]]></comment>
-                </field>
-                <field id="custom_order" type="textarea" translate="label" sortOrder="23" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Custom Sales Order List</label>
-                    <comment><![CDATA[CSV-list of entity IDs]]></comment>
-                </field>
-
-                <field id="enable_jqueryui" type="select" translate="label" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable jQuery UI</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment><![CDATA[Disable if jQuery UI is already loaded]]></comment>
-                </field>
                 <field id="debug" type="select" translate="label" sortOrder="33" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Debug</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
