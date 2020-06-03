@@ -12,7 +12,6 @@
     <head>
         <title>EmailTester Overview</title>
         <css src="Yireo_EmailTester2/css/emailtester.css"/>
-        <css src="Yireo_EmailTester2/css/jquery-ui.css"/>
         <script src="Yireo_EmailTester2/js/react.js"/>
     </head>
     <body>

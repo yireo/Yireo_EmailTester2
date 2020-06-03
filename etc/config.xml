@@ -24,7 +24,6 @@
                 <custom_product/>
                 <custom_customer/>
                 <custom_order/>
-                <enable_jqueryui>0</enable_jqueryui>
                 <debug>0</debug>
             </settings>
         </emailtester2>
