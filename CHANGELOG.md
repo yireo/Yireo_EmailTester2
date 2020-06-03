@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.3] - 3 June 2020
+### Added
+- Cleaned up configuration section
+
 ## [1.6.2] - 19 May 2020
 ### Added
 - Little footer in preview to show email subject
