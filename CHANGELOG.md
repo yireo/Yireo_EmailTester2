@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Cleaned up configuration section
 - Fix CSS issue in header
+- Cleanup outdated jQuery autocomplete files
 
 ## [1.6.2] - 19 May 2020
 ### Added
