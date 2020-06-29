@@ -11,10 +11,9 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
-/**
- * Class Reason
- */
-class Reason implements \Yireo\EmailTester2\Model\Mailer\VariableInterface
+use Yireo\EmailTester2\Model\Mailer\VariableInterface;
+
+class Reason implements VariableInterface
 {
     /**
      * @return string

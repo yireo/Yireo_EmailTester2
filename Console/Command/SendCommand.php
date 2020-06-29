@@ -24,11 +24,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Yireo\EmailTester2\Config\Config;
 use Yireo\EmailTester2\Model\Mailer;
 
-/**
- * Class SendCommand
- *
- * @package Yireo\EmailTester2\Console\Command
- */
 class SendCommand extends Command
 {
     /**

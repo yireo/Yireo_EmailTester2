@@ -14,9 +14,6 @@ namespace Yireo\EmailTester2\Helper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
 
-/**
- * Class \Yireo\EmailTester2\Helper\Data
- */
 class Data extends AbstractHelper
 {
     /**

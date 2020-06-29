@@ -11,9 +11,6 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer;
 
-/**
- * Class Recipient
- */
 class Recipient extends Addressee
 {
 }

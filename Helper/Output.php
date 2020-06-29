@@ -20,9 +20,6 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\StoreRepository;
 
-/**
- * Class \Yireo\EmailTester2\Helper\Output
- */
 class Output extends Data
 {
     /**

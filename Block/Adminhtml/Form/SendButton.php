@@ -5,9 +5,6 @@ namespace Yireo\EmailTester2\Block\Adminhtml\Form;
 
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 
-/**
- * Class SendButton
- */
 class SendButton implements ButtonProviderInterface
 {
     /**

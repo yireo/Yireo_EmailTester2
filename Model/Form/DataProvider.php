@@ -6,9 +6,6 @@ use Magento\Ui\DataProvider\AbstractDataProvider;
 use Magento\Framework\Api\Filter;
 use Yireo\EmailTester2\Helper\Form as FormHelper;
 
-/**
- * Class DataProvider
- */
 class DataProvider extends AbstractDataProvider
 {
     /**

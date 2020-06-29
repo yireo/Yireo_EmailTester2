@@ -24,9 +24,6 @@ use Magento\Framework\App\RequestInterface;
 
 use Yireo\EmailTester2\Helper\Output;
 
-/**
- * Class Yireo\EmailTester2\Model\Data\Order
- */
 class Order
 {
     /**

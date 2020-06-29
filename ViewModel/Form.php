@@ -10,9 +10,6 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
-/**
- * Class Form
- */
 class Form implements ArgumentInterface
 {
     /**

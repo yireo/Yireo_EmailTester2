@@ -15,6 +15,7 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Page;
 use Magento\Backend\Model\View\Result\RedirectFactory;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\Page\Config;
@@ -22,9 +23,6 @@ use Magento\Framework\View\Result\PageFactory;
 use Yireo\EmailTester2\Block\Adminhtml\Preview as PreviewBlock;
 use Yireo\EmailTester2\ViewModel\Form;
 
-/**
- * Class Index
- */
 class Preview extends Action
 {
     /**
@@ -53,24 +51,32 @@ class Preview extends Action
     private $formViewModel;
 
     /**
+     * @var RequestInterface
+     */
+    private $request;
+
+    /**
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param Config $pageConfig
      * @param RedirectFactory $redirectFactory
      * @param Form $formViewModel
+     * @param RequestInterface $request
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
         Config $pageConfig,
         RedirectFactory $redirectFactory,
-        Form $formViewModel
+        Form $formViewModel,
+        RequestInterface $request
     ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
         $this->pageConfig = $pageConfig;
         $this->redirectFactory = $redirectFactory;
         $this->formViewModel = $formViewModel;
+        $this->request = $request;
     }
 
     /**
@@ -82,7 +88,8 @@ class Preview extends Action
     public function execute()
     {
         if ($this->hasValidData() === false) {
-            $this->messageManager->addWarningMessage('You have not added the required customers, products or orders yet');
+            $msg = 'You have not added the required customers, products or orders yet';
+            $this->messageManager->addWarningMessage(__($msg));
             return $this->resultRedirectFactory->create()->setPath('*/*/index');
         }
 
@@ -129,6 +136,6 @@ class Preview extends Action
      */
     private function getTemplateName(): string
     {
-        return (string)$this->_request->getParam('template');
+        return (string)$this->request->getParam('template');
     }
 }

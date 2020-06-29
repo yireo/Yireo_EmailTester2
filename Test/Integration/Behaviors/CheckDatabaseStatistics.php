@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Test\Integration\Behaviors;
 
-/**
- * Trait CheckDatabaseStatistics
- */
 trait CheckDatabaseStatistics
 {
     /**

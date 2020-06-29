@@ -13,9 +13,6 @@ namespace Yireo\EmailTester2\Model\Mailer;
 
 use Magento\Framework\ObjectManagerInterface;
 
-/**
- * EmailTester model
- */
 class VariableFactory
 {
     /**

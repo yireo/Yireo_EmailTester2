@@ -18,9 +18,6 @@ use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\NotFoundException;
 
-/**
- * Class ProductLabel
- */
 class ProductLabel extends AbstractLabel
 {
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';

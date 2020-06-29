@@ -19,9 +19,6 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order\Creditmemo as CoreCreditmemo;
 use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
-/**
- * Class Creditmemo
- */
 class Creditmemo implements VariableInterface
 {
     /**

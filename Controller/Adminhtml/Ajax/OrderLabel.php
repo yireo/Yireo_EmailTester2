@@ -18,9 +18,6 @@ use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
-/**
- * Class OrderLabel
- */
 class OrderLabel extends AbstractLabel
 {
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';

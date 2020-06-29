@@ -24,9 +24,6 @@ use Magento\Framework\Reflection\DataObjectProcessor;
 use Magento\Sales\Api\Data\OrderInterface;
 use Yireo\EmailTester2\Model\Mailer\VariablesInterface;
 
-/**
- * Class Customer
- */
 class Customer implements VariablesInterface
 {
     /**

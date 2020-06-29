@@ -18,9 +18,6 @@ use Magento\Payment\Helper\Data;
 use Magento\Sales\Api\Data\OrderInterface;
 use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
-/**
- * Class PaymentHtml
- */
 class PaymentHtml implements VariableInterface
 {
     /**

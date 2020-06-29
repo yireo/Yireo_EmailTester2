@@ -15,17 +15,13 @@ namespace Yireo\EmailTester2\Model;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Mail\EmailMessageInterface;
 use Magento\Framework\Mail\MailMessageInterface;
+use Magento\Framework\Mail\MessageInterface;
 use Magento\Framework\Mail\Template\TransportBuilder as OriginalTransportBuilder;
 
-/**
- * Class TransportBuilder
- *
- * @package Yireo\EmailTester2\Model
- */
 class TransportBuilder extends OriginalTransportBuilder
 {
     /**
-     * @return MailMessageInterface|EmailMessageInterface
+     * @return MessageInterface|MailMessageInterface|EmailMessageInterface
      * @throws LocalizedException
      */
     public function getMessage()

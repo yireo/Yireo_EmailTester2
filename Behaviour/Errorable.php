@@ -11,9 +11,6 @@ declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Behaviour;
 
-/**
- * EmailTester error trait
- */
 trait Errorable
 {
     /**

@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.4] - xxx
+### Removed
+- Remove `setup_version` because there is no setup
+
+### Fixed
+- Show messages on empty data right away on page
+- Additional compliance to PHP CodeSniffer
+
 ## [1.6.3] - 3 June 2020
 ### Added
 - Cleaned up configuration section

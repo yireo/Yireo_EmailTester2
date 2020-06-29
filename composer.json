@@ -29,7 +29,8 @@
     "magento/module-sales": "^100.0|^101.0|^102.0",
     "magento/module-store": "^100.0|^101.0",
     "magento/module-ui": "^101.0",
-    "ext-pcre": "*"
+    "ext-pcre": "*",
+    "ext-json": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "*"

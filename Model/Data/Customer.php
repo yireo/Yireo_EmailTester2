@@ -24,9 +24,6 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\EmailTester2\Helper\Output;
 
-/**
- * Class Customer
- */
 class Customer
 {
     /**

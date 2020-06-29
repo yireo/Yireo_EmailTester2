@@ -18,11 +18,6 @@ use Symfony\Component\Console\Output\OutputInterface as Output;
 use Yireo\EmailTester2\Model\Backend\Source\Email;
 use Symfony\Component\Console\Helper\Table;
 
-/**
- * Class ListCommand
- *
- * @package Yireo\EmailTester2\Console\Command
- */
 class ListCommand extends Command
 {
     /**

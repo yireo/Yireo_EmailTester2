@@ -18,9 +18,6 @@ use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
 
-/**
- * Class AbstractLabel
- */
 abstract class AbstractLabel extends Action
 {
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
@@ -66,7 +63,7 @@ abstract class AbstractLabel extends Action
             $data = [
                 'id' => 0,
                 'label' => $this->getEmptyLabel(),
-            ];;
+            ];
         }
 
         return $this->resultJsonFactory->create()->setData(

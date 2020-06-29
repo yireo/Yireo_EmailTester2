@@ -17,9 +17,6 @@ use Magento\Framework\App\Helper\Context;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class DataTest
- */
 class DataTest extends TestCase
 {
     /**

@@ -4,5 +4,5 @@
 $versionViewModel = $block->getVersionViewModel();
 ?>
 <div class="version">
-    Yireo EmailTester version <?= $versionViewModel->getModuleVersion() ?>
+    Yireo EmailTester version <?= $block->escapeHtml($versionViewModel->getModuleVersion()) ?>
 </div>

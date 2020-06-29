@@ -16,9 +16,6 @@ use Magento\Email\Model\Template;
 use Magento\Email\Model\Template\Config;
 use Magento\Framework\Data\OptionSourceInterface;
 
-/**
- * Class Yireo\EmailTester2\Model\Backend\Source\Email
- */
 class Email implements OptionSourceInterface
 {
     /**

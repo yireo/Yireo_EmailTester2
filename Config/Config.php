@@ -6,9 +6,6 @@ namespace Yireo\EmailTester2\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 
-/**
- * Class Config
- */
 class Config
 {
     /**

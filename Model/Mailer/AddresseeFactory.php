@@ -14,9 +14,6 @@ namespace Yireo\EmailTester2\Model\Mailer;
 use Magento\Config\Model\Config;
 use Magento\Framework\ObjectManagerInterface;
 
-/**
- * Class RecipientFactory
- */
 class AddresseeFactory
 {
     /**

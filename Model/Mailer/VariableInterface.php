@@ -12,11 +12,6 @@ declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer;
 
-/**
- * Interface VariableInterface
- *
- * @package Yireo\EmailTester2\Model\Mailer
- */
 interface VariableInterface extends AbstractVariableInterface
 {
     /**

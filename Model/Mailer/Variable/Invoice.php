@@ -21,11 +21,6 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\InvoiceRepositoryInterface;
 use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
-/**
- * Class Invoice
- *
- * @package Yireo\EmailTester2\Model\Mailer\Variable
- */
 class Invoice implements VariableInterface
 {
     /**

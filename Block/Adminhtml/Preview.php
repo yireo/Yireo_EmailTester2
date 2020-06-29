@@ -17,9 +17,6 @@ use Magento\Backend\Model\Session;
 use Magento\Framework\View\Element\Text;
 use Yireo\EmailTester2\Model\Mailer;
 
-/**
- * Class Preview
- */
 class Preview extends Text
 {
     /**

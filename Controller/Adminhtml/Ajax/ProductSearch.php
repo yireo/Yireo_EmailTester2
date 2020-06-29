@@ -22,9 +22,6 @@ use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 
-/**
- * Class ProductSearch
- */
 class ProductSearch extends Action
 {
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
@@ -83,7 +80,7 @@ class ProductSearch extends Action
      *
      * @return Json
      */
-    public function execute() : Json
+    public function execute(): Json
     {
         $productData = [];
         $searchResults = $this->productRepository->getList($this->loadSearchCriteria());
@@ -105,10 +102,9 @@ class ProductSearch extends Action
     /**
      * @return string
      */
-    private function getSearchQuery() : string
+    private function getSearchQuery(): string
     {
-        return (string) $this->request->getParam('search');
-
+        return (string)$this->request->getParam('search');
     }
 
     /**

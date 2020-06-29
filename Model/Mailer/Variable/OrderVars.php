@@ -17,9 +17,6 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order\Address\Renderer;
 use Yireo\EmailTester2\Model\Mailer\VariablesInterface;
 
-/**
- * Class OrderVars
- */
 class OrderVars implements VariablesInterface
 {
     /**

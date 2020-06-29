@@ -20,9 +20,6 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\NotFoundException;
 
-/**
- * Class CustomerLabel
- */
 class CustomerLabel extends AbstractLabel
 {
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';

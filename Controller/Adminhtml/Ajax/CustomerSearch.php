@@ -24,9 +24,6 @@ use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\LocalizedException;
 
-/**
- * Class CustomerSearch
- */
 class CustomerSearch extends Action
 {
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';

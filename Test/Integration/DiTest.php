@@ -2,14 +2,10 @@
 namespace Yireo\EmailTester2\Test\Integration;
 
 use Magento\TestFramework\Helper\Bootstrap;
+use PHPUnit\Framework\TestCase;
 use Yireo\EmailTester2\Model\Mailer;
 
-/**
- * Class DiTest
- *
- * @package Yireo\EmailTester2\Test\Integration
- */
-class DiTest extends \PHPUnit\Framework\TestCase
+class DiTest extends TestCase
 {
     /**
      * Test whether fetching the mailer through the Object Manager works

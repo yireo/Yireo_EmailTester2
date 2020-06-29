@@ -20,9 +20,6 @@ use Magento\Sales\Api\Data\ShipmentInterface;
 use Magento\Sales\Api\ShipmentRepositoryInterface;
 use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
-/**
- * Class Shipment
- */
 class Shipment implements VariableInterface
 {
     /**

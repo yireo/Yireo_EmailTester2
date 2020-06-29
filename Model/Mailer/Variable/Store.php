@@ -16,9 +16,6 @@ use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
-/**
- * Class Store
- */
 class Store implements VariableInterface
 {
     /**

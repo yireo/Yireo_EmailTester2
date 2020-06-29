@@ -16,9 +16,6 @@ use PHPUnit\Framework\TestCase;
 use Yireo\EmailTester2\Model\Mailer\VariableFactory;
 use Yireo\EmailTester2\Model\Mailer\VariableMethodFactory;
 
-/**
- * Class VariableBuilderTest
- */
 class VariableBuilderTest extends TestCase
 {
     /**

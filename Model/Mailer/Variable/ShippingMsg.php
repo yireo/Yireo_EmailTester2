@@ -13,9 +13,6 @@ namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
 use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
-/**
- * Class ShippingMsg
- */
 class ShippingMsg implements VariableInterface
 {
     /**

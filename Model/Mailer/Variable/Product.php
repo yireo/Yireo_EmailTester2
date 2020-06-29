@@ -18,9 +18,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\PhraseFactory;
 use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
-/**
- * EmailTester Core model
- */
 class Product implements VariableInterface
 {
     /**

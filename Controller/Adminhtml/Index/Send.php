@@ -13,7 +13,9 @@ namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\Session;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -23,9 +25,6 @@ use Magento\Store\Model\StoreManagerInterface;
 use Yireo\EmailTester2\Model\Mailer;
 use Yireo\EmailTester2\ViewModel\Form;
 
-/**
- * Class Index
- */
 class Send extends Action
 {
     /**
@@ -57,6 +56,14 @@ class Send extends Action
      * @var Form
      */
     private $formViewModel;
+    /**
+     * @var RequestInterface
+     */
+    private $request;
+    /**
+     * @var Session
+     */
+    private $backendSession;
 
     /**
      * @param Context $context
@@ -66,6 +73,8 @@ class Send extends Action
      * @param StoreManagerInterface $storeManager
      * @param ProductRepositoryInterface $productRepository
      * @param Form $formViewModel
+     * @param RequestInterface $request
+     * @param Session $backendSession
      */
     public function __construct(
         Context $context,
@@ -74,7 +83,9 @@ class Send extends Action
         Mailer $mailer,
         StoreManagerInterface $storeManager,
         ProductRepositoryInterface $productRepository,
-        Form $formViewModel
+        Form $formViewModel,
+        RequestInterface $request,
+        Session $backendSession
     ) {
         parent::__construct($context);
         $this->redirectFactory = $redirectFactory;
@@ -83,6 +94,8 @@ class Send extends Action
         $this->storeManager = $storeManager;
         $this->productRepository = $productRepository;
         $this->formViewModel = $formViewModel;
+        $this->request = $request;
+        $this->backendSession = $backendSession;
     }
 
     /**
@@ -95,7 +108,9 @@ class Send extends Action
     public function execute()
     {
         if ($this->hasValidData() === false) {
-            $this->messageManager->addWarningMessage('You have not added the required customers, products or orders yet');
+            $this->messageManager->addWarningMessage(
+                'You have not added the required customers, products or orders yet'
+            );
             return $this->redirectFactory->create()->setPath('*/*/index');
         }
 
@@ -139,13 +154,13 @@ class Send extends Action
     private function getRequestData(): array
     {
         $data = [];
-        $data['store_id'] = (int)$this->_request->getParam('store_id');
-        $data['customer_id'] = (int)$this->_request->getParam('customer_id');
-        $data['product_id'] = (int)$this->_request->getParam('product_id');
-        $data['order_id'] = (int)$this->_request->getParam('order_id');
-        $data['template'] = (string)$this->_request->getParam('template');
-        $data['email'] = (string)$this->_request->getParam('email');
-        $data['sender'] = (string)$this->_request->getParam('sender');
+        $data['store_id'] = (int)$this->request->getParam('store_id');
+        $data['customer_id'] = (int)$this->request->getParam('customer_id');
+        $data['product_id'] = (int)$this->request->getParam('product_id');
+        $data['order_id'] = (int)$this->request->getParam('order_id');
+        $data['template'] = (string)$this->request->getParam('template');
+        $data['email'] = (string)$this->request->getParam('email');
+        $data['sender'] = (string)$this->request->getParam('sender');
 
         return $data;
     }
@@ -155,6 +170,6 @@ class Send extends Action
      */
     private function saveToSession(array $data)
     {
-        $this->_session->setEmailtesterValues($data);
+        $this->backendSession->setEmailtesterValues($data);
     }
 }

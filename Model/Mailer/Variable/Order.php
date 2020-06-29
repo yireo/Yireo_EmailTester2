@@ -31,9 +31,6 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order\Address\Renderer;
 use Yireo\EmailTester2\Model\Mailer\VariablesInterface;
 
-/**
- * Class Order
- */
 class Order implements VariablesInterface
 {
     /**

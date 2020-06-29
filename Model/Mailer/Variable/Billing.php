@@ -18,9 +18,6 @@ use Magento\Framework\PhraseFactory;
 use Magento\Sales\Api\Data\OrderInterface;
 use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
-/**
- * Class Billing
- */
 class Billing implements VariableInterface
 {
     /**

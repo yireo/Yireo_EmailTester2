@@ -6,9 +6,6 @@ use Magento\Framework\App\Config\MutableScopeConfigInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\TestFramework\TestCase\AbstractBackendController;
 
-/**
- * Class CheckFormTest
- */
 class CheckFormTest extends AbstractBackendController
 {
     protected function setUp()

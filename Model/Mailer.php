@@ -34,9 +34,6 @@ use Yireo\EmailTester2\Model\Mailer\Addressee;
 use Yireo\EmailTester2\Model\Mailer\Recipient;
 use Zend\Mime\Message as MessageAlias;
 
-/**
- * EmailTester Core model
- */
 class Mailer extends DataObject
 {
     /**

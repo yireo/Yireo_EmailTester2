@@ -21,9 +21,6 @@ use Yireo\EmailTester2\Helper\Output as TargetHelper;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class OutputTest
- */
 class OutputTest extends TestCase
 {
     /**

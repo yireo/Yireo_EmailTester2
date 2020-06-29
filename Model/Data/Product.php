@@ -24,9 +24,6 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\EmailTester2\Helper\Output;
 
-/**
- * Class Product
- */
 class Product
 {
     /**

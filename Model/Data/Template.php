@@ -13,8 +13,6 @@ declare(strict_types = 1);
 namespace Yireo\EmailTester2\Model\Data;
 
 /**
- * Class Template
- *
  * @deprecated There is no proper usage here
  */
 class Template

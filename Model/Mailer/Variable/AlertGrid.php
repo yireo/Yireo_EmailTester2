@@ -25,9 +25,6 @@ use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Store\Model\App\Emulation;
 use Yireo\EmailTester2\Model\Mailer\VariablesInterface;
 
-/**
- * Class AlertGrid
- */
 class AlertGrid implements VariablesInterface
 {
     /**

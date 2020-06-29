@@ -16,9 +16,6 @@ use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Data\Form\Element\Factory;
 use Magento\Framework\Data\Form\Element\CollectionFactory;
 
-/**
- * Class Id
- */
 class Id extends AbstractElement
 {
     /**

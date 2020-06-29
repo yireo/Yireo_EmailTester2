@@ -31,9 +31,6 @@ use Yireo\EmailTester2\Model\Mailer\Variable\Shipment;
 use Yireo\EmailTester2\Model\Mailer\Variable\ShippingMsg;
 use Yireo\EmailTester2\Model\Mailer\Variable\Store;
 
-/**
- * EmailTester model
- */
 class VariableBuilder extends DataObject
 {
     /**

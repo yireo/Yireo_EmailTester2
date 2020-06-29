@@ -17,9 +17,6 @@ use Magento\Quote\Api\Data\CartInterface;
 use Magento\Sales\Api\Data\OrderInterface;
 use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
-/**
- * EmailTester Core model
- */
 class Quote implements VariableInterface
 {
     /**

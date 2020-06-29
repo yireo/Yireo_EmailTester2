@@ -22,9 +22,6 @@ use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
-/**
- * Class OrderSearch
- */
 class OrderSearch extends Action
 {
     /**
@@ -87,7 +84,7 @@ class OrderSearch extends Action
      *
      * @return Json
      */
-    public function execute() : Json
+    public function execute(): Json
     {
         $orderData = [];
         $searchResults = $this->orderRepository->getList($this->loadSearchCriteria());
@@ -109,16 +106,15 @@ class OrderSearch extends Action
     /**
      * @return string
      */
-    private function getSearchQuery() : string
+    private function getSearchQuery(): string
     {
-        return (string) $this->request->getParam('search');
-
+        return (string)$this->request->getParam('search');
     }
 
     /**
      * @return SearchCriteria
      */
-    private function loadSearchCriteria() : SearchCriteria
+    private function loadSearchCriteria(): SearchCriteria
     {
         $this->searchCriteriaBuilder->setCurrentPage(0);
         $this->searchCriteriaBuilder->setPageSize(10);

@@ -17,9 +17,6 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\ObjectManagerInterface;
 
-/**
- * Class RecipientFactory
- */
 class RecipientFactory
 {
     /**

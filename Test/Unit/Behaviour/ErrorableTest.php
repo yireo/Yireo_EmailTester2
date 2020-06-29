@@ -14,9 +14,6 @@ namespace Yireo\EmailTester2\Test\Unit\Behaviour;
 use Yireo\EmailTester2\Behaviour\Errorable as Target;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class ErrorableTest
- */
 class ErrorableTest extends TestCase
 {
     /**

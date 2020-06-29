@@ -14,9 +14,6 @@ namespace Yireo\EmailTester2\Model\Mailer\Variable;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Yireo\EmailTester2\Model\Mailer\VariablesInterface;
 
-/**
- * Class OtherVars
- */
 class OtherVars implements VariablesInterface
 {
     /**

@@ -14,9 +14,6 @@ namespace Yireo\EmailTester2\Test\Unit\Behaviour;
 use Yireo\EmailTester2\Behaviour\Datacontainable as Target;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class DatacontainableTest
- */
 class DatacontainableTest extends TestCase
 {
     /**

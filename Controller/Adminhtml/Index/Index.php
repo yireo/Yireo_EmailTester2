@@ -23,11 +23,6 @@ use Magento\Framework\View\Result\PageFactory;
 use Yireo\EmailTester2\Config\Config;
 use Yireo\EmailTester2\ViewModel\Form;
 
-/**
- * Class Index
- *
- * @package Yireo\EmailTester2\Controller\Index
- */
 class Index extends Action
 {
     /**
@@ -83,6 +78,18 @@ class Index extends Action
             $this->messageManager->addNoticeMessage($msg);
         }
 
+        if ($this->formViewModel->hasCustomers() === false) {
+            $this->messageManager->addWarningMessage(__('Please add some customers to your shop first'));
+        }
+
+        if ($this->formViewModel->hasProducts() === false) {
+            $this->messageManager->addWarningMessage(__('Please add some products to your shop first'));
+        }
+
+        if ($this->formViewModel->hasOrders() === false) {
+            $this->messageManager->addWarningMessage(__('Please add some orders to your shop first'));
+        }
+
         return parent::dispatch($request);
     }
 
@@ -99,18 +106,6 @@ class Index extends Action
         $resultPage->setActiveMenu('Yireo_EmailTester2::index');
         $resultPage->addBreadcrumb(__('Yireo EmailTester'), __('Yireo EmailTester'));
         $resultPage->getConfig()->getTitle()->prepend(__('Yireo EmailTester'));
-
-        if ($this->formViewModel->hasCustomers() === false) {
-            $this->messageManager->addWarningMessage(__('Please add some customers to your shop first'));
-        }
-
-        if ($this->formViewModel->hasProducts() === false) {
-            $this->messageManager->addWarningMessage(__('Please add some products to your shop first'));
-        }
-
-        if ($this->formViewModel->hasOrders() === false) {
-            $this->messageManager->addWarningMessage(__('Please add some orders to your shop first'));
-        }
 
         return $resultPage;
     }

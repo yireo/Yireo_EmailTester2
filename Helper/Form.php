@@ -16,9 +16,6 @@ use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\StoreManagerInterface;
 use Yireo\EmailTester2\Config\Config;
 
-/**
- * Class \Yireo\EmailTester2\Helper\Form
- */
 class Form extends Data
 {
     /**
