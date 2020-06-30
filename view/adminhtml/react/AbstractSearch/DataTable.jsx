@@ -3,6 +3,7 @@ import React, {useState, useEffect} from "react";
 const DataTable = (props) => {
     const items = props.items;
     const fields = props.fields;
+    const buttonStyle = {backgroundColor: 'inherit', color: 'inherit', border: 'none'};
 
     let i = 0;
 
@@ -11,7 +12,11 @@ const DataTable = (props) => {
             <thead>
             <tr>
                 {Object.keys(fields).map((fieldCode) => (
-                    <th key={fieldCode} className="data-grid-multicheck-cell">{'' + fields[fieldCode]}</th>
+                    <th key={fieldCode} className="data-grid-multicheck-cell _sortable _draggable">
+                        <button style={buttonStyle} onClick={() => props.onColumnClick(fieldCode)}>
+                            {'' + fields[fieldCode]}
+                        </button>
+                    </th>
                 ))}
                 <th className="data-grid-multicheck-cell">Actions</th>
             </tr>

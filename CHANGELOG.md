@@ -6,7 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.6.4] - xxx
+## [1.6.4] - 30 June 2020
+### Added
+- Enhance integration tests for AJAX URLs
+- Allow for customer search based on full name
+- Allow column sorting in search popups for products, orders and customers
+
 ### Removed
 - Remove `setup_version` because there is no setup
 

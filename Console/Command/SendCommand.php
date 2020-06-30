@@ -27,22 +27,22 @@ use Yireo\EmailTester2\Model\Mailer;
 class SendCommand extends Command
 {
     /**
-     * @var
+     * @var Mailer
      */
     private $mailer;
 
     /**
-     * @var
+     * @var StoreManagerInterface
      */
     private $storeManager;
 
     /**
-     * @var
+     * @var Config
      */
     private $config;
 
     /**
-     * @var
+     * @var State
      */
     private $state;
 
@@ -81,56 +81,49 @@ class SendCommand extends Command
             'email',
             null,
             InputOption::VALUE_REQUIRED,
-            'Recipient Email',
-            (string)$this->config->getDefaultEmail()
+            'Recipient Email'
         );
 
         $this->addOption(
             'sender',
             null,
             InputOption::VALUE_REQUIRED,
-            'Sender Email',
-            (string)$this->config->getDefaultEmail()
+            'Sender Email'
         );
 
         $this->addOption(
             'template',
             null,
             InputOption::VALUE_REQUIRED,
-            'Template',
-            (string)$this->config->getDefaultTransactional()
+            'Template'
         );
 
         $this->addOption(
             'customer_id',
             null,
             InputOption::VALUE_OPTIONAL,
-            'Customer ID',
-            (int)$this->config->getDefaultCustomer()
+            'Customer ID'
         );
 
         $this->addOption(
             'order_id',
             null,
             InputOption::VALUE_OPTIONAL,
-            'Order ID',
-            (int)$this->config->getDefaultOrder()
+            'Order ID'
         );
 
         $this->addOption(
             'product_id',
             null,
             InputOption::VALUE_OPTIONAL,
-            'Product ID',
-            (int)$this->config->getDefaultProduct()
+            'Product ID'
         );
 
         $this->addOption(
             'store_id',
             null,
             InputOption::VALUE_OPTIONAL,
-            'Store View ID',
-            (int)$this->getDefaultStoreId()
+            'Store View ID'
         );
     }
 
@@ -145,13 +138,13 @@ class SendCommand extends Command
     protected function execute(Input $input, Output $output)
     {
         $data = [];
-        $data['email'] = trim($input->getOption('email'));
-        $data['sender'] = trim($input->getOption('sender'));
-        $data['template'] = trim($input->getOption('template'));
-        $data['store_id'] = (int)$input->getOption('store_id');
-        $data['customer_id'] = (int)$input->getOption('customer_id');
-        $data['product_id'] = (int)$input->getOption('product_id');
-        $data['order_id'] = (int)$input->getOption('order_id');
+        $data['email'] = $this->getStringOption($input, 'email', $this->config->getDefaultEmail());
+        $data['sender'] = $this->getStringOption($input, 'sender', $this->config->getDefaultEmail());
+        $data['template'] = $this->getStringOption($input, 'template', $this->config->getDefaultTransactional());
+        $data['store_id'] = $this->getNumberOption($input, 'store_id', $this->getDefaultStoreId());
+        $data['customer_id'] = $this->getNumberOption($input, 'customer_id', $this->config->getDefaultCustomer());
+        $data['product_id'] = $this->getNumberOption($input, 'customer_id', $this->config->getDefaultProduct());
+        $data['order_id'] = $this->getNumberOption($input, 'order_id', $this->config->getDefaultOrder());
 
         $this->state->setAreaCode(Area::AREA_FRONTEND);
 
@@ -172,5 +165,37 @@ class SendCommand extends Command
     private function getDefaultStoreId(): int
     {
         return (int)$this->storeManager->getDefaultStoreView()->getId();
+    }
+
+    /**
+     * @param Input $input
+     * @param string $optionName
+     * @param string $defaultValue
+     * @return string
+     */
+    private function getStringOption(Input $input, string $optionName = '', $defaultValue = ''): string
+    {
+        $optionValue = trim((string)$input->getOption($optionName));
+        if (!empty($optionValue)) {
+            return $optionValue;
+        }
+
+        return (string)$defaultValue;
+    }
+
+    /**
+     * @param Input $input
+     * @param string $optionName
+     * @param int $defaultValue
+     * @return int
+     */
+    private function getNumberOption(Input $input, string $optionName = '', $defaultValue = 0): int
+    {
+        $optionValue = (int)$input->getOption($optionName);
+        if (!empty($optionValue)) {
+            return $optionValue;
+        }
+
+        return (int)$defaultValue;
     }
 }

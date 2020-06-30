@@ -24,4 +24,19 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="Yireo\EmailTester2\Console\Command\ListCommand">
+        <arguments>
+            <argument name="emailOptions" xsi:type="object">Yireo\EmailTester2\Model\Backend\Source\Email\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Yireo\EmailTester2\Console\Command\SendCommand">
+        <arguments>
+            <argument name="mailer" xsi:type="object">Yireo\EmailTester2\Model\Mailer\Proxy</argument>
+            <argument name="storeManager" xsi:type="object">Magento\Store\Model\StoreManagerInterface\Proxy</argument>
+            <argument name="config" xsi:type="object">Yireo\EmailTester2\Config\Config\Proxy</argument>
+            <argument name="state" xsi:type="object">Magento\Framework\App\State\Proxy</argument>
+        </arguments>
+    </type>
 </config>

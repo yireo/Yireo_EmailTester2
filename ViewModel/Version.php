@@ -6,7 +6,7 @@ namespace Yireo\EmailTester2\ViewModel;
 
 use Magento\Framework\Component\ComponentRegistrar;
 use Magento\Framework\Exception\FileSystemException;
-use Magento\Framework\Filesystem\DriverInterface;
+use Magento\Framework\Filesystem\Driver\File;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 
@@ -18,9 +18,9 @@ class Version implements ArgumentInterface
     private $componentRegistrar;
 
     /**
-     * @var DriverInterface
+     * @var File
      */
-    private $filesystemDriver;
+    private $file;
 
     /**
      * @var Json
@@ -31,16 +31,16 @@ class Version implements ArgumentInterface
      * Version constructor.
      *
      * @param ComponentRegistrar $componentRegistrar
-     * @param DriverInterface $filesystemDriver
+     * @param File $file
      * @param Json $jsonDecoder
      */
     public function __construct(
         ComponentRegistrar $componentRegistrar,
-        DriverInterface $filesystemDriver,
+        File $file,
         Json $jsonDecoder
     ) {
         $this->componentRegistrar = $componentRegistrar;
-        $this->filesystemDriver = $filesystemDriver;
+        $this->file = $file;
         $this->jsonDecoder = $jsonDecoder;
     }
 
@@ -64,11 +64,11 @@ class Version implements ArgumentInterface
     private function getComposerData(): array
     {
         $composerFile = $this->getComposerFile();
-        if (!$this->filesystemDriver->isExists($composerFile)) {
+        if (!$this->file->isExists($composerFile)) {
             return [];
         }
 
-        $composerContent = $this->filesystemDriver->fileGetContents($composerFile);
+        $composerContent = $this->file->fileGetContents($composerFile);
         if (empty($composerContent)) {
             return [];
         }

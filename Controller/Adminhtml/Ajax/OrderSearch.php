@@ -11,72 +11,53 @@ declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Controller\Adminhtml\Ajax;
 
-use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteria;
-use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\SearchCriteriaBuilderFactory;
+use Magento\Framework\Api\SortOrderBuilderFactory;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
-class OrderSearch extends Action
+class OrderSearch extends AbstractSearch
 {
-    /**
-     * ACL resource
-     */
-    const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
-
     /**
      * @var OrderRepositoryInterface
      */
     private $orderRepository;
 
     /**
-     * @var Http
-     */
-    private $request;
-
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
-
-    /**
-     * @var FilterBuilder
-     */
-    private $filterBuilder;
-
-    /**
-     * @var JsonFactory
-     */
-    private $resultJsonFactory;
-
-    /**
+     * OrderSearch constructor.
      * @param Context $context
-     * @param OrderRepositoryInterface $orderRepository
      * @param Http $request
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory
      * @param FilterBuilder $filterBuilder
      * @param JsonFactory $resultJsonFactory
+     * @param SortOrderBuilderFactory $sortOrderBuilderFactory
+     * @param OrderRepositoryInterface $orderRepository
      */
     public function __construct(
         Context $context,
-        OrderRepositoryInterface $orderRepository,
         Http $request,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
+        SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory,
         FilterBuilder $filterBuilder,
-        JsonFactory $resultJsonFactory
+        JsonFactory $resultJsonFactory,
+        SortOrderBuilderFactory $sortOrderBuilderFactory,
+        OrderRepositoryInterface $orderRepository
     ) {
-        parent::__construct($context);
+        parent::__construct(
+            $context,
+            $request,
+            $searchCriteriaBuilderFactory,
+            $filterBuilder,
+            $resultJsonFactory,
+            $sortOrderBuilderFactory
+        );
 
         $this->orderRepository = $orderRepository;
-        $this->request = $request;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->filterBuilder = $filterBuilder;
-        $this->resultJsonFactory = $resultJsonFactory;
     }
 
     /**
@@ -87,7 +68,8 @@ class OrderSearch extends Action
     public function execute(): Json
     {
         $orderData = [];
-        $searchResults = $this->orderRepository->getList($this->loadSearchCriteria());
+        $searchFields = ['increment_id', 'customer_email'];
+        $searchResults = $this->orderRepository->getList($this->getSearchCriteria($searchFields));
 
         foreach ($searchResults->getItems() as $order) {
             /** @var $order OrderInterface */
@@ -101,39 +83,5 @@ class OrderSearch extends Action
 
         $resultJson = $this->resultJsonFactory->create();
         return $resultJson->setData($orderData);
-    }
-
-    /**
-     * @return string
-     */
-    private function getSearchQuery(): string
-    {
-        return (string)$this->request->getParam('search');
-    }
-
-    /**
-     * @return SearchCriteria
-     */
-    private function loadSearchCriteria(): SearchCriteria
-    {
-        $this->searchCriteriaBuilder->setCurrentPage(0);
-        $this->searchCriteriaBuilder->setPageSize(10);
-        $search = $this->getSearchQuery();
-
-        if (!empty($search)) {
-            $searchFields = ['customer_email'];
-            $filters = [];
-            foreach ($searchFields as $field) {
-                $filters[] = $this->filterBuilder
-                    ->setField($field)
-                    ->setConditionType('like')
-                    ->setValue('%' . $this->getSearchQuery() . '%')
-                    ->create();
-            }
-
-            $this->searchCriteriaBuilder->addFilters($filters);
-        }
-
-        return $this->searchCriteriaBuilder->create();
     }
 }

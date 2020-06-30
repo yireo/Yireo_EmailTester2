@@ -15,24 +15,24 @@ namespace Yireo\EmailTester2\Console\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Output\OutputInterface as Output;
-use Yireo\EmailTester2\Model\Backend\Source\Email;
+use Yireo\EmailTester2\Model\Backend\Source\Email as EmailOptions;
 use Symfony\Component\Console\Helper\Table;
 
 class ListCommand extends Command
 {
     /**
-     * @var
+     * @var EmailOptions
      */
     private $emailOptions;
 
     /**
      * NewRuleCommand constructor.
      *
-     * @param Email $emailOptions
+     * @param EmailOptions $emailOptions
      * @param string $name
      */
     public function __construct(
-        Email $emailOptions,
+        EmailOptions $emailOptions,
         $name = null
     ) {
         $this->emailOptions = $emailOptions;

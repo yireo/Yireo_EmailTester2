@@ -19,7 +19,8 @@ const AbstractSearch = (props) => {
                 return response;
             })
             .then((response) => response.json())
-            .then((responseJson) => setItemLabel(responseJson.label));
+            .then((responseJson) => setItemLabel(responseJson.label))
+            .catch(error => console.log(error));
 
         return true;
     };

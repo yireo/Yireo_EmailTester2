@@ -62,13 +62,11 @@ abstract class AbstractLabel extends Action
         } catch (NoSuchEntityException $e) {
             $data = [
                 'id' => 0,
-                'label' => $this->getEmptyLabel(),
+                'label' => __($this->getEmptyLabel()),
             ];
         }
 
-        return $this->resultJsonFactory->create()->setData(
-            $data
-        );
+        return $this->resultJsonFactory->create()->setData($data);
     }
 
     /**

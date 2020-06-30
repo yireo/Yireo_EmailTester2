@@ -7,7 +7,7 @@ const CustomerSearch = (props) => {
             id={props.id}
             panelTitle="Search for customers"
             emptyLabel="No customer data found"
-            fields={{id: 'ID', name: 'Name', email: 'Email'}}
+            fields={{id: 'ID', name: 'Name', email: 'Email', group_label: 'Group', website_label: 'Website'}}
             labelAjaxUrl={window.emailtester.customerLabelAjaxUrl}
             searchAjaxUrl={window.emailtester.customerSearchAjaxUrl}
         />
