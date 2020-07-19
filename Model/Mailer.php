@@ -32,7 +32,6 @@ use Exception;
 use Yireo\EmailTester2\Behaviour\Errorable;
 use Yireo\EmailTester2\Model\Mailer\Addressee;
 use Yireo\EmailTester2\Model\Mailer\Recipient;
-use Zend\Mime\Message as MessageAlias;
 
 class Mailer extends DataObject
 {
@@ -211,7 +210,7 @@ class Mailer extends DataObject
     protected function getRawContentFromTransportBuilder(): string
     {
         /** @var Message $message */
-        /** @var MessageAlias $body */
+        /** @var string|object $body */
         $message = $this->transportBuilder->getMessage();
         $body = $message->getBody();
 
