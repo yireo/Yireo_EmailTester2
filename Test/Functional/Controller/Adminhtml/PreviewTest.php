@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Test\Integration\Controller\Adminhtml;
 
+use Magento\Framework\Exception\AuthenticationException;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\TestCase\AbstractBackendController;
 
@@ -18,13 +19,13 @@ class PreviewTest extends AbstractBackendController
      *
      * @codingStandardsIgnoreStart
      * @magentoConfigFixture current_store emailtester2/settings/default_transactional customer_create_account_email_template
+     * @throws AuthenticationException
      */
-    public function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->resource = 'Yireo_EmailTester2::index';
         $this->uri = 'backend/emailtester/index/preview';
-
-        parent::setUp();
     }
 
     /**
@@ -82,7 +83,7 @@ class PreviewTest extends AbstractBackendController
 
         $needle = 'emailtester-index-preview';
         $message = sprintf('Template %s should contain keyword %s', $templateId, $needle);
-        $this->assertContains($needle, $body, $message);
+        $this->assertTrue((bool)strpos($body, $needle, $message));
         return true;
     }
 

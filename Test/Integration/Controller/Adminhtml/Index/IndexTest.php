@@ -16,11 +16,11 @@ class IndexTest extends AbstractBackendController
     /**
      * Setup method
      */
-    public function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->resource = 'Yireo_EmailTester2::index';
         $this->uri = 'backend/emailtester/index/index';
-        parent::setUp();
     }
 
     /**
@@ -34,9 +34,9 @@ class IndexTest extends AbstractBackendController
 
         $this->dispatch($this->uri);
         $body = $this->getResponse()->getBody();
-        $this->assertContains('Send Email', $body);
-        $this->assertContains('Preview Email', $body);
-        $this->assertContains('Store View', $body);
+        $this->assertTrue((bool)strpos($body, 'Send Email'));
+        $this->assertTrue((bool)strpos($body, 'Preview Email'));
+        $this->assertTrue((bool)strpos($body, 'Store View'));
 
         $this->analyseDatabaseStatistics(['select' => 100]);
     }

@@ -24,8 +24,9 @@ class DatacontainableTest extends TestCase
     /**
      * Setup method
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->targetTrait = $this->getMockForTrait(Target::class);
     }
 

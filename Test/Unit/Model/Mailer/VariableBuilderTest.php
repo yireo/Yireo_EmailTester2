@@ -26,8 +26,10 @@ class VariableBuilderTest extends TestCase
     /**
      * Setup method
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
+
         /** @var VariableFactory $variableFactory */
         $variableFactory = $this->getVariableFactoryStub();
 

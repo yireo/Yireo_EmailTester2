@@ -14,10 +14,10 @@ class OrderSearchTest extends AbstractAjaxTestCase
      * Setup method
      * @throws AuthenticationException
      */
-    public function setUp()
+    protected function setUp(): void
     {
-        $this->uri = 'backend/emailtester/ajax/orderSearch';
         parent::setUp();
+        $this->uri = 'backend/emailtester/ajax/orderSearch';
     }
 
     /**

@@ -23,10 +23,10 @@ class AbstractAjaxTestCase extends AbstractBackendController
      * Setup method
      * @throws AuthenticationException
      */
-    public function setUp()
+    protected function setUp(): void
     {
-        $this->resource = 'Yireo_EmailTester2::index';
         parent::setUp();
+        $this->resource = 'Yireo_EmailTester2::index';
     }
 
     /**

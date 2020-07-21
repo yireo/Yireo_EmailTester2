@@ -32,8 +32,10 @@ class DataTest extends TestCase
     /**
      * Setup method
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
+
         $this->objectManagerHelper = new ObjectManagerHelper($this);
 
         /** @var Context $context */

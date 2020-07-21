@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.5] - 21 July 2020
+### Fixed
+- Set order ID when creating dummy shipment
+- Upgrade tests to PHPUnit 8+ (Magento 2.4 compatible)
+
 ## [1.6.4] - 30 June 2020
 ### Added
 - Enhance integration tests for AJAX URLs

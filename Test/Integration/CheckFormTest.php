@@ -8,7 +8,7 @@ use Magento\TestFramework\TestCase\AbstractBackendController;
 
 class CheckFormTest extends AbstractBackendController
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->uri = 'backend/emailtester/index';
@@ -29,8 +29,7 @@ class CheckFormTest extends AbstractBackendController
         $this->dispatch('backend/emailtester/index');
 
         $body = $this->getResponse()->getBody();
-        $this->assertContains('Yireo EmailTester', $body);
-        $this->assertContains('Send Email', $body);
-        //$this->assertContains('dummy@example.com', $body);
+        $this->assertTrue((bool)strpos($body, 'Yireo EmailTester'));
+        $this->assertTrue((bool)strpos($body, 'Send Email'));
     }
 }

@@ -17,6 +17,8 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\PhraseFactory;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\ShipmentInterface;
+use Magento\Sales\Api\Data\ShipmentItemCreationInterfaceFactory;
+use Magento\Sales\Api\Data\ShipmentItemInterfaceFactory;
 use Magento\Sales\Api\ShipmentRepositoryInterface;
 use Yireo\EmailTester2\Model\Mailer\VariableInterface;
 
@@ -41,8 +43,9 @@ class Shipment implements VariableInterface
      * @var PhraseFactory
      */
     private $phraseFactory;
+
     /**
-     * @var \Magento\Sales\Api\Data\ShipmentItemCreationInterfaceFactory
+     * @var ShipmentItemCreationInterfaceFactory
      */
     private $shipmentItemFactory;
 
@@ -50,13 +53,13 @@ class Shipment implements VariableInterface
      * Shipment constructor.
      *
      * @param ShipmentRepositoryInterface $shipmentRepository
-     * @param \Magento\Sales\Api\Data\ShipmentItemInterfaceFactory $shipmentItemFactory
+     * @param ShipmentItemInterfaceFactory $shipmentItemFactory
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param PhraseFactory $phraseFactory
      */
     public function __construct(
         ShipmentRepositoryInterface $shipmentRepository,
-        \Magento\Sales\Api\Data\ShipmentItemInterfaceFactory $shipmentItemFactory,
+        ShipmentItemInterfaceFactory $shipmentItemFactory,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         PhraseFactory $phraseFactory
     ) {
@@ -103,6 +106,7 @@ class Shipment implements VariableInterface
         $shipment = $this->shipmentRepository->create();
         $shipmentItems = $this->getShipmentItems($this->order);
         $shipment->setItems($shipmentItems);
+        $shipment->setOrderId($this->order->getEntityId());
         return $shipment;
     }
 

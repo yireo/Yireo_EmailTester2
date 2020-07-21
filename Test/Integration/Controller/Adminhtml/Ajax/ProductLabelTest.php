@@ -14,10 +14,10 @@ class ProductLabelTest extends AbstractAjaxTestCase
      * Setup method
      * @throws AuthenticationException
      */
-    public function setUp()
+    protected function setUp(): void
     {
-        $this->uri = 'backend/emailtester/ajax/productLabel';
         parent::setUp();
+        $this->uri = 'backend/emailtester/ajax/productLabel';
     }
 
     /**
