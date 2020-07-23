@@ -10,6 +10,12 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-blank" xsi:noNamespaceSchemaLocation="urn:magento:module:View/Layout:etc/page_configuration.xsd">
     <head>
+        <remove src="css/styles-old.css"/>
+        <remove src="jquery/farbtastic/css/farbtastic.css"/>
+        <remove src="jquery/jstree/themes/default/style.css"/>
+        <remove src="extjs/resources/css/ytheme-magento.css"/>
+        <remove src="extjs/resources/css/ext-all.css"/>
+        <remove src="css/styles.css"/>
         <css src="Yireo_EmailTester2/css/emailtester-preview.css"/>
     </head>
     <body>

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.6] - 23 July 2020
+### Fixed
+- Remove all unneeded CSS from preview page
+
 ## [1.6.5] - 21 July 2020
 ### Fixed
 - Set order ID when creating dummy shipment
