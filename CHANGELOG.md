@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.8] - 30 October 2020
+### Fixed
+- Change namespace of UiComponents buttons (`preview`) to avoid conflicts with other mixins
+
 ## [1.6.7] - 28 July 2020
 ### Fixed
 - Bump Magento 2.4 dependencies

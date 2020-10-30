@@ -12,13 +12,13 @@ define([
         initAdapter: function () {
             this._super();
             adapter.on({
-                'preview': this.submitToPreview.bind(this, true, {}),
-                'send': this.submitToSend.bind(this, true, {})
+                'emailtester-preview': this.emailTesterSubmitToPreview.bind(this, true, {}),
+                'emailtester-send': this.emailTesterSubmitToSend.bind(this, true, {})
             }, this.selectorPrefix, this.eventPrefix);
 
             return this;
         },
-        submitToPreview: function (redirect, data) {
+        emailTesterSubmitToPreview: function (redirect, data) {
             function convertObjectToQueryString(object)
             {
                 return Object.keys(object).map(function(key) {
@@ -34,7 +34,7 @@ define([
             redirectUrl += '?' + convertObjectToQueryString(formValues);
             window.open(redirectUrl,'_blank');
         },
-        submitToSend: function (redirect, data) {
+        emailTesterSubmitToSend: function (redirect, data) {
             this.source.client.urls.save = replaceUrl(this.source.submit_url, 'send');
             return this.save(redirect, data);
         }
