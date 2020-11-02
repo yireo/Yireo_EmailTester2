@@ -2,20 +2,6 @@ stages:
   - basic
   - fullinstall
 
-# PHP 7.0 simple linting
-php-7.0-linting:
-  stage: basic
-  image: php:7.0
-  script:
-    - sh -c 'if find . -name "*.php" -exec php -l {} 2>&1 \; | grep -v "^No syntax errors detected"; then exit 1; fi'
-
-# PHP 7.1 simple linting
-php-7.1-linting:
-  stage: basic
-  image: php:7.1
-  script:
-    - sh -c 'if find . -name "*.php" -exec php -l {} 2>&1 \; | grep -v "^No syntax errors detected"; then exit 1; fi'
-
 # PHP 7.2 simple linting
 php-7.2-linting:
   stage: basic
@@ -23,10 +9,17 @@ php-7.2-linting:
   script:
     - sh -c 'if find . -name "*.php" -exec php -l {} 2>&1 \; | grep -v "^No syntax errors detected"; then exit 1; fi'
 
-# PHP 7.2 codesniffing
-php-7.2-phpcs:
+# PHP 7.3 simple linting
+php-7.3-linting:
   stage: basic
-  image: yireo/php-testbox:7.2
+  image: php:7.3
+  script:
+    - sh -c 'if find . -name "*.php" -exec php -l {} 2>&1 \; | grep -v "^No syntax errors detected"; then exit 1; fi'
+
+# PHP 7.3 codesniffing
+php-7.3-phpcs:
+  stage: basic
+  image: yireo/php-testbox:7.3
   script:
     - phpcs --colors --standard=PSR2 --report=full --extensions=php,phtml .
     - composer validate
@@ -36,45 +29,13 @@ magento-eqp2-basic:
   stage: basic
   image: yireo/php-testbox:7.1
   script:
-    - composer create-project --repository=https://repo.magento.com magento/marketplace-eqp /tmp/meqp2
-    - php /tmp/meqp2/vendor/bin/phpcs . --standard=MEQP2 --severity=10 --extensions=php,phtml
-
-# Magento 2.1 testing
-magento-2.1-validation:
-  stage: fullinstall
-  image: yireo/magento2ci:7.0
-  script:
-    - source .gitlab-ci.env && test "$RUN_MAGENTO_21" -eq "0" && exit 0
-    - git clone https://gitlab.yireo.com/tools/magento2devbox.git /tmp/magento2devbox &&
-      /tmp/magento2devbox/magento/scripts/install-magento.sh &&
-      /tmp/magento2devbox/magento/scripts/gitlab-ci.sh
-  variables:
-    MAGENTO_VERSION: "2.1.12"
-    MAGENTO_ADD_REDIS: "0"
-    RUN_PHPUNIT_UNIT_TESTS: "0"
-    RUN_PHPUNIT_INTEGRATION_TESTS: "0"
-    RUN_YIREO_EXTENSIONCHECKER: "0"
-  services:
-    - name: mysql:5.7
-
-# Magento 2.2 testing
-magento-2.2-validation:
-  image: yireo/magento2ci:7.1
-  stage: fullinstall
-  script:
-    - source .gitlab-ci.env && test "$RUN_MAGENTO_22" -eq "0" && exit 0
-    - git clone https://gitlab.yireo.com/tools/magento2devbox.git /tmp/magento2devbox &&
-      /tmp/magento2devbox/magento/scripts/install-magento.sh &&
-      /tmp/magento2devbox/magento/scripts/gitlab-ci.sh
-  variables:
-    MAGENTO_VERSION: "2.2.7"
-  services:
-    - name: mysql:5.7
-    - name: redis
+    - mkdir -p /tmp/magento-phpcs && cd /tmp/magento-phpcs && composer require --dev magento/magento-coding-standard
+    - php /tmp/magento-phpcs/vendor/bin/phpcs --config-set vendor/magento/magento-coding-standard/
+    - php /tmp/magento-phpcs/vendor/bin/phpcs . --standard=Magento2 --severity=10 --extensions=php,phtml -s
 
 # Magento 2.3 testing
 magento-2.3-validation:
-  image: yireo/magento2ci:7.2
+  image: yireo/magento2ci:7.3
   stage: fullinstall
   script:
     - source .gitlab-ci.env && test "$RUN_MAGENTO_23" -eq "0" && exit 0
@@ -82,7 +43,7 @@ magento-2.3-validation:
       /tmp/magento2devbox/magento/scripts/install-magento.sh &&
       /tmp/magento2devbox/magento/scripts/gitlab-ci.sh
   variables:
-    MAGENTO_VERSION: "2.3.0"
+    MAGENTO_VERSION: "2.3.5-p2"
   services:
     - name: mysql:5.7
     - name: redis

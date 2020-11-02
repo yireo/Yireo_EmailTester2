@@ -112,6 +112,7 @@ class VariableBuilder extends DataObject
             $variableModel = $this->variableFactory->create($variableModelName);
 
             try {
+                // phpcs:ignore Magento2.Performance.ForeachArrayMerge.ForeachArrayMerge
                 $variables = array_merge($variables, $this->callVariableModelMethods($variableModel, $variableName));
             } catch (NoSuchEntityException $e) {
                 continue;
