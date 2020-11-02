@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.9] - 2 November 2020
+### Fixed
+- Change form IDs to become more unique to avoid conflicts with other extensions
+
 ## [1.6.8] - 30 October 2020
 ### Fixed
 - Change namespace of UiComponents buttons (`preview`) to avoid conflicts with other mixins

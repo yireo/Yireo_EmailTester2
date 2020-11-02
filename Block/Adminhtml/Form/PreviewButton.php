@@ -15,11 +15,12 @@ class PreviewButton implements ButtonProviderInterface
         return [
             'label' => __('Preview Email'),
             'class' => 'save primary',
+            'id' => 'emailtesterPreview',
             'on_click' => '',
             'data_attribute' => [
                 'mage-init' => [
                     'button' => [
-                        'event' => 'preview'
+                        'event' => 'emailtesterPreview'
                     ]
                 ],
             ],

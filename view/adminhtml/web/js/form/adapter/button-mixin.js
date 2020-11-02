@@ -4,8 +4,8 @@ define([
     'use strict';
 
     var mixin = {
-        'emailtester-preview': '#preview',
-        'emailtester-send': '#send'
+        'emailtester-preview': '#emailtesterPreview',
+        'emailtester-send': '#emailtesterSend'
     };
 
     return function (target) {

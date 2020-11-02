@@ -15,11 +15,12 @@ class SendButton implements ButtonProviderInterface
         return [
             'label' => __('Send Email'),
             'class' => 'save primary',
+            'id' => 'emailtesterSend',
             'on_click' => '',
             'data_attribute' => [
                 'mage-init' => [
                     'button' => [
-                        'event' => 'send'
+                        'event' => 'emailtesterSend'
                     ]
                 ],
             ],
