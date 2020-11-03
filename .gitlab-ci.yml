@@ -30,7 +30,7 @@ magento-eqp2-basic:
   image: yireo/php-testbox:7.1
   script:
     - mkdir -p /tmp/magento-phpcs && cd /tmp/magento-phpcs && composer require --dev magento/magento-coding-standard
-    - php /tmp/magento-phpcs/vendor/bin/phpcs --config-set vendor/magento/magento-coding-standard/
+    - php /tmp/magento-phpcs/vendor/bin/phpcs --config-set installed_paths vendor/magento/magento-coding-standard/
     - php /tmp/magento-phpcs/vendor/bin/phpcs . --standard=Magento2 --severity=10 --extensions=php,phtml -s
 
 # Magento 2.3 testing
