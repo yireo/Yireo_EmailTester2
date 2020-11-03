@@ -31,7 +31,7 @@ magento-eqp2-basic:
   script:
     - mkdir -p /tmp/magento-phpcs && cd /tmp/magento-phpcs && composer require --dev magento/magento-coding-standard
     - php /tmp/magento-phpcs/vendor/bin/phpcs --config-set installed_paths vendor/magento/magento-coding-standard/
-    - php /tmp/magento-phpcs/vendor/bin/phpcs . --standard=Magento2 --severity=10 --extensions=php,phtml -s
+    - php /tmp/magento-phpcs/vendor/bin/phpcs $CI_BUILDS_DIR --standard=Magento2 --severity=10 --extensions=php,phtml -s
 
 # Magento 2.3 testing
 magento-2.3-validation:
