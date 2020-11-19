@@ -38,7 +38,7 @@ const AbstractSearch = (props) => {
         <div>
             <div className="id-preview-container">
                 <div className="admin__control-addon id-preview">
-                    <input className="admin__control-text" type="text" name="product_id" placeholder="Numeric ID"
+                    <input className="admin__control-text" type="text" name={props.fieldName} placeholder="Numeric ID"
                            onChange={(event) => changeItemData(event.target.value)}
                            value={itemId} maxLength="11"/>
                     <label className="admin__addon-suffix">

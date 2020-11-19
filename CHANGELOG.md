@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.10] - 19 November 2020
+### Fixed
+- Make sure form values for product, order and customer are transferred to preview
+
 ## [1.6.9] - 2 November 2020
 ### Fixed
 - Change form IDs to become more unique to avoid conflicts with other extensions

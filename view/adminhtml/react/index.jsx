@@ -10,11 +10,6 @@ const componentMapping = {
     OrderSearch
 };
 
-/*
-import initiateReactComponents from "@yireo/magento2-react-adminhtml";
-initiateReactComponents(componentMapping);
-*/
-
 window.renderReactComponent = (componentId, elementId, props = {}) => {
     if (!elementId || !componentId) {
         throw new Error('renderReactComponent requires 2 arguments');

@@ -1,10 +1,11 @@
 define([
+    'jquery',
     'Magento_Ui/js/form/adapter',
     'mage/url'
-], function (adapter, url) {
+], function ($, adapter, url) {
     'use strict';
 
-    var replaceUrl = function(url, replace) {
+    var replaceUrl = function (url, replace) {
         return url.replace('emailtester/index/index', 'emailtester/index/' + replace);
     };
 
@@ -19,20 +20,26 @@ define([
             return this;
         },
         emailTesterSubmitToPreview: function (redirect, data) {
-            function convertObjectToQueryString(object)
-            {
-                return Object.keys(object).map(function(key) {
+            function convertObjectToQueryString(object) {
+                return Object.keys(object).map(function (key) {
                     if (!object[key]) {
                         return;
                     }
-                    return key + '=' + object[key];
+
+                    var value = object[key];
+                    var $input = $('input[name=' + key + ']')
+                    if ($input && $input.val() !== undefined) {
+                        value = $input.val();
+                    }
+
+                    return key + '=' + value;
                 }).join('&');
             }
 
             var formValues = this.source.data;
             var redirectUrl = window.emailtester.previewUrl;
             redirectUrl += '?' + convertObjectToQueryString(formValues);
-            window.open(redirectUrl,'_blank');
+            window.open(redirectUrl, '_blank');
         },
         emailTesterSubmitToSend: function (redirect, data) {
             this.source.client.urls.save = replaceUrl(this.source.submit_url, 'send');

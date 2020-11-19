@@ -5,6 +5,7 @@ const OrderSearch = (props) => {
     return (
         <AbstractSearch
             id={props.id}
+            fieldName={props.fieldName}
             panelTitle="Search for orders"
             emptyLabel="No order data found"
             fields={{
