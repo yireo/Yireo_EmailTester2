@@ -243,6 +243,8 @@ class Order implements VariablesInterface
             $order->setCustomerFirstname($customer->getFirstname());
             $order->setCustomerLastname($customer->getLastname());
             $order->setCustomerNote('Some customer note');
+            $order->setEmailCustomerNote('Some customer note');
+            $order->setIsNotVirtual($order->getIsNotVirtual());
             $order->setCustomer($customer);
         }
 

@@ -20,25 +20,23 @@ define([
             return this;
         },
         emailTesterSubmitToPreview: function (redirect, data) {
-            function convertObjectToQueryString(object) {
-                return Object.keys(object).map(function (key) {
-                    if (!object[key]) {
-                        return;
-                    }
+            function getValueFromInput(inputName) {
+                var $input = $('[name=' + inputName + ']')
+                if ($input && $input.val() !== undefined) {
+                    return $input.val();
+                }
+            }
 
-                    var value = object[key];
-                    var $input = $('input[name=' + key + ']')
-                    if ($input && $input.val() !== undefined) {
-                        value = $input.val();
-                    }
-
+            function convertKeysToQueryString(keys) {
+                return keys.map(function (key) {
+                    var value = getValueFromInput(key);
                     return key + '=' + value;
                 }).join('&');
             }
 
-            var formValues = this.source.data;
             var redirectUrl = window.emailtester.previewUrl;
-            redirectUrl += '?' + convertObjectToQueryString(formValues);
+            var formKeys = ['sender', 'email', 'store_id', 'template', 'customer_id', 'product_id', 'order_id'];
+            redirectUrl += '?' + convertKeysToQueryString(formKeys);
             window.open(redirectUrl, '_blank');
         },
         emailTesterSubmitToSend: function (redirect, data) {

@@ -83,7 +83,7 @@ class PaymentHtml implements VariableInterface
             $paymentInfo = $order->getPayment();
             return (string)$this->paymentHelper->getInfoBlockHtml($paymentInfo, $storeId);
         } catch (Exception $exception) {
-            return '';
+            return 'No payment available';
         }
     }
 

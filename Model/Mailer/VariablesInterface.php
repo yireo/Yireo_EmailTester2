@@ -15,7 +15,7 @@ namespace Yireo\EmailTester2\Model\Mailer;
 interface VariablesInterface extends AbstractVariableInterface
 {
     /**
-     * @return mixed
+     * @return array
      */
-    public function getVariables();
+    public function getVariables(): array;
 }

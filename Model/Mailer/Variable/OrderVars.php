@@ -49,7 +49,7 @@ class OrderVars implements VariablesInterface
      */
     public function getVariables(): array
     {
-        if (empty($order)) {
+        if (empty($this->order)) {
             $phrase = $this->phraseFactory->create(['text' => 'Could not find any order entity']);
             throw new NoSuchEntityException($phrase);
         }
@@ -57,6 +57,7 @@ class OrderVars implements VariablesInterface
         $variables = [];
         $variables['formattedShippingAddress'] = $this->getFormattedShippingAddress();
         $variables['formattedBillingAddress'] = $this->getFormattedBillingAddress();
+        $variables['created_at_formatted'] = $this->order->getCreatedAtFormatted(2);
 
         return $variables;
     }

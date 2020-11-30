@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.11] - 30 November 2020
+### Fixed
+- Use better method to inject form values in preview URL
+
+### Added
+- Add new customer note variables (2.4+)
+- Documented non-extension issue on outdated templates (FAQ)
+
 ## [1.6.10] - 19 November 2020
 ### Fixed
 - Make sure form values for product, order and customer are transferred to preview

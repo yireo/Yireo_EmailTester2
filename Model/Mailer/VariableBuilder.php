@@ -41,7 +41,7 @@ class VariableBuilder extends DataObject
         'order' => Order::class,
         'customer' => Customer::class,
         'product' => Product::class,
-        'qoute' => Quote::class,
+        'quote' => Quote::class,
         'shipment' => Shipment::class,
         'invoice' => Invoice::class,
         'creditmemo' => Creditmemo::class,
@@ -138,9 +138,7 @@ class VariableBuilder extends DataObject
             }
         }
 
-        $variables = $this->retrieveVariables($variableModel, $variableName);
-
-        return $variables;
+        return $this->retrieveVariables($variableModel, $variableName);
     }
 
     /**
@@ -155,17 +153,23 @@ class VariableBuilder extends DataObject
 
         if (method_exists($variableModel, 'getVariable')) {
             $variableValue = $variableModel->getVariable();
+            if (!$variableValue) {
+                return $variables;
+            }
+
             $this->setData($variableName, $variableValue);
             $variables[$variableName] = $variableValue;
         }
 
         if (method_exists($variableModel, 'getVariables')) {
             $variableValues = $variableModel->getVariables();
-            if (!empty($variableValues)) {
-                foreach ($variableValues as $variableName => $variableValue) {
-                    $this->setData($variableName, $variableValue);
-                    $variables[$variableName] = $variableValue;
+            foreach ($variableValues as $variableName => $variableValue) {
+                if (!$variableValue) {
+                    continue;
                 }
+
+                $this->setData($variableName, $variableValue);
+                $variables[$variableName] = $variableValue;
             }
         }
 

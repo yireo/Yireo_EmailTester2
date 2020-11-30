@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Yireo\EmailTester2\Model;
 
 use Magento\Framework\App\Area;
+use Magento\Framework\App\State;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Mail\Message;
 use Magento\Framework\Mail\MimePart;
@@ -22,6 +23,7 @@ use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Email\Model\BackendTemplateFactory;
+use Magento\Email\Model\ResourceModel\Template as TemplateResourceModel;
 use Magento\Framework\Mail\TemplateInterface;
 use Magento\Framework\Phrase;
 use Magento\Framework\Phrase\RendererInterface;
@@ -99,6 +101,14 @@ class Mailer extends DataObject
      * @var RendererInterface
      */
     private $renderer;
+    /**
+     * @var TemplateResourceModel
+     */
+    private $templateResourceModel;
+    /**
+     * @var State
+     */
+    private $appState;
 
     /**
      * Mailer constructor.
@@ -115,6 +125,8 @@ class Mailer extends DataObject
      * @param BackendTemplateFactory $backendTemplateFactory
      * @param TemplateConfig $templateConfig
      * @param RendererInterface $renderer
+     * @param TemplateResourceModel $templateResourceModel
+     * @param State $appState
      * @param array $data
      */
     public function __construct(
@@ -130,6 +142,8 @@ class Mailer extends DataObject
         BackendTemplateFactory $backendTemplateFactory,
         TemplateConfig $templateConfig,
         RendererInterface $renderer,
+        TemplateResourceModel $templateResourceModel,
+        State $appState,
         array $data = []
     ) {
         parent::__construct($data);
@@ -145,6 +159,8 @@ class Mailer extends DataObject
         $this->templateConfig = $templateConfig;
         $this->backendTemplateFactory = $backendTemplateFactory;
         $this->renderer = $renderer;
+        $this->templateResourceModel = $templateResourceModel;
+        $this->appState = $appState;
     }
 
     /**
@@ -459,7 +475,7 @@ class Mailer extends DataObject
     {
         if (preg_match('/^([0-9]+)$/', $templateId)) {
             $template = $this->backendTemplateFactory->create();
-            $template->load($templateId);
+            $this->templateResourceModel->load($template, $templateId);
             return $template;
         }
 
@@ -508,12 +524,15 @@ class Mailer extends DataObject
      */
     private function buildVariables(): array
     {
-        $variableBuilder = $this->variableBuilder;
-        $data = $this->getData();
-        $variableBuilder->setData($data);
-        $variables = $variableBuilder->getVariables();
+        $this->appState->emulateAreaCode(
+            Area::AREA_FRONTEND,
+            function () {
+                $data = $this->getData();
+                $this->variableBuilder->setData($data);
+            }
+        );
 
-        return $variables;
+        return $this->variableBuilder->getVariables();
     }
 
     /**
