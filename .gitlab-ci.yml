@@ -29,7 +29,7 @@ magento-eqp2-basic:
   stage: basic
   image: yireo/php-testbox:7.1
   script:
-    - mkdir -p /tmp/magento-phpcs && cd /tmp/magento-phpcs && composer require --dev magento/magento-coding-standard
+    - mkdir -p /tmp/magento-phpcs && cd /tmp/magento-phpcs && COMPOSER_MEMORY_LIMIT=-1 composer require --dev magento/magento-coding-standard
     - php /tmp/magento-phpcs/vendor/bin/phpcs --config-set installed_paths vendor/magento/magento-coding-standard/
     - php /tmp/magento-phpcs/vendor/bin/phpcs $CI_PROJECT_DIR --standard=Magento2 --severity=10 --extensions=php,phtml -s
 
