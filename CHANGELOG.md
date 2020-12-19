@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.12] - 19 December 2020
+### Fixed
+- Re-add `setup_version` for Magento 2.2 compatibility
+
 ## [1.6.11] - 30 November 2020
 ### Fixed
 - Use better method to inject form values in preview URL
