@@ -160,25 +160,13 @@ class Order implements VariablesInterface
         $order = $this->getOrder();
         $this->setProductInOrder($order);
 
-        $shippingAddress = $order->getShippingAddress();
-        $billingAddress = $order->getBillingAddress();
-
-        if (!$shippingAddress) {
-            $shippingAddress = $billingAddress;
-        }
-
-        if (!$billingAddress) {
-            $billingAddress = $shippingAddress;
-        }
-
-        $shippingAddressHtml = ($shippingAddress) ? $this->addressRenderer->format($shippingAddress, 'html') : '';
-        $billingAddressHtml = ($billingAddress) ? $this->addressRenderer->format($billingAddress, 'html') : '';
+        $order->setIsVirtual(false);
+        $order->setData('is_not_virtual', true);
 
         return [
             'order' => $order,
             'order_data' => $order,
-            'formattedShippingAddress' => $shippingAddressHtml,
-            'formattedBillingAddress' => $billingAddressHtml,
+            'order_id' => $order->getEntityId(),
         ];
     }
 
