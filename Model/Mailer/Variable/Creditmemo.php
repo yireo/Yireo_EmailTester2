@@ -72,12 +72,10 @@ class Creditmemo implements VariableInterface
         $creditmemos = $searchResult->getItems();
 
         if (!empty($creditmemos[0])) {
-            $creditmemo = $creditmemos[0];
-        } else {
-            $creditmemo = null;
+            return $creditmemos[0];
         }
 
-        return $creditmemo;
+        return null;
     }
 
     /**
