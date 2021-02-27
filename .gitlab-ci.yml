@@ -2,10 +2,10 @@ stages:
   - basic
   - fullinstall
 
-# PHP 7.2 simple linting
-php-7.2-linting:
+# PHP 7.4 simple linting
+php-7.4-linting:
   stage: basic
-  image: php:7.2
+  image: php:7.4
   script:
     - sh -c 'if find . -name "*.php" -exec php -l {} 2>&1 \; | grep -v "^No syntax errors detected"; then exit 1; fi'
 
@@ -27,26 +27,30 @@ php-7.3-phpcs:
 # Magento MEQP2 validation
 magento-eqp2-basic:
   stage: basic
-  image: yireo/php-testbox:7.1
+  image: yireo/php-testbox:7.3
   script:
     - mkdir -p /tmp/magento-phpcs && cd /tmp/magento-phpcs && COMPOSER_MEMORY_LIMIT=-1 composer require --dev magento/magento-coding-standard
     - php /tmp/magento-phpcs/vendor/bin/phpcs --config-set installed_paths vendor/magento/magento-coding-standard/
     - php /tmp/magento-phpcs/vendor/bin/phpcs $CI_PROJECT_DIR --standard=Magento2 --severity=10 --extensions=php,phtml -s
 
-# Magento 2.3 testing
-magento-2.3-validation:
-  image: yireo/magento2base:7.3
+# Magento 2.4 testing
+magento-2.4-validation:
+  image: yireo/magento2base:7.4
   stage: fullinstall
   script:
-    - source .gitlab-ci.env && test "$RUN_MAGENTO_23" -eq "0" && exit 0
     - git clone https://gitlab.yireo.com/tools/magento2devbox.git /tmp/magento2devbox &&
       /tmp/magento2devbox/magento/scripts/install-magento.sh &&
       /tmp/magento2devbox/magento/scripts/gitlab-ci.sh
   variables:
-    MAGENTO_VERSION: "2.3.5-p2"
+    MAGENTO_VERSION: "2.4.2"
+    COMPOSER_VERSION: "2"
   services:
     - name: mysql:5.7
+      tmpfs: ["/var/lib/mysql", "/tmp"]
     - name: redis
+    - name: "docker.elastic.co/elasticsearch/elasticsearch:7.10.1"
+      alias: "elasticsearch"
+      command: [ "bin/elasticsearch", "-Expack.security.enabled=false", "-Ediscovery.type=single-node" ]
 
 # Global variables
 variables:
