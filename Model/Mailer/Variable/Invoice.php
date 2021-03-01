@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 /**
  * Yireo EmailTester for Magento
  *
@@ -8,20 +9,19 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types = 1);
-
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
 use Exception;
 use Magento\Framework\Api\SearchCriteriaBuilderFactory;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\PhraseFactory;
 use Magento\Sales\Api\Data\InvoiceInterface;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\InvoiceRepositoryInterface;
-use Yireo\EmailTester2\Model\Mailer\VariableInterface;
+use Yireo\EmailTester2\Model\Mailer\VariablesInterface;
 
-class Invoice implements VariableInterface
+class Invoice implements VariablesInterface
 {
     /**
      * @var OrderInterface
@@ -61,10 +61,25 @@ class Invoice implements VariableInterface
     }
 
     /**
+     * @return array
+     * @throws LocalizedException
+     */
+    public function getVariables(): array
+    {
+        $invoice = $this->getInvoice();
+
+        return [
+            'invoice' => $invoice,
+            'invoice_data' => $invoice,
+            'invoice_id' => $invoice->getEntityId(),
+        ];
+    }
+
+    /**
      * @return InvoiceInterface
      * @throws NoSuchEntityException
      */
-    public function getVariable()
+    private function getInvoice(): InvoiceInterface
     {
         if (empty($this->order)) {
             $phrase = $this->phraseFactory->create(['text' => 'Could not find any order entity']);

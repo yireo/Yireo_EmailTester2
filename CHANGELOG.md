@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.6.13] - 26 February December 2021
+## [1.6.14] - 1 March 2021
+### Fixed
+- Fixed missing `invoice_id` and `creditmemo_id` just in case
+
+## [1.6.13] - 26 February 2021
 ### Fixed
 - Remove yarn.lock
 - Fixed missing `order_id`
