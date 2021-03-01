@@ -17,7 +17,6 @@ use Magento\Framework\PhraseFactory;
 use Magento\Sales\Api\CreditmemoRepositoryInterface;
 use Magento\Sales\Api\Data\CreditmemoInterface;
 use Magento\Sales\Api\Data\OrderInterface;
-use Magento\Sales\Model\Order\Creditmemo as CoreCreditmemo;
 use Yireo\EmailTester2\Model\Mailer\VariablesInterface;
 
 class Creditmemo implements VariablesInterface

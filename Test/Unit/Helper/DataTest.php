@@ -16,11 +16,12 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
 use PHPUnit\Framework\TestCase;
+use Yireo\EmailTester2\Helper\Data as DataHelper;
 
 class DataTest extends TestCase
 {
     /**
-     * @var \Yireo\EmailTester2\Helper\Data
+     * @var DataHelper
      */
     private $targetHelper;
 
@@ -40,7 +41,7 @@ class DataTest extends TestCase
 
         /** @var Context $context */
         $context = $this->getHelperContextStub();
-        $this->targetHelper = new \Yireo\EmailTester2\Helper\Data($context);
+        $this->targetHelper = new DataHelper($context);
     }
 
     /**
