@@ -46,7 +46,6 @@ magento-2.4-validation:
     COMPOSER_VERSION: "2"
   services:
     - name: mysql:5.7
-      tmpfs: ["/var/lib/mysql", "/tmp"]
     - name: redis
     - name: "docker.elastic.co/elasticsearch/elasticsearch:7.10.1"
       alias: "elasticsearch"
