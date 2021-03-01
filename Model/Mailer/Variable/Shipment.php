@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Yireo EmailTester for Magento
  *
@@ -6,8 +6,6 @@
  * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
-
-declare(strict_types = 1);
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
@@ -20,9 +18,9 @@ use Magento\Sales\Api\Data\ShipmentInterface;
 use Magento\Sales\Api\Data\ShipmentItemCreationInterfaceFactory;
 use Magento\Sales\Api\Data\ShipmentItemInterfaceFactory;
 use Magento\Sales\Api\ShipmentRepositoryInterface;
-use Yireo\EmailTester2\Model\Mailer\VariableInterface;
+use Yireo\EmailTester2\Model\Mailer\VariablesInterface;
 
-class Shipment implements VariableInterface
+class Shipment implements VariablesInterface
 {
     /**
      * @var OrderInterface
@@ -70,10 +68,24 @@ class Shipment implements VariableInterface
     }
 
     /**
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function getVariables(): array
+    {
+        $shipment = $this->getShipment();
+
+        return [
+            'shipment' => $shipment,
+            'shipment_id' => $shipment->getEntityId(),
+        ];
+    }
+
+    /**
      * @return ShipmentInterface
      * @throws NoSuchEntityException
      */
-    public function getVariable()
+    private function getShipment(): ShipmentInterface
     {
         if (empty($this->order)) {
             $phrase = $this->phraseFactory->create(['text' => 'Could not find any order entity']);
@@ -88,8 +100,7 @@ class Shipment implements VariableInterface
             $shipments = $this->shipmentRepository->getList($searchCriteria)->getItems();
 
             if ($shipments) {
-                $shipment = $shipments[0];
-                return $shipment;
+                return $shipments[0];
             }
 
             return $this->createDummyShipment();
@@ -105,6 +116,7 @@ class Shipment implements VariableInterface
     {
         $shipment = $this->shipmentRepository->create();
         $shipmentItems = $this->getShipmentItems($this->order);
+        $shipment->setEntityId(42);
         $shipment->setItems($shipmentItems);
         $shipment->setOrderId($this->order->getEntityId());
         return $shipment;

@@ -38,7 +38,7 @@ magento-2.4-validation:
   image: yireo/magento2base:7.4
   stage: fullinstall
   script:
-    - git clone https://gitlab.yireo.com/tools/magento2devbox.git /tmp/magento2devbox &&
+    - git clone https://gitlab.yireo.com/tools/docker-magento2-testbox.git /tmp/magento2devbox &&
       /tmp/magento2devbox/magento/scripts/install-magento.sh &&
       /tmp/magento2devbox/magento/scripts/gitlab-ci.sh
   variables:
