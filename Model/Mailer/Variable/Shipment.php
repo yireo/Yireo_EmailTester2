@@ -116,7 +116,6 @@ class Shipment implements VariablesInterface
     {
         $shipment = $this->shipmentRepository->create();
         $shipmentItems = $this->getShipmentItems($this->order);
-        $shipment->setEntityId(42);
         $shipment->setItems($shipmentItems);
         $shipment->setOrderId($this->order->getEntityId());
         return $shipment;

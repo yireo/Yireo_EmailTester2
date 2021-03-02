@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.16] - 2 March 2021
+### Fixed
+- Remove fake shipping ID because it will only generate an error
+
 ## [1.6.15] - 1 March 2021
 ### Fixed
 - Fixed missing `shipping_id`
