@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 /**
  * Yireo EmailTester for Magento
@@ -94,12 +94,17 @@ class Invoice implements VariablesInterface
             $searchCriteria->setPageSize(1);
             $searchResult = $this->invoiceRepository->getList($searchCriteria);
 
-            if ($searchResult) {
-                $invoices = $searchResult->getItems();
-                return array_shift($invoices);
+            if (!$searchResult) {
+                return $this->getAnyInvoice();
             }
 
-            return $this->getAnyInvoice();
+            $invoices = $searchResult->getItems();
+            $invoice = array_shift($invoices);
+            if (!$invoice instanceof InvoiceInterface) {
+                return $this->getAnyInvoice();
+            }
+
+            return $invoice;
         } catch (Exception $e) {
             return $this->getAnyInvoice();
         }
@@ -115,12 +120,18 @@ class Invoice implements VariablesInterface
         $searchCriteria->setCurrentPage(1);
         $searchCriteria->setPageSize(1);
         $searchResult = $this->invoiceRepository->getList($searchCriteria);
-        if ($searchResult) {
-            $invoices = $searchResult->getItems();
-            return array_shift($invoices);
+
+        if (!$searchResult) {
+            return $this->invoiceRepository->create();
         }
 
-        return $this->invoiceRepository->create();
+        $invoices = $searchResult->getItems();
+        $invoice = array_shift($invoices);
+        if (!$invoice instanceof InvoiceInterface) {
+            return $this->invoiceRepository->create();
+        }
+
+        return $invoice;
     }
 
     /**

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.17] - 13 April 2021
+### Fixed
+- Prevent exception when order exists with no invoice
+
 ## [1.6.16] - 2 March 2021
 ### Fixed
 - Remove fake shipping ID because it will only generate an error
