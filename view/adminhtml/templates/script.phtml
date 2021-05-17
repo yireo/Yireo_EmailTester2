@@ -12,6 +12,7 @@
 <script>
     window.emailtester = {
         "previewUrl": "<?= $block->escapeUrl($block->getUrl('*/*/preview')) ?>",
+        "sendUrl": "<?= $block->escapeUrl($block->getUrl('*/*/send')) ?>",
         "customerSearchAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/customerSearch')) ?>",
         "productSearchAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/productSearch')) ?>",
         "orderSearchAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/orderSearch')) ?>",

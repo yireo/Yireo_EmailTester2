@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Config;
@@ -49,7 +50,12 @@ class Config
      */
     public function getDefaultSender(): string
     {
-        return (string)$this->getConfigValue('default_sender');
+        $defaultEmail = (string)$this->getConfigValue('default_sender');
+        if ($defaultEmail) {
+            return $defaultEmail;
+        }
+
+        return (string) $this->getConfigValue('trans_email/ident_general/email');
     }
 
     /**
@@ -57,7 +63,12 @@ class Config
      */
     public function getDefaultEmail(): string
     {
-        return (string)$this->getConfigValue('default_email');
+        $defaultEmail = (string)$this->getConfigValue('default_email');
+        if ($defaultEmail) {
+            return $defaultEmail;
+        }
+
+        return (string) $this->getConfigValue('trans_email/ident_general/email');
     }
 
     /**
@@ -143,18 +154,18 @@ class Config
     /**
      * Return a configuration value
      *
-     * @param string $key
+     * @param string $path
      * @param mixed $defaultValue
      *
      * @return mixed
      */
-    private function getConfigValue(string $key = '', $defaultValue = null)
+    private function getConfigValue(string $path = '', $defaultValue = null)
     {
-        $value = $this->scopeConfig->getValue(
-            'emailtester2/settings/' . $key,
-            ScopeInterface::SCOPE_STORE
-        );
+        if (!strstr($path, '/')) {
+            $path = 'emailtester2/settings/' . $path;
+        }
 
+        $value = $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE);
         if (empty($value)) {
             $value = $defaultValue;
         }

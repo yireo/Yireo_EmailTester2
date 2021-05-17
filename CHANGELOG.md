@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.18] - 17 May 2021
+### Fixed
+- Cleanup of DI code
+- Use General Contact as a fallback
+- Fix for "Send" not picking up on right variables anymore
+
 ## [1.6.17] - 13 April 2021
 ### Fixed
 - Prevent exception when order exists with no invoice

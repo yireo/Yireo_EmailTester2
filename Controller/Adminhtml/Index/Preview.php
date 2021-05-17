@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * EmailTester2 plugin for Magento
  *
@@ -7,14 +7,11 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types=1);
-
 namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Page;
-use Magento\Backend\Model\View\Result\RedirectFactory;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -41,11 +38,6 @@ class Preview extends Action
     private $pageConfig;
 
     /**
-     * @var RedirectFactory
-     */
-    private $redirectFactory;
-
-    /**
      * @var Form
      */
     private $formViewModel;
@@ -59,7 +51,6 @@ class Preview extends Action
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param Config $pageConfig
-     * @param RedirectFactory $redirectFactory
      * @param Form $formViewModel
      * @param RequestInterface $request
      */
@@ -67,14 +58,12 @@ class Preview extends Action
         Context $context,
         PageFactory $resultPageFactory,
         Config $pageConfig,
-        RedirectFactory $redirectFactory,
         Form $formViewModel,
         RequestInterface $request
     ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
         $this->pageConfig = $pageConfig;
-        $this->redirectFactory = $redirectFactory;
         $this->formViewModel = $formViewModel;
         $this->request = $request;
     }

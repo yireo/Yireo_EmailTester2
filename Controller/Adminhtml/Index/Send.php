@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * EmailTester2 plugin for Magento
  *
@@ -7,21 +7,17 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types=1);
-
 namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\Session;
-use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface as MessageManager;
-use Magento\Store\Model\StoreManagerInterface;
 use Yireo\EmailTester2\Model\Mailer;
 use Yireo\EmailTester2\ViewModel\Form;
 
@@ -43,23 +39,15 @@ class Send extends Action
     private $mailer;
 
     /**
-     * @var StoreManagerInterface
-     */
-    private $storeManager;
-
-    /**
-     * @var ProductRepositoryInterface
-     */
-    private $productRepository;
-
-    /**
      * @var Form
      */
     private $formViewModel;
+
     /**
      * @var RequestInterface
      */
     private $request;
+
     /**
      * @var Session
      */
@@ -70,8 +58,6 @@ class Send extends Action
      * @param RedirectFactory $redirectFactory
      * @param MessageManager $messageManager
      * @param Mailer $mailer
-     * @param StoreManagerInterface $storeManager
-     * @param ProductRepositoryInterface $productRepository
      * @param Form $formViewModel
      * @param RequestInterface $request
      * @param Session $backendSession
@@ -81,8 +67,6 @@ class Send extends Action
         RedirectFactory $redirectFactory,
         MessageManager $messageManager,
         Mailer $mailer,
-        StoreManagerInterface $storeManager,
-        ProductRepositoryInterface $productRepository,
         Form $formViewModel,
         RequestInterface $request,
         Session $backendSession
@@ -91,8 +75,6 @@ class Send extends Action
         $this->redirectFactory = $redirectFactory;
         $this->mailer = $mailer;
         $this->messageManager = $messageManager;
-        $this->storeManager = $storeManager;
-        $this->productRepository = $productRepository;
         $this->formViewModel = $formViewModel;
         $this->request = $request;
         $this->backendSession = $backendSession;
