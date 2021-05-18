@@ -1,4 +1,4 @@
-# PHP requirement not met
+# Some PHP requirement is not met
 Our extension is developed to incorporate newer PHP features like type hinting, spaceship operators and terniary operators. For this, we
 recommend that PHP is running at least version PHP 7.1, but we recommend PHP 7.2. The actual requirements are always documented in our
 `composer.json` file.
@@ -15,3 +15,9 @@ If you encounter an issue where an email override in your Magento Admin Panel do
     {{layout handle="sales_email_order_items" order=$order}}
 
 Either you can migrate your email templates towards newer code that works (where EmailTester will simply support those new variables), or mark your template as legacy. Open up the database table `email_template`, locate the `template_id` of the email template in question and set the flag `is_legacy` to `1`.
+
+# Does this work together with MagePlaza SMTP?
+Yes, it does. The MagePlaza SMTP extension hooks into the Magento `TransportBuilder` and because of this, they simply work together. Actually, this is leading to one of
+our recommended test-setups: Install the MagePlaza SMTP extension (or some other similar extension), configure it to use the SMTP details of a testing email provider like
+[mailtrap.io](https://mailtrap.io/). Next, send the email via EmailTester and it should simply popup in the inbox of mailtrap.
+
