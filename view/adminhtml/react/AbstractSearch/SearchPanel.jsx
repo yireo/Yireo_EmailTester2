@@ -61,7 +61,6 @@ const SearchPanel = (props) => {
                             value={search}
                             onChange={(event) => {
                                 setSearch(event.target.value);
-                                searchViaAjax(props.ajaxUrl, event.target.value, sortField, sortDirection);
                             }}
                         />
                         <button className="action-submit" type="button">
