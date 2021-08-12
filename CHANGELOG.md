@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.19] - 12 August 2021
+### Fixed
+- Prevent duplicate AJAX call when searching in modal popup
+
 ## [1.6.18] - 17 May 2021
 ### Fixed
 - Cleanup of DI code
