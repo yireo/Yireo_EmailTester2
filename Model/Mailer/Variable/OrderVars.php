@@ -78,9 +78,14 @@ class OrderVars implements VariablesInterface
      */
     private function getFormattedShippingAddress(): string
     {
-        return $this->order->getIsVirtual()
+        $address = $this->order->getShippingAddress();
+        if (!$address) {
+            $address = $this->order->getBillingAddress();
+        }
+
+        return $this->order->getIsVirtual() || !$address
             ? ''
-            : (string)$this->addressRenderer->format($this->order->getShippingAddress(), 'html');
+            : (string)$this->addressRenderer->format($address, 'html');
     }
 
     /**
@@ -88,6 +93,8 @@ class OrderVars implements VariablesInterface
      */
     private function getFormattedBillingAddress(): string
     {
-        return (string)$this->addressRenderer->format($this->order->getBillingAddress(), 'html');
+        return !$this->order->getBillingAddress()
+            ? ''
+            : (string)$this->addressRenderer->format($this->order->getBillingAddress(), 'html');
     }
 }
