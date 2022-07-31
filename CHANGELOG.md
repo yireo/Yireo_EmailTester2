@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [1.6.24] - 31 July 2022
+### Fixed
+- Bump
+
 ## [1.6.23] - 31 July 2022
 ### Fixed
 - Bump
@@ -22,6 +26,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Copy shipping address from billing address when empty
 - Fix PHP 8.1 error with Magento AlertGrid (issue 35569)
+
+## [1.6.21] - 11 July 2022
+### Fixed
+- Version bump
+
+## [1.6.20] - 28 June 2021
+### Fixed
+- Version bump
 
 ## [1.6.19] - 12 August 2021
 ### Fixed
