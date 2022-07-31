@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [1.6.23] - 31 July 2022
+### Fixed
+- Bump
+
 ## [1.6.22] - 31 July 2022
 ### Fixed
 - Fix empty output in AlertGrid causing `preg_replace` error in Magento core
