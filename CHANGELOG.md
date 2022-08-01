@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.6.20] - 26 June 2022
+### Fixed
+- Copy shipping address from billing address when empty
+- Fix PHP 8.1 error with Magento AlertGrid (issue 35569)
 
 ## [1.6.21] - 11 July 2022
 ### Fixed
