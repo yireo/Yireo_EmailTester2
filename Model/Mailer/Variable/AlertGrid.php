@@ -10,6 +10,7 @@
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
 use Exception;
+use Throwable;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -20,7 +21,6 @@ use Magento\ProductAlert\Block\Email\Price;
 use Magento\ProductAlert\Block\Email\Stock;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Store\Api\StoreRepositoryInterface;
-use Magento\Store\Model\App\Emulation;
 use Yireo\EmailTester2\Model\Mailer\VariablesInterface;
 
 class AlertGrid implements VariablesInterface
@@ -44,11 +44,6 @@ class AlertGrid implements VariablesInterface
      * @var LayoutFactory
      */
     private $layoutFactory;
-
-    /**
-     * @var Emulation
-     */
-    private $appEmulation;
 
     /**
      * @var int
@@ -80,7 +75,6 @@ class AlertGrid implements VariablesInterface
      * @param State $appState
      * @param StoreRepositoryInterface $storeRepository
      * @param LayoutFactory $layoutFactory
-     * @param Emulation $appEmulation
      * @param ScopeConfigInterface $scopeConfig
      * @param DesignInterface $design
      * @param ProductRepositoryInterface $productRepository
@@ -89,7 +83,6 @@ class AlertGrid implements VariablesInterface
         State $appState,
         StoreRepositoryInterface $storeRepository,
         LayoutFactory $layoutFactory,
-        Emulation $appEmulation,
         ScopeConfigInterface $scopeConfig,
         DesignInterface $design,
         ProductRepositoryInterface $productRepository
@@ -97,7 +90,6 @@ class AlertGrid implements VariablesInterface
         $this->appState = $appState;
         $this->storeRepository = $storeRepository;
         $this->layoutFactory = $layoutFactory;
-        $this->appEmulation = $appEmulation;
         $this->scopeConfig = $scopeConfig;
         $this->design = $design;
         $this->productRepository = $productRepository;
@@ -151,7 +143,11 @@ class AlertGrid implements VariablesInterface
                     }
                 }
 
-                return $block->toHtml();
+                try {
+                    return $block->toHtml();
+                } catch (Throwable $throwable) {
+                    return $throwable->getMessage();
+                }
             }
         );
 
