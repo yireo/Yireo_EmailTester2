@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * Yireo EmailTester2 for Magento
  *
@@ -7,8 +8,6 @@
  * @copyright   Copyright 2019 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
-
-declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Console\Command;
 
@@ -23,6 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface as Output;
 use Symfony\Component\Console\Input\InputOption;
 use Yireo\EmailTester2\Config\Config;
 use Yireo\EmailTester2\Model\Mailer;
+use Magento\Framework\Console\Cli;
 
 class SendCommand extends Command
 {
@@ -157,6 +157,7 @@ class SendCommand extends Command
         $this->mailer->send();
 
         $output->writeln('<info>Mail has been sent</info>');
+        return Cli::RETURN_SUCCESS;
     }
 
     /**
