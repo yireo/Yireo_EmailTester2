@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [1.6.25] - 8 November 2023
+### Fixed
+- Calculate if order is virtual by using products
+
 ## [1.6.24] - 31 July 2022
 ### Fixed
 - Bump
