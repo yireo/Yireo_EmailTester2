@@ -22,6 +22,9 @@ Please note that we trust that you have familiarized yourself with the technical
 Deployment Modes (Production Mode, Developer Mode) and how to deploy changes from a developer site to a production site (static
 content deployment). Our module poses no difference to the regular deployment strategy that Magento recommends.
 
+## Usage
+The module can be configured via **Stores > Configuration > Yireo > Yireo EmailTester**. The module be used by navigating to **Marketing > Communications > Yireo EmailTester**.
+
 ## See also
 - [ChangeLog](CHANGELOG.md)
 - [Testing](TESTING.md)
