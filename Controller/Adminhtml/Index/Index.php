@@ -17,11 +17,13 @@ use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Page;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Component\ComponentRegistrar;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\View\Result\PageFactory;
 use Yireo\EmailTester2\Config\Config;
 use Yireo\EmailTester2\ViewModel\Form;
+use Yireo\ExtensionChecker\Util\ModuleInfo;
 
 class Index extends Action
 {
@@ -43,6 +45,8 @@ class Index extends Action
      * @var Form
      */
     private $formViewModel;
+    private ComponentRegistrar $componentRegistrar;
+    private ModuleInfo $moduleInfo;
 
     /**
      * @param Context $context
@@ -50,19 +54,25 @@ class Index extends Action
      * @param ManagerInterface $messageManager
      * @param Config $config
      * @param Form $formViewModel
+     * @param ComponentRegistrar $componentRegistrar
+     * @param ModuleInfo $moduleInfo
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
         ManagerInterface $messageManager,
         Config $config,
-        Form $formViewModel
+        Form $formViewModel,
+        ComponentRegistrar $componentRegistrar,
+        ModuleInfo $moduleInfo
     ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
         $this->messageManager = $messageManager;
         $this->config = $config;
         $this->formViewModel = $formViewModel;
+        $this->componentRegistrar = $componentRegistrar;
+        $this->moduleInfo = $moduleInfo;
     }
 
     /**
@@ -101,6 +111,8 @@ class Index extends Action
      */
     public function execute(): Page
     {
+        $this->checkForAdminReactComponents();
+
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('Yireo_EmailTester2::index');
@@ -108,5 +120,18 @@ class Index extends Action
         $resultPage->getConfig()->getTitle()->prepend(__('Yireo EmailTester'));
 
         return $resultPage;
+    }
+
+    private function checkForAdminReactComponents()
+    {
+        $path = $this->componentRegistrar->getPath(ComponentRegistrar::MODULE, 'Yireo_AdminReactComponents');
+        if (empty($path)) {
+            $this->messageManager->addErrorMessage('Module "Yireo_AdminReactComponents" is required but is not installed');
+        }
+
+        $moduleInfo = $this->moduleInfo->getModuleInfo('Yireo_AdminReactComponents');
+        if (empty($moduleInfo)) {
+            $this->messageManager->addErrorMessage('Module "Yireo_AdminReactComponents" is required but is not enabled');
+        }
     }
 }

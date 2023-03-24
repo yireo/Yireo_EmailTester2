@@ -5,7 +5,7 @@ define([
 
         return IdPreviewField.extend({
             defaults: {
-                idPreviewUrl: window.emailtester.orderIdAjaxUrl,
+                idPreviewUrl: window.yireo_react.orderIdAjaxUrl,
                 imports: {
                     searchValue: 'emailtester_form.emailtester_form.order_fieldset.order_search:value'
                 }

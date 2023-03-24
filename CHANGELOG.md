@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-## [1.6.25] - 8 November 2023
+## [1.7.0] - 24 March 2023
+### Added
+- Added dependency with new `Yireo_AdminReactComponents` module
+
+## [1.6.25] - 8 November 2022
 ### Fixed
 - Calculate if order is virtual by using products
 
