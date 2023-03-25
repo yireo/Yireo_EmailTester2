@@ -20,10 +20,10 @@ use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Component\ComponentRegistrar;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Module\ModuleList;
 use Magento\Framework\View\Result\PageFactory;
 use Yireo\EmailTester2\Config\Config;
 use Yireo\EmailTester2\ViewModel\Form;
-use Yireo\ExtensionChecker\Util\ModuleInfo;
 
 class Index extends Action
 {
@@ -41,12 +41,21 @@ class Index extends Action
      * @var Config
      */
     private $config;
+
     /**
      * @var Form
      */
     private $formViewModel;
-    private ComponentRegistrar $componentRegistrar;
-    private ModuleInfo $moduleInfo;
+
+    /**
+     * @var ComponentRegistrar
+     */
+    private $componentRegistrar;
+
+    /**
+     * @var ModuleList
+     */
+    private $moduleList;
 
     /**
      * @param Context $context
@@ -55,7 +64,7 @@ class Index extends Action
      * @param Config $config
      * @param Form $formViewModel
      * @param ComponentRegistrar $componentRegistrar
-     * @param ModuleInfo $moduleInfo
+     * @param ModuleList $moduleList
      */
     public function __construct(
         Context $context,
@@ -64,7 +73,7 @@ class Index extends Action
         Config $config,
         Form $formViewModel,
         ComponentRegistrar $componentRegistrar,
-        ModuleInfo $moduleInfo
+        ModuleList $moduleList
     ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
@@ -72,7 +81,7 @@ class Index extends Action
         $this->config = $config;
         $this->formViewModel = $formViewModel;
         $this->componentRegistrar = $componentRegistrar;
-        $this->moduleInfo = $moduleInfo;
+        $this->moduleList = $moduleList;
     }
 
     /**
@@ -129,8 +138,8 @@ class Index extends Action
             $this->messageManager->addErrorMessage('Module "Yireo_AdminReactComponents" is required but is not installed');
         }
 
-        $moduleInfo = $this->moduleInfo->getModuleInfo('Yireo_AdminReactComponents');
-        if (empty($moduleInfo)) {
+        $moduleList = $this->moduleList->getOne('Yireo_AdminReactComponents');
+        if (empty($moduleList)) {
             $this->messageManager->addErrorMessage('Module "Yireo_AdminReactComponents" is required but is not enabled');
         }
     }
