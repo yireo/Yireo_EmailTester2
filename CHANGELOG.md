@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [1.7.2] - 19 April 2023
+### Fixed
+- Change composer name of React module
+- Update XML structure to fix fields not being picked up
+
 ## [1.7.1] - 25 March 2023
 ### Fixed
 - Swap dep of ExtensionChecker with core module info

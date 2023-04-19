@@ -1,6 +1,6 @@
 {
     "name": "yireo/magento2-emailtester2",
-    "version": "1.7.1",
+    "version": "1.7.2",
     "license": "OSL-3.0",
     "type": "magento2-module",
     "homepage": "https://www.yireo.com/software/magento-extensions/emailtester2",
@@ -29,7 +29,7 @@
         "magento/module-sales": "^100.0|^101.0|^102.0|^103.0",
         "magento/module-store": "^100.0|^101.0",
         "magento/module-ui": "^101.0",
-        "yireo/module-admin-react-components": "^1.0",
+        "yireo/magento2-admin-react-components": "^1.0",
         "ext-pcre": "*",
         "ext-json": "*"
     },
