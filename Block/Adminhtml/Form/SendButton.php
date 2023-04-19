@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Block\Adminhtml\Form;
 
@@ -8,9 +7,9 @@ use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 class SendButton implements ButtonProviderInterface
 {
     /**
-     * @return array
+     * @return mixed[]
      */
-    public function getButtonData()
+    public function getButtonData(): array
     {
         return [
             'label' => __('Send Email'),
