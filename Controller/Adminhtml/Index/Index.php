@@ -17,8 +17,10 @@ use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Page;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Component\ComponentRegistrar;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Module\ModuleList;
 use Magento\Framework\View\Result\PageFactory;
 use Yireo\EmailTester2\Config\Config;
 use Yireo\EmailTester2\ViewModel\Form;
@@ -39,10 +41,21 @@ class Index extends Action
      * @var Config
      */
     private $config;
+
     /**
      * @var Form
      */
     private $formViewModel;
+
+    /**
+     * @var ComponentRegistrar
+     */
+    private $componentRegistrar;
+
+    /**
+     * @var ModuleList
+     */
+    private $moduleList;
 
     /**
      * @param Context $context
@@ -50,19 +63,25 @@ class Index extends Action
      * @param ManagerInterface $messageManager
      * @param Config $config
      * @param Form $formViewModel
+     * @param ComponentRegistrar $componentRegistrar
+     * @param ModuleList $moduleList
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
         ManagerInterface $messageManager,
         Config $config,
-        Form $formViewModel
+        Form $formViewModel,
+        ComponentRegistrar $componentRegistrar,
+        ModuleList $moduleList
     ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
         $this->messageManager = $messageManager;
         $this->config = $config;
         $this->formViewModel = $formViewModel;
+        $this->componentRegistrar = $componentRegistrar;
+        $this->moduleList = $moduleList;
     }
 
     /**
@@ -101,6 +120,8 @@ class Index extends Action
      */
     public function execute(): Page
     {
+        $this->checkForAdminReactComponents();
+
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('Yireo_EmailTester2::index');
@@ -108,5 +129,18 @@ class Index extends Action
         $resultPage->getConfig()->getTitle()->prepend(__('Yireo EmailTester'));
 
         return $resultPage;
+    }
+
+    private function checkForAdminReactComponents()
+    {
+        $path = $this->componentRegistrar->getPath(ComponentRegistrar::MODULE, 'Yireo_AdminReactComponents');
+        if (empty($path)) {
+            $this->messageManager->addErrorMessage('Module "Yireo_AdminReactComponents" is required but is not installed');
+        }
+
+        $moduleList = $this->moduleList->getOne('Yireo_AdminReactComponents');
+        if (empty($moduleList)) {
+            $this->messageManager->addErrorMessage('Module "Yireo_AdminReactComponents" is required but is not enabled');
+        }
     }
 }

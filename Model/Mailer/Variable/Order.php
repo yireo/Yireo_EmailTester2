@@ -160,9 +160,6 @@ class Order implements VariablesInterface
         $order = $this->getOrder();
         $this->setProductInOrder($order);
 
-        $order->setIsVirtual($order->getIsVirtual());
-        $order->setData('is_not_virtual', !$order->getIsVirtual());
-
         return [
             'order' => $order,
             'order_data' => $order,
@@ -189,6 +186,10 @@ class Order implements VariablesInterface
             $item->setName($product->getName());
             $item->setSku($product->getSku());
         }
+
+        $isVirtual = $product->getIsVirtual();
+        $order->setIsVirtual($isVirtual);
+        $order->setIsNotVirtual(!$isVirtual);
 
         return true;
     }

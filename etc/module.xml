@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
 /**
- * Yireo EmailTester2 for Magento 
+ * Yireo EmailTester2 for Magento
  *
  * @author      Yireo (https://www.yireo.com/)
  * @copyright   Copyright 2018 Yireo (https://www.yireo.com/)
@@ -23,6 +23,7 @@
             <module name="Magento_Quote"/>
             <module name="Magento_Sales"/>
             <module name="Magento_Ui"/>
+            <module name="Yireo_AdminReactComponents"/>
         </sequence>
     </module>
 </config>

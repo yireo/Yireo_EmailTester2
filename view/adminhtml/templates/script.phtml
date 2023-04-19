@@ -1,6 +1,6 @@
 <?php
 /**
- * EmailTester2 extension for Magento
+ * AdminReactComponents extension for Magento
  *
  * @author      Yireo (https://www.yireo.com/)
  * @copyright   Copyright (c) 2018 Yireo.com
@@ -12,12 +12,6 @@
 <script>
     window.emailtester = {
         "previewUrl": "<?= $block->escapeUrl($block->getUrl('*/*/preview')) ?>",
-        "sendUrl": "<?= $block->escapeUrl($block->getUrl('*/*/send')) ?>",
-        "customerSearchAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/customerSearch')) ?>",
-        "productSearchAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/productSearch')) ?>",
-        "orderSearchAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/orderSearch')) ?>",
-        "customerLabelAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/customerLabel')) ?>",
-        "productLabelAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/productLabel')) ?>",
-        "orderLabelAjaxUrl": "<?= $block->escapeUrl($block->getUrl('*/ajax/orderLabel')) ?>"
+        "sendUrl": "<?= $block->escapeUrl($block->getUrl('*/*/send')) ?>"
     };
 </script>
