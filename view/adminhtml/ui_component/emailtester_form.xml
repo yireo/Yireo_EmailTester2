@@ -135,10 +135,12 @@
         <field name="customer_id" sortOrder="2" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="fieldName" xsi:type="string">customer_id</item>
                     <item name="elementId" xsi:type="string">customer_search</item>
                     <item name="reactComponentPath" xsi:type="string">CustomerSearch</item>
                     <item name="elementTmpl" xsi:type="string">Yireo_AdminReactComponents/react_loader.html</item>
+                    <item name="reactProps" xsi:type="array">
+                        <item name="fieldName" xsi:type="string">customer_id</item>
+                    </item>
                 </item>
             </argument>
             <settings>
@@ -157,10 +159,12 @@
         <field name="product_id" sortOrder="2" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="fieldName" xsi:type="string">product_id</item>
                     <item name="elementId" xsi:type="string">product_search</item>
                     <item name="reactComponentPath" xsi:type="string">ProductSearch</item>
                     <item name="elementTmpl" xsi:type="string">Yireo_AdminReactComponents/react_loader.html</item>
+                    <item name="reactProps" xsi:type="array">
+                        <item name="fieldName" xsi:type="string">product_id</item>
+                    </item>
                 </item>
             </argument>
             <settings>
@@ -178,10 +182,12 @@
         <field name="order_id" sortOrder="2" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="fieldName" xsi:type="string">order_id</item>
                     <item name="elementId" xsi:type="string">order_search</item>
                     <item name="reactComponentPath" xsi:type="string">OrderSearch</item>
                     <item name="elementTmpl" xsi:type="string">Yireo_AdminReactComponents/react_loader.html</item>
+                    <item name="reactProps" xsi:type="array">
+                        <item name="fieldName" xsi:type="string">order_id</item>
+                    </item>
                 </item>
             </argument>
             <settings>
