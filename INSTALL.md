@@ -1,4 +1,5 @@
 # Installation
+
 ## Requirements
 * Magento 2.2.0 Stable or higher
 
@@ -15,8 +16,10 @@ harder and might lead to errors quicker. So we recommend you to use `composer` i
 ## Activation
 Next, enable the new module using the following CLI commands:
 
-    ./bin/magento module:enable Yireo_EmailTester2
-    ./bin/magento setup:upgrade
+```bash
+./bin/magento module:enable Yireo_EmailTester2 Yireo_AdminReactComponents
+./bin/magento setup:upgrade
+```
 
 Please note that we trust that you have familiarized yourself with the technical aspects of Magento 2: How to properly use
 Deployment Modes (Production Mode, Developer Mode) and how to deploy changes from a developer site to a production site (static
