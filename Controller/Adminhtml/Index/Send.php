@@ -41,7 +41,7 @@ class Send extends Action
     /**
      * @var MessageManager
      */
-    private $messageManager;
+    protected $messageManager;
 
     /**
      * @var Form
