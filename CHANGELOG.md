@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [1.7.3] - 11 July 2023
+### Fixed
+- Fix PHP 8.2 deprecation warnings #10 @Phennim
+
 ## [1.7.2] - 19 April 2023
 ### Fixed
 - Change composer name of React module
