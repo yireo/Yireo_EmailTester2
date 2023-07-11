@@ -40,7 +40,7 @@ class Index extends Action
     /**
      * @var ManagerInterface
      */
-    private $messageManager;
+    protected $messageManager;
 
     /**
      * @var Config
