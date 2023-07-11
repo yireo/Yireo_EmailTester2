@@ -31,6 +31,11 @@ class PaymentHtml implements VariableInterface
     private $storeId = 0;
 
     /**
+     * @var PhraseFactory
+     */
+    private $phraseFactory;
+
+    /**
      * @var Data
      */
     private $paymentHelper;

@@ -38,6 +38,11 @@ class Index extends Action
     private $resultPageFactory;
 
     /**
+     * @var ManagerInterface
+     */
+    private $messageManager;
+
+    /**
      * @var Config
      */
     private $config;
