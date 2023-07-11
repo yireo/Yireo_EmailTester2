@@ -39,6 +39,11 @@ class Send extends Action
     private $mailer;
 
     /**
+     * @var MessageManager
+     */
+    private $messageManager;
+
+    /**
      * @var Form
      */
     private $formViewModel;

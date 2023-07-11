@@ -62,6 +62,11 @@ class Customer implements VariablesInterface
     private $customerViewHelper;
 
     /**
+     * @var PhraseFactory
+     */
+    private $phraseFactory;
+
+    /**
      * Order constructor.
      *
      * @param CustomerRepositoryInterface $customerRepository
