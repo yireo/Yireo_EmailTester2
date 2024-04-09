@@ -132,23 +132,24 @@
             <label translate="true">Customer Value</label>
         </settings>
 
-        <field name="customer_id" sortOrder="2" formElement="input">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="elementId" xsi:type="string">customer_search</item>
-                    <item name="reactComponentPath" xsi:type="string">CustomerSearch</item>
-                    <item name="elementTmpl" xsi:type="string">Yireo_AdminReactComponents/react_loader.html</item>
-                    <item name="reactProps" xsi:type="array">
-                        <item name="fieldName" xsi:type="string">customer_id</item>
-                    </item>
-                </item>
-            </argument>
-            <settings>
-                <dataType>text</dataType>
-                <label translate="true">Customer ID</label>
-                <dataScope>customer_search</dataScope>
-            </settings>
-        </field>
+        <htmlContent>
+            <block name="customer_search" template="Yireo_AdminSimpleSearchFields::search/field.phtml">
+                <arguments>
+                    <argument name="field" xsi:type="object">Yireo\AdminSimpleSearchFields\ViewModel\CustomerField
+                    </argument>
+                    <argument name="field_name" xsi:type="string">customer_id</argument>
+                    <argument name="field_label" xsi:type="string">Customer ID</argument>
+                </arguments>
+
+                <block name="product.search.field.script" as="script"
+                       template="Yireo_AdminSimpleSearchFields::search/field/script.phtml">
+                    <arguments>
+                        <argument name="field" xsi:type="object">Yireo\AdminSimpleSearchFields\ViewModel\CustomerField
+                        </argument>
+                    </arguments>
+                </block>
+            </block>
+        </htmlContent>
     </fieldset>
 
     <fieldset name="product_fieldset">
@@ -156,22 +157,24 @@
             <label translate="true">Product Value</label>
         </settings>
 
-        <field name="product_id" sortOrder="2" formElement="input">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="elementId" xsi:type="string">product_search</item>
-                    <item name="reactComponentPath" xsi:type="string">ProductSearch</item>
-                    <item name="elementTmpl" xsi:type="string">Yireo_AdminReactComponents/react_loader.html</item>
-                    <item name="reactProps" xsi:type="array">
-                        <item name="fieldName" xsi:type="string">product_id</item>
-                    </item>
-                </item>
-            </argument>
-            <settings>
-                <dataType>text</dataType>
-                <label translate="true">Product ID</label>
-            </settings>
-        </field>
+        <htmlContent>
+            <block name="product_search" template="Yireo_AdminSimpleSearchFields::search/field.phtml">
+                <arguments>
+                    <argument name="field" xsi:type="object">Yireo\AdminSimpleSearchFields\ViewModel\ProductField
+                    </argument>
+                    <argument name="field_name" xsi:type="string">product_id</argument>
+                    <argument name="field_label" xsi:type="string">Product ID</argument>
+                </arguments>
+
+                <block name="product.search.field.script" as="script"
+                       template="Yireo_AdminSimpleSearchFields::search/field/script.phtml">
+                    <arguments>
+                        <argument name="field" xsi:type="object">Yireo\AdminSimpleSearchFields\ViewModel\ProductField
+                        </argument>
+                    </arguments>
+                </block>
+            </block>
+        </htmlContent>
     </fieldset>
 
     <fieldset name="order_fieldset">
@@ -179,22 +182,23 @@
             <label translate="true">Order Value</label>
         </settings>
 
-        <field name="order_id" sortOrder="2" formElement="input">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="elementId" xsi:type="string">order_search</item>
-                    <item name="reactComponentPath" xsi:type="string">OrderSearch</item>
-                    <item name="elementTmpl" xsi:type="string">Yireo_AdminReactComponents/react_loader.html</item>
-                    <item name="reactProps" xsi:type="array">
-                        <item name="fieldName" xsi:type="string">order_id</item>
-                    </item>
-                </item>
-            </argument>
-            <settings>
-                <dataType>text</dataType>
-                <label translate="true">Order ID</label>
-            </settings>
-        </field>
-    </fieldset>
+        <htmlContent>
+            <block name="order_search" template="Yireo_AdminSimpleSearchFields::search/field.phtml">
+                <arguments>
+                    <argument name="field" xsi:type="object">Yireo\AdminSimpleSearchFields\ViewModel\OrderField
+                    </argument>
+                    <argument name="field_name" xsi:type="string">order_id</argument>
+                    <argument name="field_label" xsi:type="string">Order ID</argument>
+                </arguments>
 
+                <block name="product.search.field.script" as="script"
+                       template="Yireo_AdminSimpleSearchFields::search/field/script.phtml">
+                    <arguments>
+                        <argument name="field" xsi:type="object">Yireo\AdminSimpleSearchFields\ViewModel\OrderField
+                        </argument>
+                    </arguments>
+                </block>
+            </block>
+        </htmlContent>
+    </fieldset>
 </form>
