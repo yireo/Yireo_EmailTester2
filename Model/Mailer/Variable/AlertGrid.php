@@ -127,7 +127,7 @@ class AlertGrid implements VariablesInterface
 
         $alertGrid = $this->appState->emulateAreaCode(
             Area::AREA_FRONTEND,
-            function () use ($store, $layoutFactory) {
+            function () use ($layoutFactory) {
                 /** @var Price $block */
                 $layout = $layoutFactory->create();
                 $block = $layout->createBlock($this->getBlockClass());
