@@ -128,7 +128,7 @@ class Order
      */
     public function getOrderIncrementId(): string
     {
-        return (string)$this->getOrder()->getIncrementId();
+        return (string)$this->getOrder($this->getOrderId())->getIncrementId();
     }
 
     /**
@@ -221,6 +221,6 @@ class Order
      */
     private function getOrderCollectionLimit() : int
     {
-        return (int) $this->getStoreConfig('emailtester/settings/limit_order');
+        return (int) $this->config->getValue('emailtester/settings/limit_order');
     }
 }

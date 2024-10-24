@@ -61,11 +61,11 @@ class Email implements OptionSourceInterface
         $options = [];
         $collection = $this->emailTemplateCollection;
 
-        if (!empty($collection)) {
+        if ($collection->count() > 0) {
             foreach ($collection as $template) {
-                /** @var Template $templateCode */
+                /** @var Template $template */
                 $templateCode = (string)$template->getTemplateCode();
-                if (empty($templateCode)) {
+                if (false === strlen($templateCode) > 0) {
                     $templateCode = (string)$template->getData('orig_template_code');
                 }
 
@@ -82,7 +82,7 @@ class Email implements OptionSourceInterface
                 continue;
             }
 
-            if (!empty($collection)) {
+            if ($collection->count() > 0) {
                 $option['label'] = '[' . $option['group'] . '] ' . $option['label'];
             }
             $options[] = $option;

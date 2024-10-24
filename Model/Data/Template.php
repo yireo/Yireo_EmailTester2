@@ -73,9 +73,6 @@ class Template
                 continue;
             }
 
-            if (!empty($collection)) {
-                $option['label'] = '[default] ' . $option['label'];
-            }
             $options[] = $option;
         }
 

@@ -114,10 +114,6 @@ class RecipientFactory
         }
 
         $recipientEmail = $data['email'];
-        if (empty($recipientEmail)) {
-            return false;
-        }
-
         $recipient->setEmail($recipientEmail);
 
         return false;

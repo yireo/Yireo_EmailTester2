@@ -66,7 +66,7 @@ class SendCommand extends Command
         $this->storeManager = $storeManager;
         $this->config = $config;
         $this->state = $state;
-        return parent::__construct($name);
+        parent::__construct($name);
     }
 
     /**

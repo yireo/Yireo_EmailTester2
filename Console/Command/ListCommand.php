@@ -36,7 +36,7 @@ class ListCommand extends Command
         $name = null
     ) {
         $this->emailOptions = $emailOptions;
-        return parent::__construct($name);
+        parent::__construct($name);
     }
 
     /**
