@@ -116,12 +116,7 @@ class Customer implements VariablesInterface
      */
     public function getVariable() : CustomerSecure
     {
-        /** @var CustomerInterface $customer */
-        if (!empty($this->order) && $this->order->getCustomerId() > 0 && $this->customerId == 0) {
-            $customer = $this->getCustomerById((int) $this->order->getCustomerId());
-        } elseif ($this->customerId) {
-            $customer = $this->getCustomerById((int) $this->customerId);
-        }
+        $customer = $this->getCustomer();
 
         // Load the first customer instead
         if (empty($customer) || !$customer->getId() > 0) {
@@ -184,5 +179,23 @@ class Customer implements VariablesInterface
     public function setOrder(OrderInterface $order)
     {
         $this->order = $order;
+    }
+
+    /**
+     * @return false|CustomerInterface
+     * @throws LocalizedException
+     */
+    private function getCustomer(): CustomerInterface|false
+    {
+        /** @var CustomerInterface $customer */
+        if (!empty($this->order) && $this->order->getCustomerId() > 0 && $this->customerId == 0) {
+            return $this->getCustomerById((int)$this->order->getCustomerId());
+        }
+
+        if ($this->customerId) {
+            return $this->getCustomerById((int)$this->customerId);
+        }
+
+        return false;
     }
 }
