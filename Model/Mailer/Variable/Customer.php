@@ -185,7 +185,7 @@ class Customer implements VariablesInterface
      * @return false|CustomerInterface
      * @throws LocalizedException
      */
-    private function getCustomer(): CustomerInterface|false
+    private function getCustomer(): ?CustomerInterface
     {
         /** @var CustomerInterface $customer */
         if (!empty($this->order) && $this->order->getCustomerId() > 0 && $this->customerId == 0) {
@@ -196,6 +196,6 @@ class Customer implements VariablesInterface
             return $this->getCustomerById((int)$this->customerId);
         }
 
-        return false;
+        return null;
     }
 }
