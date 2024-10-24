@@ -1,8 +1,1 @@
-<?php
-/** @var $block \Magento\Framework\View\Element\Template */
-/** @var $versionViewModel \Yireo\EmailTester2\ViewModel\Version */
-$versionViewModel = $block->getVersionViewModel();
-?>
-<div class="version">
-    Yireo EmailTester version <?= $block->escapeHtml($versionViewModel->getModuleVersion()) ?>
-</div>
+<?php /** @var $block \Magento\Framework\View\Element\Template */ /** @var $versionViewModel \Yireo\EmailTester2\ViewModel\Version */ $versionViewModel = $block->getVersionViewModel(); ?> <div class="version"> Yireo EmailTester version <?= $block->escapeHtml($versionViewModel->getModuleVersion()) ?></div>

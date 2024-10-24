@@ -19,7 +19,10 @@
             <resource>Yireo_EmailTester2::config</resource>
             <group id="settings" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Settings</label>
-
+                <field id="funding" type="note" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Funding</label>
+                    <frontend_model>Yireo\EmailTester2\Config\Frontend\Funding</frontend_model>
+                </field>
                 <field id="default_sender" translate="label" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Default Email Sender</label>
                     <backend_model>Magento\Config\Model\Config\Backend\Email\Address</backend_model>
