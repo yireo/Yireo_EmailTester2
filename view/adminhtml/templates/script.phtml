@@ -1,4 +1,14 @@
-<?php /** * AdminReactComponents extension for Magento * * @author Yireo (https://www.yireo.com/) * @copyright Copyright (c) 2018 Yireo.com * @license Open Software License */ /** @var $block Magento\Backend\Block\Template */ ?> <script>
+<?php
+
+declare(strict_types=1);
+/**
+ * @author Yireo (https://www.yireo.com/)
+ * * @copyright Copyright (c) 2018 Yireo.com
+ * * @license Open Software License
+ */
+
+/** @var $block Magento\Backend\Block\Template */ ?>
+<script>
     window.emailtester = {
         "previewUrl": "<?= $block->escapeUrl($block->getUrl('*/*/preview')) ?>",
         "sendUrl": "<?= $block->escapeUrl($block->getUrl('*/*/send')) ?>"

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [1.7.8] - 5 November 2024
+### Fixed
+- Properly implement `yireo/magento2-admin-simple-search-fields`
+
 ## [1.7.7] - 5 November 2024
 ### Fixed
 - Add dep `yireo/magento2-admin-simple-search-fields`

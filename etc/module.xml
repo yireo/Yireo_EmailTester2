@@ -23,7 +23,7 @@
             <module name="Magento_Quote"/>
             <module name="Magento_Sales"/>
             <module name="Magento_Ui"/>
-            <module name="Yireo_AdminReactComponents"/>
+            <module name="Yireo_AdminSimpleSearchFields"/>
         </sequence>
     </module>
 </config>

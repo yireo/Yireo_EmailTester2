@@ -125,7 +125,7 @@ class Index extends Action
      */
     public function execute(): Page
     {
-        $this->checkForAdminReactComponents();
+        $this->checkForDependencies();
 
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
@@ -136,16 +136,16 @@ class Index extends Action
         return $resultPage;
     }
 
-    private function checkForAdminReactComponents()
+    private function checkForDependencies()
     {
-        $path = $this->componentRegistrar->getPath(ComponentRegistrar::MODULE, 'Yireo_AdminReactComponents');
+        $path = $this->componentRegistrar->getPath(ComponentRegistrar::MODULE, 'Yireo_AdminSimpleSearchFields');
         if (empty($path)) {
-            $this->messageManager->addErrorMessage('Module "Yireo_AdminReactComponents" is required but is not installed');
+            $this->messageManager->addErrorMessage('Module "Yireo_AdminSimpleSearchFields" is required but is not installed');
         }
 
-        $moduleList = $this->moduleList->getOne('Yireo_AdminReactComponents');
+        $moduleList = $this->moduleList->getOne('Yireo_AdminSimpleSearchFields');
         if (empty($moduleList)) {
-            $this->messageManager->addErrorMessage('Module "Yireo_AdminReactComponents" is required but is not enabled');
+            $this->messageManager->addErrorMessage('Module "Yireo_AdminSimpleSearchFields" is required but is not enabled');
         }
     }
 }

@@ -12,11 +12,9 @@
     <head>
         <title>EmailTester Overview</title>
         <css src="Yireo_EmailTester2/css/emailtester.css"/>
-        <script src="Yireo_AdminReactComponents/js/react.js"/>
     </head>
     <body>
         <referenceContainer name="content">
-            <block name="Yireo_AdminReactComponents_script" template="Yireo_AdminReactComponents::script.phtml"/>
             <block name="Yireo_EmailTester2_script" template="Yireo_EmailTester2::script.phtml"/>
             <uiComponent name="emailtester_form"/>
             <block name="version" template="Yireo_EmailTester2::version.phtml" after="-">
