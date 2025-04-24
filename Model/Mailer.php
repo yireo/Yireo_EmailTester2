@@ -29,6 +29,7 @@ use Magento\Framework\Translate\Inline\StateInterface;
 use Magento\Email\Model\Template\Config as TemplateConfig;
 use Magento\Store\Model\StoreManagerInterface;
 use Exception;
+use Symfony\Component\Mime\Part\TextPart;
 use Yireo\EmailTester2\Behaviour\Errorable;
 use Yireo\EmailTester2\Model\Mailer\Addressee;
 use Yireo\EmailTester2\Model\Mailer\Recipient;
@@ -225,12 +226,16 @@ class Mailer extends DataObject
     protected function getRawContentFromTransportBuilder(): string
     {
         /** @var Message $message */
-        /** @var string|object $body */
+        /** @var string|TextPart|object $body */
         $message = $this->transportBuilder->getMessage();
         $body = $message->getBody();
 
         if (is_string($body)) {
             return $body;
+        }
+
+        if ($body instanceof TextPart) {
+            return $body->getBody();
         }
 
         if (method_exists($body, 'getRawContent')) {
