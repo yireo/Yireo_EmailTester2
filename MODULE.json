@@ -1,0 +1,21 @@
+{
+    "module_name": "Yireo_EmailTester2",
+    "composer_name": "yireo/magento2-emailtester2",
+    "sequence": [
+        "Magento_Backend",
+        "Magento_Catalog",
+        "Magento_Config",
+        "Magento_Customer",
+        "Magento_Eav",
+        "Magento_Email",
+        "Magento_Payment",
+        "Magento_ProductAlert",
+        "Magento_Quote",
+        "Magento_Sales",
+        "Magento_Store",
+        "Magento_Ui",
+        "Yireo_AdminSimpleSearchFields"
+    ],
+    "phpcs_severity": "7",
+    "phpstan_level": "1"
+}
