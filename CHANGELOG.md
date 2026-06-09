@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [1.7.10] - 09 June 2026
+### Fixed
+- Fix Symfony 7 compatibility to CLI commands
+
 ## [1.7.9] - 24 April 2025
 ### Fixed
 - Fix for Symfony Mailer in Magento 2.4.8
