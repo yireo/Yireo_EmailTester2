@@ -532,11 +532,26 @@ class Mailer extends DataObject
             Area::AREA_FRONTEND,
             function () {
                 $data = $this->getData();
+                $data['template_code'] = $this->getTemplateCode();
                 $this->variableBuilder->setData($data);
             }
         );
 
         return $this->variableBuilder->getVariables();
+    }
+
+    /**
+     * @return string
+     */
+    private function getTemplateCode(): string
+    {
+        $template = $this->getTemplate();
+        $origTemplateCode = (string)$template->getOrigTemplateCode();
+        if ($origTemplateCode !== '') {
+            return $origTemplateCode;
+        }
+
+        return $this->getTemplateId();
     }
 
     /**

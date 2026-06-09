@@ -36,6 +36,11 @@ class AlertGrid implements VariablesInterface
     private $template;
 
     /**
+     * @var string
+     */
+    private $templateCode = '';
+
+    /**
      * @var State
      */
     private $appState;
@@ -160,7 +165,9 @@ class AlertGrid implements VariablesInterface
      */
     private function getBlockClass(): string
     {
-        if (strstr($this->template, 'stock')) {
+        $code = $this->templateCode !== '' ? $this->templateCode : (string)$this->template;
+
+        if (strstr($code, 'stock')) {
             return Stock::class;
         }
 
@@ -192,5 +199,14 @@ class AlertGrid implements VariablesInterface
     public function setTemplate(string $template)
     {
         $this->template = $template;
+    }
+
+    /**
+     *
+     * @param string $templateCode
+     */
+    public function setTemplateCode(string $templateCode)
+    {
+        $this->templateCode = $templateCode;
     }
 }
