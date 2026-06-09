@@ -42,7 +42,7 @@ class ListCommand extends Command
     /**
      * Configure this command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('yireo_emailtester2:list');
         $this->setDescription('List all available transactional emails');
@@ -54,7 +54,7 @@ class ListCommand extends Command
      *
      * @return void
      */
-    protected function execute(Input $input, Output $output)
+    protected function execute(Input $input, Output $output): int
     {
         $options = $this->emailOptions->toOptionArray();
 
@@ -71,5 +71,7 @@ class ListCommand extends Command
             ->setHeaders($headers)
             ->setRows($rows);
         $table->render();
+
+	return Command::SUCCESS;
     }
 }

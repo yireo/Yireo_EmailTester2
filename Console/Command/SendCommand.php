@@ -13,8 +13,6 @@ namespace Yireo\EmailTester2\Console\Command;
 
 use Magento\Framework\App\Area;
 use Magento\Framework\App\State;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\StoreManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface as Input;
@@ -22,39 +20,14 @@ use Symfony\Component\Console\Output\OutputInterface as Output;
 use Symfony\Component\Console\Input\InputOption;
 use Yireo\EmailTester2\Config\Config;
 use Yireo\EmailTester2\Model\Mailer;
-use Magento\Framework\Console\Cli;
 
 class SendCommand extends Command
 {
-    /**
-     * @var Mailer
-     */
-    private $mailer;
+    private Mailer $mailer;
+    private StoreManagerInterface $storeManager;
+    private Config $config;
+    private State $state;
 
-    /**
-     * @var StoreManagerInterface
-     */
-    private $storeManager;
-
-    /**
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * @var State
-     */
-    private $state;
-
-    /**
-     * NewRuleCommand constructor.
-     *
-     * @param Mailer $mailer
-     * @param StoreManagerInterface $storeManager
-     * @param Config $config
-     * @param State $state
-     * @param string $name
-     */
     public function __construct(
         Mailer $mailer,
         StoreManagerInterface $storeManager,
@@ -69,9 +42,6 @@ class SendCommand extends Command
         parent::__construct($name);
     }
 
-    /**
-     * Configure this command
-     */
     protected function configure()
     {
         $this->setName('yireo_emailtester2:send');
@@ -127,15 +97,7 @@ class SendCommand extends Command
         );
     }
 
-    /**
-     * @param Input $input
-     * @param Output $output
-     *
-     * @return void
-     * @throws LocalizedException
-     * @throws NoSuchEntityException
-     */
-    protected function execute(Input $input, Output $output)
+    protected function execute(Input $input, Output $output): int
     {
         $data = [];
         $data['email'] = $this->getStringOption($input, 'email', $this->config->getDefaultEmail());
@@ -157,7 +119,8 @@ class SendCommand extends Command
         $this->mailer->send();
 
         $output->writeln('<info>Mail has been sent</info>');
-        return Cli::RETURN_SUCCESS;
+
+        return Command::SUCCESS;
     }
 
     /**
