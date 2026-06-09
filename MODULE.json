@@ -17,5 +17,83 @@
         "Yireo_AdminSimpleSearchFields"
     ],
     "phpcs_severity": "7",
-    "phpstan_level": "1"
+    "phpstan_level": "1",
+    "php_versions": [
+        "8.1",
+        "8.2",
+        "8.3",
+        "8.4"
+    ],
+    "skip_magento_versions": [],
+    "skip_css_utils": false,
+    "modules": [
+        "Magento_Backend",
+        "Magento_Catalog",
+        "Magento_Cms",
+        "Magento_Config",
+        "Magento_Customer",
+        "Magento_Directory",
+        "Magento_Eav",
+        "Magento_Email",
+        "Magento_Indexer",
+        "Magento_Payment",
+        "Magento_ProductAlert",
+        "Magento_Quote",
+        "Magento_Rule",
+        "Magento_Sales",
+        "Magento_SalesSequence",
+        "Magento_Store",
+        "Magento_Theme",
+        "Magento_Ui",
+        "Magento_Variable",
+        "Yireo_AdminSimpleSearchFields"
+    ],
+    "components": [],
+    "config": [
+        {
+            "path": "emailtester2/settings/funding",
+            "label": "Settings > Funding",
+            "description": ""
+        },
+        {
+            "path": "emailtester2/settings/default_sender",
+            "label": "Settings > Default Email Sender",
+            "description": ""
+        },
+        {
+            "path": "emailtester2/settings/default_email",
+            "label": "Settings > Default Email Target",
+            "description": ""
+        },
+        {
+            "path": "emailtester2/settings/default_transactional",
+            "label": "Settings > Default Transactional Email",
+            "description": ""
+        },
+        {
+            "path": "emailtester2/settings/default_product",
+            "label": "Settings > Default Product",
+            "description": ""
+        },
+        {
+            "path": "emailtester2/settings/default_customer",
+            "label": "Settings > Default Customer",
+            "description": ""
+        },
+        {
+            "path": "emailtester2/settings/default_order",
+            "label": "Settings > Default Sales Order",
+            "description": ""
+        },
+        {
+            "path": "emailtester2/settings/debug",
+            "label": "Settings > Debug",
+            "description": ""
+        }
+    ],
+    "tests": {
+        "unit": 9,
+        "integration": 22,
+        "functional": 0
+    }
 }
