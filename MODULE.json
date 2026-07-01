@@ -13,8 +13,7 @@
         "Magento_Quote",
         "Magento_Sales",
         "Magento_Store",
-        "Magento_Ui",
-        "Yireo_AdminSimpleSearchFields"
+        "Magento_Ui"
     ],
     "phpcs_severity": "7",
     "phpstan_level": "1",
@@ -45,8 +44,7 @@
         "Magento_Store",
         "Magento_Theme",
         "Magento_Ui",
-        "Magento_Variable",
-        "Yireo_AdminSimpleSearchFields"
+        "Magento_Variable"
     ],
     "components": [],
     "config": [

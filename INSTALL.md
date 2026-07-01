@@ -17,7 +17,7 @@ harder and might lead to errors quicker. So we recommend you to use `composer` i
 Next, enable the new module using the following CLI commands:
 
 ```bash
-./bin/magento module:enable Yireo_EmailTester2 Yireo_AdminSimpleSearchFields
+./bin/magento module:enable Yireo_EmailTester2 Loki_Base Loki_Components Loki_AdminComponents
 ./bin/magento setup:upgrade
 ```
 

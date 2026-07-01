@@ -9,19 +9,99 @@
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:View/Layout:etc/page_configuration.xsd">
+    <update handle="loki_admin_components_form"/>
+
     <head>
         <title>EmailTester Overview</title>
-        <css src="Yireo_EmailTester2/css/emailtester.css"/>
     </head>
     <body>
         <referenceContainer name="content">
-            <block name="Yireo_EmailTester2_script" template="Yireo_EmailTester2::script.phtml"/>
-            <uiComponent name="emailtester_form"/>
+            <block
+                name="emailtester.form"
+                template="Loki_AdminComponents::form.phtml">
+                <arguments>
+                    <argument name="provider" xsi:type="string">Yireo\EmailTester2\Form\FormProvider</argument>
+                    <argument name="buttons" xsi:type="array">
+                        <item name="send" xsi:type="array">
+                            <item name="method" xsi:type="string">send</item>
+                            <item name="label" xsi:type="string">Send Email</item>
+                            <item name="primary" xsi:type="boolean">true</item>
+                        </item>
+                        <item name="preview" xsi:type="array">
+                            <item name="method" xsi:type="string">preview</item>
+                            <item name="label" xsi:type="string">Preview Email</item>
+                            <item name="primary" xsi:type="boolean">true</item>
+                        </item>
+                    </argument>
+                    <argument name="fieldsets" xsi:type="array">
+                        <item name="base" xsi:type="array">
+                            <item name="label" xsi:type="string">Generic Options</item>
+                        </item>
+                        <item name="customer" xsi:type="array">
+                            <item name="label" xsi:type="string">Customer Options</item>
+                        </item>
+                        <item name="product" xsi:type="array">
+                            <item name="label" xsi:type="string">Product Options</item>
+                        </item>
+                        <item name="order" xsi:type="array">
+                            <item name="label" xsi:type="string">Order Options</item>
+                        </item>
+                    </argument>
+                    <argument name="fields" xsi:type="array">
+                        <item name="mail_from" xsi:type="array">
+                            <item name="label" xsi:type="string">Mail From</item>
+                            <item name="required" xsi:type="boolean">true</item>
+                            <item name="fieldset" xsi:type="string">base</item>
+                        </item>
+                        <item name="mail_to" xsi:type="array">
+                            <item name="label" xsi:type="string">Mail To</item>
+                            <item name="required" xsi:type="boolean">true</item>
+                        </item>
+                        <item name="store_id" xsi:type="array">
+                            <item name="field_type" xsi:type="string">select</item>
+                            <item name="options" xsi:type="object">Loki\AdminComponents\ViewModel\Options\StoreViewOptions</item>
+                            <item name="label" xsi:type="string">Store View</item>
+                            <item name="required" xsi:type="boolean">true</item>
+                        </item>
+                        <item name="template" xsi:type="array">
+                            <item name="field_type" xsi:type="string">select</item>
+                            <item name="options" xsi:type="object">Yireo\EmailTester2\ViewModel\Options\EmailTemplateOptions</item>
+                            <item name="label" xsi:type="string">Template</item>
+                            <item name="required" xsi:type="boolean">true</item>
+                        </item>
+                        <item name="customer_id" xsi:type="array">
+                            <item name="label" xsi:type="string">Customer</item>
+                            <item name="field_type" xsi:type="string">customer_select</item>
+                        </item>
+
+                        <item name="product_id" xsi:type="array">
+                            <item name="label" xsi:type="string">Product</item>
+                            <item name="field_type" xsi:type="string">product_select</item>
+                        </item>
+
+                        <item name="order_id" xsi:type="array">
+                            <item name="label" xsi:type="string">Order</item>
+                            <item name="provider" xsi:type="string">Magento\Sales\Model\OrderRepository</item>
+                            <item name="resource_model" xsi:type="string">Magento\Sales\Model\ResourceModel\Order</item>
+                            <item name="field_type" xsi:type="string">entity_select</item>
+                            <item name="button_label" xsi:type="string">Select order</item>
+                            <item name="namespace" xsi:type="string">sales_order_grid</item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
             <block name="version" template="Yireo_EmailTester2::version.phtml" after="-">
                 <arguments>
                     <argument name="version_view_model" xsi:type="object">Yireo\EmailTester2\ViewModel\Version</argument>
                 </arguments>
             </block>
+        </referenceContainer>
+
+        <referenceContainer name="loki.script">
+            <block
+                name="emailtester-component-extend"
+                template="Yireo_EmailTester2::script/component-extend/emailtester-component-extend.phtml"
+            />
         </referenceContainer>
     </body>
 </page>

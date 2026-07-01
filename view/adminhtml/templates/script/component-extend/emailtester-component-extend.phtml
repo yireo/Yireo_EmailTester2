@@ -1,0 +1,33 @@
+<?php
+
+declare(strict_types=1);
+
+/** @var \Magento\Framework\View\Element\Template $block */
+
+$previewUrl = $block->escapeUrl($block->getUrl('*/*/preview'));
+$sendUrl = $block->escapeUrl($block->getUrl('*/*/send'));
+?>
+<script>
+    LokiComponentExtender.add('ExampleMixin', () => {
+        return {
+            preview() {
+                const url = '<?= $previewUrl ?>' + this.getEmailTesterParameters();
+                console.log('Previewing', url);
+            },
+            send() {
+                const url = '<?= $sendUrl ?>' + this.getEmailTesterParameters();
+                console.log('Previewing', url);
+            },
+            getEmailTesterParameters() {
+                return '?' +
+                    'sender=' + this.sender +
+                    'email=' + this.email +
+                    'store_id=' + this.store_id +
+                    'template=' + this.template +
+                    'customer_id=' + this.customer_id +
+                    'product_id=' + this.product_id +
+                    'order_id=' + this.order_id;
+            }
+        };
+    });
+</script>
