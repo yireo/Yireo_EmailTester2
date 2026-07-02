@@ -22,18 +22,6 @@
                 <arguments>
                     <argument name="provider" xsi:type="string">Yireo\EmailTester2\Form\FormProvider</argument>
                     <!--
-                    <argument name="buttons" xsi:type="array">
-                        <item name="send" xsi:type="array">
-                            <item name="method" xsi:type="string">send</item>
-                            <item name="label" xsi:type="string">Send Email</item>
-                            <item name="primary" xsi:type="boolean">true</item>
-                        </item>
-                        <item name="preview" xsi:type="array">
-                            <item name="method" xsi:type="string">preview</item>
-                            <item name="label" xsi:type="string">Preview Email</item>
-                            <item name="primary" xsi:type="boolean">true</item>
-                        </item>
-                    </argument>
                     <argument name="fieldsets" xsi:type="array">
                         <item name="base" xsi:type="array">
                             <item name="label" xsi:type="string">Generic Options</item>

@@ -16,8 +16,8 @@ $sendUrl = $block->escapeUrl($block->getUrl('*/*/send'));
                     return;
                 }
 
-                const url = '<?= $previewUrl ?>' + this.getEmailTesterParameters();
-                Alpine.store('Message').addMessage('error', 'Previewing ' + url);
+                const url = '<?= $previewUrl ?>?' + new URLSearchParams(params).toString();
+                window.open(url);
             },
             send() {
                 const params = this.getEmailTesterParameters();
@@ -25,26 +25,41 @@ $sendUrl = $block->escapeUrl($block->getUrl('*/*/send'));
                     return;
                 }
 
-                const url = '<?= $sendUrl ?>' + this.getEmailTesterParameters();
-                Alpine.store('Message').addMessage('error', 'Send ' + url);
+                const url = '<?= $sendUrl ?>?' + new URLSearchParams(params).toString();
+                window.open(url);
             },
             addError(message) {
                 Alpine.store('Message').addMessage('error', message);
             },
             getEmailTesterParameters() {
-                if (!this.sender) {
-                    this.addError('Please add a sender');
+                const fields = {
+                    'mail_from': 'Sender',
+                    'mail_to': 'Recipient',
+                    'store_id': 'Store ID',
+                    'template': 'Email Template',
+                    'customer_id': 'Customer',
+                    'product_id': 'Product',
+                    'order_id': 'Order',
+                };
+
+                let valid = true;
+                const values = {};
+
+                for (const [key, label] of Object.entries(fields)) {
+                    if (!this.item[key]) {
+                        this.addError('Please add a valid ' + label);
+                        valid = false;
+                        return false;
+                    }
+
+                    values[key] = this.item[key];
+                }
+
+                if (!valid) {
                     return false;
                 }
 
-                return '?' +
-                    'sender=' + this.sender +
-                    'email=' + this.email +
-                    'store_id=' + this.store_id +
-                    'template=' + this.template +
-                    'customer_id=' + this.customer_id +
-                    'product_id=' + this.product_id +
-                    'order_id=' + this.order_id;
+                return values;
             }
         };
     });

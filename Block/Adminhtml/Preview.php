@@ -82,8 +82,8 @@ class Preview extends Text
         $data['product_id'] = (int)$this->_request->getParam('product_id');
         $data['order_id'] = (int)$this->_request->getParam('order_id');
         $data['template'] = (string)$this->_request->getParam('template');
-        $data['email'] = (string)$this->_request->getParam('email');
-        $data['sender'] = (string)$this->_request->getParam('sender');
+        $data['mail_from'] = (string)$this->_request->getParam('mail_from');
+        $data['mail_to'] = (string)$this->_request->getParam('mail_to');
 
         return $data;
     }

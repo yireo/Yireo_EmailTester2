@@ -57,17 +57,13 @@ class Form extends Data
     {
         $data = [
             'store_id' => $this->getDefaultStoreId(),
-            'sender' => $this->config->getDefaultSender(),
-            'email' => $this->config->getDefaultEmail(),
+            'mail_from' => $this->config->getDefaultSender(),
+            'mail_to' => $this->config->getDefaultEmail(),
             'template' => $this->config->getDefaultTransactional(),
             'customer_id' => $this->config->getDefaultCustomer(),
             'order_id' => $this->config->getDefaultOrder(),
             'product_id' => $this->config->getDefaultProduct(),
         ];
-
-        $data['product_search'] = $data['product_id'];
-        $data['customer_search'] = $data['customer_id'];
-        $data['order_search'] = $data['order_id'];
 
         $sessionData = $this->getDataFromSession();
 
@@ -75,18 +71,6 @@ class Form extends Data
             foreach ($sessionData as $sessionName => $sessionValue) {
                 if (isset($data[$sessionName]) && !empty($sessionValue)) {
                     $data[$sessionName] = $sessionValue;
-                }
-
-                if ($sessionName === 'customer_id' && !empty($sessionValue)) {
-                    $data['customer_search'] = $sessionValue;
-                }
-
-                if ($sessionName === 'product_id' && !empty($sessionValue)) {
-                    $data['product_search'] = $sessionValue;
-                }
-
-                if ($sessionName === 'order_id' && !empty($sessionValue)) {
-                    $data['order_search'] = $sessionValue;
                 }
             }
         }
