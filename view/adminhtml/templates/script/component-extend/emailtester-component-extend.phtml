@@ -11,14 +11,32 @@ $sendUrl = $block->escapeUrl($block->getUrl('*/*/send'));
     LokiComponentExtender.add('ExampleMixin', () => {
         return {
             preview() {
+                const params = this.getEmailTesterParameters();
+                if (!params) {
+                    return;
+                }
+
                 const url = '<?= $previewUrl ?>' + this.getEmailTesterParameters();
-                console.log('Previewing', url);
+                Alpine.store('Message').addMessage('error', 'Previewing ' + url);
             },
             send() {
+                const params = this.getEmailTesterParameters();
+                if (!params) {
+                    return;
+                }
+
                 const url = '<?= $sendUrl ?>' + this.getEmailTesterParameters();
-                console.log('Previewing', url);
+                Alpine.store('Message').addMessage('error', 'Send ' + url);
+            },
+            addError(message) {
+                Alpine.store('Message').addMessage('error', message);
             },
             getEmailTesterParameters() {
+                if (!this.sender) {
+                    this.addError('Please add a sender');
+                    return false;
+                }
+
                 return '?' +
                     'sender=' + this.sender +
                     'email=' + this.email +

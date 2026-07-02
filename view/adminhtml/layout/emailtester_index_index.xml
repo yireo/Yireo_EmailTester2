@@ -21,6 +21,7 @@
                 template="Loki_AdminComponents::form.phtml">
                 <arguments>
                     <argument name="provider" xsi:type="string">Yireo\EmailTester2\Form\FormProvider</argument>
+                    <!--
                     <argument name="buttons" xsi:type="array">
                         <item name="send" xsi:type="array">
                             <item name="method" xsi:type="string">send</item>
@@ -88,6 +89,7 @@
                             <item name="namespace" xsi:type="string">sales_order_grid</item>
                         </item>
                     </argument>
+                    -->
                 </arguments>
             </block>
             <block name="version" template="Yireo_EmailTester2::version.phtml" after="-">
