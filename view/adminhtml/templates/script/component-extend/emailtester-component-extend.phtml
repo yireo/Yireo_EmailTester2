@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
 /** @version 1.8.0 */
+/** @var Template $block */
+/** @var Escaper $escaper */
 
-/** @var \Magento\Framework\View\Element\Template $block */
-
-$previewUrl = $block->escapeUrl($block->getUrl('*/*/preview'));
-$sendUrl = $block->escapeUrl($block->getUrl('*/*/send'));
+$previewUrl = $block->getUrl('*/*/preview');
+$sendUrl = $block->getUrl('*/*/send');
 ?>
 <script>
     LokiComponentExtender.add('ExampleMixin', () => {
@@ -18,7 +21,7 @@ $sendUrl = $block->escapeUrl($block->getUrl('*/*/send'));
                     return;
                 }
 
-                const url = '<?= $previewUrl ?>?' + new URLSearchParams(params).toString();
+                const url = '<?= $escaper->escapeUrl($previewUrl) ?>?' + new URLSearchParams(params).toString();
                 window.open(url);
             },
             send() {
@@ -27,7 +30,7 @@ $sendUrl = $block->escapeUrl($block->getUrl('*/*/send'));
                     return;
                 }
 
-                const url = '<?= $sendUrl ?>?' + new URLSearchParams(params).toString();
+                const url = '<?= $escaper->escapeUrl($sendUrl) ?>?' + new URLSearchParams(params).toString();
                 window.open(url);
             },
             addError(message) {
