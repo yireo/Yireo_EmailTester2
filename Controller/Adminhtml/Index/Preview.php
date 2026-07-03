@@ -9,43 +9,25 @@
 
 namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
 
-use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Page;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Message\Manager;
 use Magento\Framework\View\Page\Config;
 use Magento\Framework\View\Result\PageFactory;
 use Yireo\EmailTester2\Block\Adminhtml\Preview as PreviewBlock;
 use Yireo\EmailTester2\ViewModel\Form;
 
-class Preview extends Action
+class Preview implements HttpGetActionInterface
 {
     /**
      * ACL resource
      */
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
-
-    /**
-     * @var PageFactory
-     */
-    private $resultPageFactory;
-
-    /**
-     * @var Config
-     */
-    private $pageConfig;
-
-    /**
-     * @var Form
-     */
-    private $formViewModel;
-
-    /**
-     * @var RequestInterface
-     */
-    private $request;
 
     /**
      * @param Context $context
@@ -55,17 +37,13 @@ class Preview extends Action
      * @param RequestInterface $request
      */
     public function __construct(
-        Context $context,
-        PageFactory $resultPageFactory,
-        Config $pageConfig,
-        Form $formViewModel,
-        RequestInterface $request
+        private readonly PageFactory $resultPageFactory,
+        private readonly Config $pageConfig,
+        private readonly Form $formViewModel,
+        private readonly RequestInterface $request,
+        private readonly Manager $messageManager,
+        private readonly RedirectFactory $resultRedirectFactory
     ) {
-        parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-        $this->pageConfig = $pageConfig;
-        $this->formViewModel = $formViewModel;
-        $this->request = $request;
     }
 
     /**

@@ -12,42 +12,12 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 
 class Form implements ArgumentInterface
 {
-    /**
-     * @var OrderRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @var ProductRepositoryInterface
-     */
-    private $productRepository;
-
-    /**
-     * @var CustomerRepositoryInterface
-     */
-    private $customerRepository;
-    /**
-     * @var SearchCriteriaBuilderFactory
-     */
-    private $searchCriteriaBuilderFactory;
-
-    /**
-     * Form constructor.
-     * @param OrderRepositoryInterface $orderRepository
-     * @param ProductRepositoryInterface $productRepository
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory
-     */
     public function __construct(
-        OrderRepositoryInterface $orderRepository,
-        ProductRepositoryInterface $productRepository,
-        CustomerRepositoryInterface $customerRepository,
-        SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory
+        private readonly OrderRepositoryInterface $orderRepository,
+        private readonly ProductRepositoryInterface $productRepository,
+        private readonly CustomerRepositoryInterface $customerRepository,
+        private readonly SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory
     ) {
-        $this->orderRepository = $orderRepository;
-        $this->productRepository = $productRepository;
-        $this->customerRepository = $customerRepository;
-        $this->searchCriteriaBuilderFactory = $searchCriteriaBuilderFactory;
     }
 
     /**

@@ -20,29 +20,17 @@ use Yireo\EmailTester2\Model\Mailer;
 class Preview extends Text
 {
     /**
-     * @var Mailer
-     */
-    protected $mailer;
-
-    /**
-     * @var Session
-     */
-    protected $backendSession;
-
-    /**
      * @param Mailer $mailer
      * @param Context $context
      * @param Session $backendSession
      * @param array $data
      */
     public function __construct(
-        Mailer $mailer,
+        private readonly Mailer $mailer,
+        private readonly Session $backendSession,
         Context $context,
-        Session $backendSession,
         array $data = []
     ) {
-        $this->mailer = $mailer;
-        $this->backendSession = $backendSession;
         parent::__construct($context, $data);
     }
 

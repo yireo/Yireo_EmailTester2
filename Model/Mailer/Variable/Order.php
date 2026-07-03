@@ -20,15 +20,9 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\PhraseFactory;
-use Magento\Quote\Api\CartRepositoryInterface;
-use Magento\Quote\Api\Data\CartItemInterfaceFactory;
-use Magento\Quote\Model\Quote\Item\ToOrderItem;
 use Magento\Sales\Api\Data\OrderInterface;
-use Magento\Sales\Api\Data\OrderItemInterface;
-use Magento\Sales\Api\Data\OrderItemInterfaceFactory;
-use Magento\Sales\Api\OrderItemRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Sales\Model\Order\Address\Renderer;
+use Magento\Sales\Model\Order as OrderEntity;
 use Yireo\EmailTester2\Model\Mailer\VariablesInterface;
 
 class Order implements VariablesInterface
@@ -53,102 +47,14 @@ class Order implements VariablesInterface
      */
     private $productId = 0;
 
-    /**
-     * @var OrderRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @var CustomerRepositoryInterface
-     */
-    private $customerRepository;
-
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
-
-    /**
-     * @var View
-     */
-    private $customerViewHelper;
-
-    /**
-     * @var Renderer
-     */
-    private $addressRenderer;
-
-    /**
-     * @var PhraseFactory
-     */
-    private $phraseFactory;
-    /**
-     * @var OrderItemRepositoryInterface
-     */
-    private $orderItemRepository;
-    /**
-     * @var OrderItemInterfaceFactory
-     */
-    private $orderItemFactory;
-    /**
-     * @var ProductRepositoryInterface
-     */
-    private $productRepository;
-    /**
-     * @var CartItemInterfaceFactory
-     */
-    private $quoteItemFactory;
-    /**
-     * @var ToOrderItem
-     */
-    private $toOrderItem;
-    /**
-     * @var CartRepositoryInterface
-     */
-    private $quoteRepository;
-
-    /**
-     * Order constructor.
-     *
-     * @param OrderRepositoryInterface $orderRepository
-     * @param CartRepositoryInterface $quoteRepository
-     * @param CartItemInterfaceFactory $quoteItemFactory
-     * @param ToOrderItem $toOrderItem
-     * @param OrderItemRepositoryInterface $orderItemRepository
-     * @param OrderItemInterfaceFactory $orderItemFactory
-     * @param ProductRepositoryInterface $productRepository
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param View $customerViewHelper
-     * @param PhraseFactory $phraseFactory
-     * @param Renderer $addressRenderer
-     */
     public function __construct(
-        OrderRepositoryInterface $orderRepository,
-        CartRepositoryInterface $quoteRepository,
-        CartItemInterfaceFactory $quoteItemFactory,
-        ToOrderItem $toOrderItem,
-        OrderItemRepositoryInterface $orderItemRepository,
-        OrderItemInterfaceFactory $orderItemFactory,
-        ProductRepositoryInterface $productRepository,
-        CustomerRepositoryInterface $customerRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        View $customerViewHelper,
-        PhraseFactory $phraseFactory,
-        Renderer $addressRenderer
+        private readonly OrderRepositoryInterface $orderRepository,
+        private readonly ProductRepositoryInterface $productRepository,
+        private readonly CustomerRepositoryInterface $customerRepository,
+        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
+        private readonly View $customerViewHelper,
+        private readonly PhraseFactory $phraseFactory,
     ) {
-        $this->orderRepository = $orderRepository;
-        $this->quoteItemFactory = $quoteItemFactory;
-        $this->toOrderItem = $toOrderItem;
-        $this->orderItemRepository = $orderItemRepository;
-        $this->orderItemFactory = $orderItemFactory;
-        $this->productRepository = $productRepository;
-        $this->customerRepository = $customerRepository;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->customerViewHelper = $customerViewHelper;
-        $this->phraseFactory = $phraseFactory;
-        $this->addressRenderer = $addressRenderer;
-        $this->quoteRepository = $quoteRepository;
     }
 
     /**
@@ -159,6 +65,7 @@ class Order implements VariablesInterface
     {
         $order = $this->getOrder();
         $this->setProductInOrder($order);
+        $order->setCustomerName($order->getCustomerFirstname() . ' ' . $order->getCustomerLastname());
 
         return [
             'order' => $order,
@@ -168,10 +75,12 @@ class Order implements VariablesInterface
     }
 
     /**
+     * @param OrderEntity $order
+     *
      * @return bool
      * @throws NoSuchEntityException
      */
-    private function setProductInOrder(OrderInterface $order): bool
+    private function setProductInOrder(OrderEntity $order): bool
     {
         if (!$this->productId > 0) {
             return false;
@@ -195,10 +104,10 @@ class Order implements VariablesInterface
     }
 
     /**
-     * @return OrderInterface
+     * @return OrderEntity
      * @throws LocalizedException
      */
-    private function getOrder(): OrderInterface
+    private function getOrder(): OrderEntity
     {
         $order = false;
 
@@ -248,7 +157,7 @@ class Order implements VariablesInterface
     /**
      * @param int $orderId
      *
-     * @return bool|OrderInterface
+     * @return bool|OrderEntity
      */
     private function getOrderById(int $orderId)
     {
@@ -257,6 +166,7 @@ class Order implements VariablesInterface
         }
 
         try {
+            /** @var OrderEntity $order */
             $order = $this->orderRepository->get($orderId);
         } catch (InvalidArgumentException $exception) {
             return false;

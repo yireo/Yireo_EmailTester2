@@ -10,8 +10,6 @@ use Loki\AdminComponents\Provider\FormProviderInterface;
 use Loki\AdminComponents\Provider\ItemProviderInterface;
 use Loki\AdminComponents\ViewModel\Options\StoreViewOptions;
 use Magento\Framework\DataObject;
-use Magento\Sales\Model\OrderRepository;
-use Magento\Sales\Model\ResourceModel\Order;
 use Yireo\EmailTester2\Helper\Form as FormHelper;
 use Yireo\EmailTester2\ViewModel\Options\EmailTemplateOptions;
 

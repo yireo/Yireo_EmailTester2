@@ -12,36 +12,11 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 class Version implements ArgumentInterface
 {
-    /**
-     * @var ComponentRegistrar
-     */
-    private $componentRegistrar;
-
-    /**
-     * @var File
-     */
-    private $file;
-
-    /**
-     * @var Json
-     */
-    private $jsonDecoder;
-
-    /**
-     * Version constructor.
-     *
-     * @param ComponentRegistrar $componentRegistrar
-     * @param File $file
-     * @param Json $jsonDecoder
-     */
     public function __construct(
-        ComponentRegistrar $componentRegistrar,
-        File $file,
-        Json $jsonDecoder
+        private readonly ComponentRegistrar $componentRegistrar,
+        private readonly File $file,
+        private readonly Json $jsonDecoder
     ) {
-        $this->componentRegistrar = $componentRegistrar;
-        $this->file = $file;
-        $this->jsonDecoder = $jsonDecoder;
     }
 
     /**
