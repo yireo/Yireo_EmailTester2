@@ -13,7 +13,8 @@
         "Magento_Quote",
         "Magento_Sales",
         "Magento_Store",
-        "Magento_Ui"
+        "Magento_Ui",
+        "Yireo_AdminSimpleSearchFields"
     ],
     "phpcs_severity": "7",
     "phpstan_level": "1",
@@ -44,9 +45,12 @@
         "Magento_Store",
         "Magento_Theme",
         "Magento_Ui",
-        "Magento_Variable"
+        "Magento_Variable",
+        "Yireo_AdminSimpleSearchFields"
     ],
-    "components": [],
+    "components": [
+        "emailtester.form"
+    ],
     "config": [
         {
             "path": "emailtester2/settings/funding",
@@ -90,7 +94,7 @@
         }
     ],
     "tests": {
-        "unit": 9,
+        "unit": 10,
         "integration": 22,
         "functional": 0
     }
