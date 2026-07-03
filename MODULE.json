@@ -2,6 +2,7 @@
     "module_name": "Yireo_EmailTester2",
     "composer_name": "yireo/magento2-emailtester2",
     "sequence": [
+        "Loki_AdminComponents",
         "Magento_Backend",
         "Magento_Catalog",
         "Magento_Config",
@@ -13,8 +14,7 @@
         "Magento_Quote",
         "Magento_Sales",
         "Magento_Store",
-        "Magento_Ui",
-        "Yireo_AdminSimpleSearchFields"
+        "Magento_Ui"
     ],
     "phpcs_severity": "8",
     "phpstan_level": "1",
@@ -27,6 +27,9 @@
     "skip_magento_versions": [],
     "skip_css_utils": false,
     "modules": [
+        "Loki_AdminComponents",
+        "Loki_Components",
+        "Loki_CssUtils",
         "Magento_Backend",
         "Magento_Catalog",
         "Magento_Cms",
@@ -46,7 +49,7 @@
         "Magento_Theme",
         "Magento_Ui",
         "Magento_Variable",
-        "Yireo_AdminSimpleSearchFields"
+        "Yireo_CspUtilities"
     ],
     "components": [
         "emailtester.form"
