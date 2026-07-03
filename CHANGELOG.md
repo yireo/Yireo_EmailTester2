@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.0] - 03 July 2026
+### Fixed
+- Rewrite to Loki Admin Components
+- Remove dependency with `Yireo_SimpleAdminFields`
+- Testing "back in stock notfication" uses "price grid" instead of "stock grid" in preview mode #18
+
 ## [1.7.10] - 09 June 2026
 ### Fixed
 - Fix Symfony 7 compatibility to CLI commands
