@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.2] - 18 August 2026
+### Fixed
+- Update symfony/console version constraints
+- Loosen constraint with Loki Admin Components
+
 ## [1.8.1] - 09 July 2026
 ### Fixed
 - Fix outdated dep with Loki Admin Components
