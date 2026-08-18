@@ -28,12 +28,15 @@
     "skip_css_utils": false,
     "modules": [
         "Loki_AdminComponents",
+        "Loki_Base",
         "Loki_Components",
         "Loki_CssUtils",
+        "Magento_AdminNotification",
         "Magento_Backend",
         "Magento_Catalog",
         "Magento_Cms",
         "Magento_Config",
+        "Magento_Csp",
         "Magento_Customer",
         "Magento_Directory",
         "Magento_Eav",
@@ -98,7 +101,7 @@
     ],
     "tests": {
         "unit": 10,
-        "integration": 22,
+        "integration": 3,
         "functional": 0
     }
 }
