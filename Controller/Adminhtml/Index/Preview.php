@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 /**
  * EmailTester2 plugin for Magento
  *
@@ -9,20 +10,18 @@
 
 namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
 
+use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Page;
-use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\RequestInterface;
-use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Message\Manager;
 use Magento\Framework\View\Page\Config;
 use Magento\Framework\View\Result\PageFactory;
 use Yireo\EmailTester2\Block\Adminhtml\Preview as PreviewBlock;
 use Yireo\EmailTester2\ViewModel\Form;
 
-class Preview implements HttpGetActionInterface
+class Preview  extends Action
 {
     /**
      * ACL resource
@@ -37,13 +36,13 @@ class Preview implements HttpGetActionInterface
      * @param RequestInterface $request
      */
     public function __construct(
+        Context $context,
         private readonly PageFactory $resultPageFactory,
         private readonly Config $pageConfig,
         private readonly Form $formViewModel,
         private readonly RequestInterface $request,
-        private readonly Manager $messageManager,
-        private readonly RedirectFactory $resultRedirectFactory
     ) {
+        parent::__construct($context);
     }
 
     /**
