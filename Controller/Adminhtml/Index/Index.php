@@ -15,18 +15,13 @@ namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Page;
-use Magento\Framework\App\Action\HttpGetActionInterface;
-use Magento\Framework\App\RequestInterface;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Component\ComponentRegistrar;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Module\ModuleList;
 use Magento\Framework\View\Result\PageFactory;
-use Yireo\EmailTester2\Config\Config;
 use Yireo\EmailTester2\ViewModel\Form;
 
-class Index implements HttpGetActionInterface
+class Index extends Action
 {
     /**
      * ACL resource
@@ -34,12 +29,13 @@ class Index implements HttpGetActionInterface
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
 
     public function __construct(
+        Context $context,
         private PageFactory $resultPageFactory,
-        private ManagerInterface $messageManager,
         private Form $formViewModel,
         private ComponentRegistrar $componentRegistrar,
         private ModuleList $moduleList
     ) {
+        parent::__construct($context);
     }
 
     /**
