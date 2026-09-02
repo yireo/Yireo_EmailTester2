@@ -19,7 +19,6 @@
     "phpcs_severity": "8",
     "phpstan_level": "1",
     "php_versions": [
-        "8.1",
         "8.2",
         "8.3",
         "8.4",
