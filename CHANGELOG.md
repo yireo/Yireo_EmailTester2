@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Preview fails with "element wasn't found" when a payment method creates a new page result (issue #24)
+- Existing shipment not used as `shipment` variable for orders with shipments (issue #24)
 
 ## [1.8.2] - 18 August 2026
 ### Fixed

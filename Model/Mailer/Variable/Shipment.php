@@ -100,7 +100,7 @@ class Shipment implements VariablesInterface
             $shipments = $this->shipmentRepository->getList($searchCriteria)->getItems();
 
             if ($shipments) {
-                return $shipments[0];
+                return reset($shipments);
             }
 
             return $this->createDummyShipment();

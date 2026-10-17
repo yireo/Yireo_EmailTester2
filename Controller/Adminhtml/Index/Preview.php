@@ -12,16 +12,15 @@ namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Backend\Model\View\Result\Page;
-use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Controller\Result\RawFactory;
 use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Escaper;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\View\Page\Config;
-use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\View\Element\BlockFactory;
 use Yireo\EmailTester2\Block\Adminhtml\Preview as PreviewBlock;
 use Yireo\EmailTester2\ViewModel\Form;
 
-class Preview  extends Action
+class Preview extends Action
 {
     /**
      * ACL resource
@@ -29,24 +28,36 @@ class Preview  extends Action
     const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
 
     /**
+     * Styles for the meta-info bar, previously loaded via a layout page
+     */
+    private const META_INFO_STYLE = '<style>'
+        . 'body{padding-bottom:80px !important;}'
+        . '.meta-info{position:fixed;bottom:0;left:0;right:0;background-color:#fff6dc;'
+        . 'border:1px solid #ccc;margin-bottom:0;padding:10px;}'
+        . '</style>';
+
+    /**
      * @param Context $context
-     * @param PageFactory $resultPageFactory
-     * @param Config $pageConfig
+     * @param RawFactory $resultRawFactory
+     * @param BlockFactory $blockFactory
      * @param Form $formViewModel
-     * @param RequestInterface $request
+     * @param Escaper $escaper
      */
     public function __construct(
         Context $context,
-        private readonly PageFactory $resultPageFactory,
-        private readonly Config $pageConfig,
+        private readonly RawFactory $resultRawFactory,
+        private readonly BlockFactory $blockFactory,
         private readonly Form $formViewModel,
-        private readonly RequestInterface $request,
+        private readonly Escaper $escaper,
     ) {
         parent::__construct($context);
     }
 
     /**
-     * Index action
+     * Render the email preview as raw HTML
+     *
+     * A layout page is deliberately not used: rendering the email might instantiate a new page result
+     * (for instance via payment method dependencies), which resets the shared layout and drops its blocks.
      *
      * @return ResultInterface
      * @throws LocalizedException
@@ -59,21 +70,14 @@ class Preview  extends Action
             return $this->resultRedirectFactory->create()->setPath('*/*/index');
         }
 
-        /** @var Page $resultPage */
-        $resultPage = $this->resultPageFactory->create();
+        /** @var PreviewBlock $previewBlock */
+        $previewBlock = $this->blockFactory->createBlock(PreviewBlock::class);
 
-        $this->pageConfig->getTitle()->set($this->getTemplateName());
-        $layout = $resultPage->getLayout();
+        $result = $this->resultRawFactory->create();
+        $result->setHeader('Content-Type', 'text/html; charset=utf-8');
+        $result->setContents($previewBlock->getText() . $this->getTitle() . self::META_INFO_STYLE);
 
-        $update = $layout->getUpdate();
-        $update->removeHandle('default');
-        $update->addHandle('emailtester_index_preview');
-
-        /** @var $previewBlock PreviewBlock */
-        $previewBlock = $layout->createBlock(PreviewBlock::class);
-        $resultPage->addContent($previewBlock);
-
-        return $resultPage;
+        return $result;
     }
 
     /**
@@ -100,8 +104,9 @@ class Preview  extends Action
     /**
      * @return string
      */
-    private function getTemplateName(): string
+    private function getTitle(): string
     {
-        return (string)$this->request->getParam('template');
+        $templateName = (string)$this->getRequest()->getParam('template');
+        return '<title>' . $this->escaper->escapeHtml($templateName) . '</title>';
     }
 }
