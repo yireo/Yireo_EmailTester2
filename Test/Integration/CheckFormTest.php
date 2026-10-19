@@ -32,4 +32,15 @@ class CheckFormTest extends AbstractBackendController
         $this->assertTrue((bool)strpos($body, 'Yireo EmailTester'));
         $this->assertTrue((bool)strpos($body, 'Send Email'));
     }
+
+    public function testEntitySelectFieldsDisplayWithoutSelection()
+    {
+        $this->dispatch('backend/emailtester/index');
+
+        $body = $this->getResponse()->getBody();
+        foreach (['Customer', 'Product', 'Order'] as $entity) {
+            $this->assertStringContainsString($entity . ' Options', $body);
+            $this->assertStringContainsString('Select ' . strtolower($entity), $body);
+        }
+    }
 }
