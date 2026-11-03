@@ -91,8 +91,9 @@ class Creditmemo implements VariablesInterface
         $searchResult = $this->creditmemoRepository->getList($searchCriteria);
         $creditmemos = $searchResult->getItems();
 
-        if (!empty($creditmemos[0])) {
-            return $creditmemos[0];
+        $creditmemo = reset($creditmemos);
+        if ($creditmemo instanceof CreditmemoInterface) {
+            return $creditmemo;
         }
 
         $phrase = $this->phraseFactory->create(['text' => 'Could not find any creditmemo entity']);
