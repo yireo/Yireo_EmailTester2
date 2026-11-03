@@ -139,7 +139,7 @@ class SendCommand extends Command
      */
     private function getStringOption(Input $input, string $optionName = '', $defaultValue = ''): string
     {
-        $optionValue = trim((string)$input->getOption($optionName));
+        $optionValue = trim((string)$input->getOption($optionName), " \f\n\r\t\v\x00");
         if (!empty($optionValue)) {
             return $optionValue;
         }

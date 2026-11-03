@@ -124,7 +124,7 @@ class Output extends Data
         $options = [];
         $customOptions = explode(',', $customOptions);
         foreach ($customOptions as $customOption) {
-            $customOption = (int)trim($customOption);
+            $customOption = (int)trim($customOption, " \f\n\r\t\v\x00");
             if ($customOption > 0) {
                 $options[] = $customOption;
             }
