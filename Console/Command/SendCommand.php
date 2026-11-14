@@ -105,7 +105,7 @@ class SendCommand extends Command
         $data['template'] = $this->getStringOption($input, 'template', $this->config->getDefaultTransactional());
         $data['store_id'] = $this->getNumberOption($input, 'store_id', $this->getDefaultStoreId());
         $data['customer_id'] = $this->getNumberOption($input, 'customer_id', $this->config->getDefaultCustomer());
-        $data['product_id'] = $this->getNumberOption($input, 'customer_id', $this->config->getDefaultProduct());
+        $data['product_id'] = $this->getNumberOption($input, 'product_id', $this->config->getDefaultProduct());
         $data['order_id'] = $this->getNumberOption($input, 'order_id', $this->config->getDefaultOrder());
 
         $this->state->setAreaCode(Area::AREA_FRONTEND);

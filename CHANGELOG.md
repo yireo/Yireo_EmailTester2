@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Preview fails with "element wasn't found" when a payment method creates a new page result (issue #24)
 - Existing shipment not used as `shipment` variable for orders with shipments (issue #24)
+- CLI option `--product_id` of `yireo_emailtester2:send` ignored and read from `--customer_id` (issue #25)
 
 ### Added
 - Integration test for rendering the customer, product and order selection fields
