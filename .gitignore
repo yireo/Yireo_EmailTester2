@@ -3,3 +3,9 @@ vendor/
 yarn.lock
 .playwright/
 .opencode/
+.php-cs-fixer.cache
+.phpunit.result.cache
+.ai/
+.gitlab-ci-local/
+.yireo-extension-builder.json
+MEMORY.md
