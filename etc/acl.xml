@@ -17,6 +17,13 @@
                         <resource id="Yireo_EmailTester2::index" title="Yireo EmailTester" sortOrder="10" />
                     </resource>
                 </resource>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Yireo_EmailTester2::config" title="Yireo EmailTester Settings" sortOrder="999" />
+                        </resource>
+                    </resource>
+                </resource>
             </resource>
         </resources>
     </acl>
