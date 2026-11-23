@@ -40,6 +40,7 @@
         "Magento_Eav",
         "Magento_Email",
         "Magento_Indexer",
+        "Magento_MediaGalleryUiApi",
         "Magento_Payment",
         "Magento_ProductAlert",
         "Magento_Quote",
@@ -98,8 +99,8 @@
         }
     ],
     "tests": {
-        "unit": 10,
-        "integration": 3,
+        "unit": 20,
+        "integration": 16,
         "functional": 0
     }
 }
