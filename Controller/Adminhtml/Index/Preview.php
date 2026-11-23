@@ -12,6 +12,7 @@ namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Controller\Result\RawFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Escaper;
@@ -20,7 +21,7 @@ use Magento\Framework\View\Element\BlockFactory;
 use Yireo\EmailTester2\Block\Adminhtml\Preview as PreviewBlock;
 use Yireo\EmailTester2\ViewModel\Form;
 
-class Preview extends Action
+class Preview extends Action implements HttpGetActionInterface
 {
     /**
      * ACL resource
@@ -59,6 +60,9 @@ class Preview extends Action
      * A layout page is deliberately not used: rendering the email might instantiate a new page result
      * (for instance via payment method dependencies), which resets the shared layout and drops its blocks.
      *
+     * The output is served in a CSP sandbox, so that scripts within an email template
+     * are not executed and can not act within the admin session.
+     *
      * @return ResultInterface
      * @throws LocalizedException
      */
@@ -70,12 +74,20 @@ class Preview extends Action
             return $this->resultRedirectFactory->create()->setPath('*/*/index');
         }
 
-        /** @var PreviewBlock $previewBlock */
-        $previewBlock = $this->blockFactory->createBlock(PreviewBlock::class);
-
         $result = $this->resultRawFactory->create();
         $result->setHeader('Content-Type', 'text/html; charset=utf-8');
-        $result->setContents($previewBlock->getText() . $this->getTitle() . self::META_INFO_STYLE);
+        $result->setHeader('Content-Security-Policy', 'sandbox');
+        $result->setHeader('X-Frame-Options', 'SAMEORIGIN');
+
+        try {
+            /** @var PreviewBlock $previewBlock */
+            $previewBlock = $this->blockFactory->createBlock(PreviewBlock::class);
+            $html = (string)$previewBlock->getText();
+        } catch (LocalizedException $exception) {
+            $html = '<p>' . $this->escaper->escapeHtml($exception->getMessage()) . '</p>';
+        }
+
+        $result->setContents($html . $this->getTitle() . self::META_INFO_STYLE);
 
         return $result;
     }

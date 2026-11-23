@@ -15,13 +15,14 @@ namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Page;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Component\ComponentRegistrar;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Module\ModuleList;
 use Magento\Framework\View\Result\PageFactory;
 use Yireo\EmailTester2\ViewModel\Form;
 
-class Index extends Action
+class Index extends Action implements HttpGetActionInterface
 {
     /**
      * ACL resource

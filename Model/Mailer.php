@@ -26,6 +26,7 @@ use Magento\Framework\Mail\TemplateInterface;
 use Magento\Framework\Phrase;
 use Magento\Framework\Phrase\RendererInterface;
 use Magento\Framework\Translate\Inline\StateInterface;
+use Magento\Framework\Validator\EmailAddress as EmailAddressValidator;
 use Magento\Email\Model\Template\Config as TemplateConfig;
 use Magento\Store\Model\StoreManagerInterface;
 use Exception;
@@ -144,6 +145,7 @@ class Mailer extends DataObject
         RendererInterface $renderer,
         TemplateResourceModel $templateResourceModel,
         State $appState,
+        private readonly EmailAddressValidator $emailAddressValidator,
         array $data = []
     ) {
         parent::__construct($data);
@@ -285,16 +287,20 @@ class Mailer extends DataObject
      */
     private function getRecipient(): Recipient
     {
-        $data = [
-            'customer_id' => $this->getData('customer_id'),
-            'email' => $this->getData('email'),
-        ];
+        $recipient = $this->recipientFactory->create();
 
-        return $this->recipientFactory->create($data);
+        $email = (string)$this->getData('email');
+        if ($email) {
+            $this->validateEmailAddress($email);
+            $recipient->setEmail($email);
+        }
+
+        return $recipient;
     }
 
     /**
      * @return Addressee
+     * @throws LocalizedException
      */
     private function getSender(): Addressee
     {
@@ -302,10 +308,22 @@ class Mailer extends DataObject
 
         $sender = (string)$this->getData('sender');
         if ($sender) {
+            $this->validateEmailAddress($sender);
             $addressee->setEmail($sender);
         }
 
         return $addressee;
+    }
+
+    /**
+     * @param string $email
+     * @throws LocalizedException
+     */
+    private function validateEmailAddress(string $email): void
+    {
+        if (!$this->emailAddressValidator->isValid($email)) {
+            throw new LocalizedException(__('Invalid email address "%1"', $email));
+        }
     }
 
     /**

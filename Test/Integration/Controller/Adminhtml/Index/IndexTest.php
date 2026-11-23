@@ -40,4 +40,14 @@ class IndexTest extends AbstractBackendController
 
         $this->analyseDatabaseStatistics(['select' => 100]);
     }
+
+    public function testAnonymousRequestIsForwardedToLogin()
+    {
+        $this->_auth->logout();
+
+        $this->dispatch($this->uri);
+
+        $this->assertSame('login', $this->getRequest()->getActionName());
+        $this->assertStringNotContainsString('Preview Email', (string)$this->getResponse()->getBody());
+    }
 }

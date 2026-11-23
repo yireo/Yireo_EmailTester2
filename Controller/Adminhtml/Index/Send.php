@@ -12,6 +12,7 @@ namespace Yireo\EmailTester2\Controller\Adminhtml\Index;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\Session;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Controller\ResultInterface;
@@ -21,7 +22,7 @@ use Magento\Framework\Message\ManagerInterface as MessageManager;
 use Yireo\EmailTester2\Model\Mailer;
 use Yireo\EmailTester2\ViewModel\Form;
 
-class Send extends Action
+class Send extends Action implements HttpPostActionInterface
 {
     /**
      * ACL resource
@@ -104,10 +105,17 @@ class Send extends Action
         $data = $this->getRequestData();
         $this->saveToSession($data);
 
-        $this->mailer->setData($data);
-        $this->mailer->send();
+        try {
+            $this->mailer->setData($data);
+            if ($this->mailer->send()) {
+                $this->messageManager->addNoticeMessage(__('Message sent to %1', $data['email']));
+            } else {
+                $this->messageManager->addErrorMessage($this->mailer->getErrorString());
+            }
+        } catch (LocalizedException $exception) {
+            $this->messageManager->addErrorMessage($exception->getMessage());
+        }
 
-        $this->messageManager->addNoticeMessage('Message sent to ' . $data['email']);
         $redirect = $this->redirectFactory->create();
         $redirect->setPath('*/*/index', ['form_id' => 0]);
 
@@ -146,8 +154,8 @@ class Send extends Action
         $data['product_id'] = (int)$this->request->getParam('product_id');
         $data['order_id'] = (int)$this->request->getParam('order_id');
         $data['template'] = (string)$this->request->getParam('template');
-        $data['email'] = (string)$this->request->getParam('email');
-        $data['sender'] = (string)$this->request->getParam('sender');
+        $data['email'] = (string)$this->request->getParam('mail_to');
+        $data['sender'] = (string)$this->request->getParam('mail_from');
 
         return $data;
     }
@@ -157,6 +165,10 @@ class Send extends Action
      */
     private function saveToSession(array $data)
     {
-        $this->backendSession->setEmailtesterValues($data);
+        $sessionData = $data;
+        $sessionData['mail_to'] = $data['email'];
+        $sessionData['mail_from'] = $data['sender'];
+        unset($sessionData['email'], $sessionData['sender']);
+        $this->backendSession->setEmailtesterValues($sessionData);
     }
 }

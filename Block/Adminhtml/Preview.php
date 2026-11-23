@@ -54,7 +54,7 @@ class Preview extends Text
     {
         $this->mailer->setData($data);
         $text = $this->mailer->getHtml();
-        $text .= '<div class="meta-info">Subject: ' . $this->mailer->getSubject() . '</div>';
+        $text .= '<div class="meta-info">Subject: ' . $this->escapeHtml($this->mailer->getSubject()) . '</div>';
 
         $this->setText($text);
     }

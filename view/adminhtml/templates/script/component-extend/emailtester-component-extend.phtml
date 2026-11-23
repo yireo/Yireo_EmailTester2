@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Magento\Framework\Escaper;
-use Magento\Framework\View\Element\Template;
+use Magento\Backend\Block\Template;
 
 /** @version 1.8.2 */
 /** @var Template $block */
@@ -21,7 +21,7 @@ $sendUrl = $block->getUrl('*/*/send');
                     return;
                 }
 
-                const url = '<?= $escaper->escapeUrl($previewUrl) ?>?' + new URLSearchParams(params).toString();
+                const url = '<?= $escaper->escapeJs($previewUrl) ?>?' + new URLSearchParams(params).toString();
                 window.open(url);
             },
             send() {
@@ -30,8 +30,23 @@ $sendUrl = $block->getUrl('*/*/send');
                     return;
                 }
 
-                const url = '<?= $escaper->escapeUrl($sendUrl) ?>?' + new URLSearchParams(params).toString();
-                window.open(url);
+                const form = document.createElement('form');
+                form.method = 'post';
+                form.action = '<?= $escaper->escapeJs($sendUrl) ?>';
+                form.target = '_blank';
+                params['form_key'] = '<?= $escaper->escapeJs($block->getFormKey()) ?>';
+
+                for (const [name, value] of Object.entries(params)) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = name;
+                    input.value = value;
+                    form.appendChild(input);
+                }
+
+                document.body.appendChild(form);
+                form.submit();
+                form.remove();
             },
             addError(message) {
                 Alpine.store('Message').addMessage('error', message);

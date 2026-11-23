@@ -90,6 +90,7 @@
         <referenceContainer name="loki.script">
             <block
                 name="emailtester-component-extend"
+                class="Magento\Backend\Block\Template"
                 template="Yireo_EmailTester2::script/component-extend/emailtester-component-extend.phtml"
             />
         </referenceContainer>
