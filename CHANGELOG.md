@@ -5,13 +5,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.8.3] - 23 November 2026
+### Security
+- Unauthenticated access to email preview and form page in 1.8.0-1.8.2 (backend authentication and ACL bypassed)
+- Serve email preview in a CSP sandbox and escape the subject (XSS)
+- Send emails only via POST with form key (CSRF)
+- Validate sender and recipient, no fallback to other orders, customers, products or invoices for unknown IDs
+- Do not render exception messages into emails, declare ACL resource `Yireo_EmailTester2::config`
+
 ### Fixed
 - Preview fails with "element wasn't found" when a payment method creates a new page result (issue #24)
-- Existing shipment not used as `shipment` variable for orders with shipments (issue #24)
-- CLI option `--product_id` of `yireo_emailtester2:send` ignored and read from `--customer_id` (issue #25)
+- Existing shipment or credit memo not used as variable for orders that have one (issue #24)
+- CLI option `--product_id` of `yireo_emailtester2:send` ignored (issue #25)
+- Recipient address ignored when sending a test email
 
-### Added
-- Integration test for rendering the customer, product and order selection fields
+### Removed
+- PHP 8.1 support (PHP 8.5 support added), unused data classes and form data provider
 
 ## [1.8.2] - 18 August 2026
 ### Fixed
