@@ -9,12 +9,6 @@
         "composer-installer",
         "magento"
     ],
-    "authors": [
-        {
-            "name": "Jisse Reitsma (Yireo)",
-            "email": "jisse@yireo.com"
-        }
-    ],
     "require": {
         "ext-json": "*",
         "ext-pcre": "*",
