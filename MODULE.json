@@ -7,14 +7,12 @@
         "Magento_Catalog",
         "Magento_Config",
         "Magento_Customer",
-        "Magento_Eav",
         "Magento_Email",
         "Magento_Payment",
         "Magento_ProductAlert",
         "Magento_Quote",
         "Magento_Sales",
-        "Magento_Store",
-        "Magento_Ui"
+        "Magento_Store"
     ],
     "phpcs_severity": "8",
     "phpstan_level": "1",
