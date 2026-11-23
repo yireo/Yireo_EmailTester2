@@ -21,6 +21,7 @@ use Magento\ProductAlert\Block\Email\Price;
 use Magento\ProductAlert\Block\Email\Stock;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Store\Api\StoreRepositoryInterface;
+use Psr\Log\LoggerInterface;
 use Yireo\EmailTester2\Model\Mailer\VariablesInterface;
 
 class AlertGrid implements VariablesInterface
@@ -83,6 +84,7 @@ class AlertGrid implements VariablesInterface
      * @param ScopeConfigInterface $scopeConfig
      * @param DesignInterface $design
      * @param ProductRepositoryInterface $productRepository
+     * @param LoggerInterface $logger
      */
     public function __construct(
         State $appState,
@@ -90,7 +92,8 @@ class AlertGrid implements VariablesInterface
         LayoutFactory $layoutFactory,
         ScopeConfigInterface $scopeConfig,
         DesignInterface $design,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        private readonly LoggerInterface $logger
     ) {
         $this->appState = $appState;
         $this->storeRepository = $storeRepository;
@@ -151,7 +154,8 @@ class AlertGrid implements VariablesInterface
                 try {
                     return $block->toHtml();
                 } catch (Throwable $throwable) {
-                    return $throwable->getMessage();
+                    $this->logger->error('Yireo_EmailTester2: ' . $throwable->getMessage());
+                    return '';
                 }
             }
         );

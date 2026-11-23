@@ -189,11 +189,16 @@ class Customer implements VariablesInterface
     {
         /** @var CustomerInterface $customer */
         if (!empty($this->order) && $this->order->getCustomerId() > 0 && $this->customerId == 0) {
-            return $this->getCustomerById((int)$this->order->getCustomerId());
+            return $this->getCustomerById((int)$this->order->getCustomerId()) ?: null;
         }
 
         if ($this->customerId) {
-            return $this->getCustomerById((int)$this->customerId);
+            $customer = $this->getCustomerById((int)$this->customerId);
+            if (!$customer) {
+                throw new LocalizedException(__('Customer with ID %1 does not exist', $this->customerId));
+            }
+
+            return $customer;
         }
 
         return null;

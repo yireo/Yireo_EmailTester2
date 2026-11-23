@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Yireo\EmailTester2\Test\Unit\Model\Mailer\Variable;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use ReflectionMethod;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -40,7 +41,8 @@ class AlertGridTest extends TestCase
             $this->createMock(LayoutFactory::class),
             $this->createMock(ScopeConfigInterface::class),
             $this->createMock(DesignInterface::class),
-            $this->createMock(ProductRepositoryInterface::class)
+            $this->createMock(ProductRepositoryInterface::class),
+            $this->createMock(LoggerInterface::class)
         );
     }
 
@@ -58,7 +60,6 @@ class AlertGridTest extends TestCase
         }
 
         $method = new ReflectionMethod(AlertGrid::class, 'getBlockClass');
-        $method->setAccessible(true);
 
         $this->assertSame($expectedClass, $method->invoke($this->target));
     }

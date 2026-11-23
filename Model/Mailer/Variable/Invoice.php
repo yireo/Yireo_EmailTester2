@@ -11,7 +11,6 @@
 
 namespace Yireo\EmailTester2\Model\Mailer\Variable;
 
-use Exception;
 use Magento\Framework\Api\SearchCriteriaBuilderFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -86,52 +85,20 @@ class Invoice implements VariablesInterface
             throw new NoSuchEntityException($phrase);
         }
 
-        try {
-            $searchCriteriaBuilder = $this->searchCriteriaBuilderFactory->create();
-            $searchCriteriaBuilder->addFilter('order_id', $this->order->getEntityId());
-            $searchCriteria = $searchCriteriaBuilder->create();
-            $searchCriteria->setCurrentPage(1);
-            $searchCriteria->setPageSize(1);
-            $searchResult = $this->invoiceRepository->getList($searchCriteria);
-
-            if (!$searchResult) {
-                return $this->getAnyInvoice();
-            }
-
-            $invoices = $searchResult->getItems();
-            $invoice = array_shift($invoices);
-            if (!$invoice instanceof InvoiceInterface) {
-                return $this->getAnyInvoice();
-            }
-
-            return $invoice;
-        } catch (Exception $e) {
-            return $this->getAnyInvoice();
-        }
-    }
-
-    /**
-     * @return InvoiceInterface
-     */
-    private function getAnyInvoice(): InvoiceInterface
-    {
         $searchCriteriaBuilder = $this->searchCriteriaBuilderFactory->create();
+        $searchCriteriaBuilder->addFilter('order_id', $this->order->getEntityId());
         $searchCriteria = $searchCriteriaBuilder->create();
         $searchCriteria->setCurrentPage(1);
         $searchCriteria->setPageSize(1);
-        $searchResult = $this->invoiceRepository->getList($searchCriteria);
+        $invoices = $this->invoiceRepository->getList($searchCriteria)->getItems();
 
-        if (!$searchResult) {
-            return $this->invoiceRepository->create();
+        $invoice = reset($invoices);
+        if ($invoice instanceof InvoiceInterface) {
+            return $invoice;
         }
 
-        $invoices = $searchResult->getItems();
-        $invoice = array_shift($invoices);
-        if (!$invoice instanceof InvoiceInterface) {
-            return $this->invoiceRepository->create();
-        }
-
-        return $invoice;
+        $phrase = $this->phraseFactory->create(['text' => 'Could not find any invoice entity']);
+        throw new NoSuchEntityException($phrase);
     }
 
     /**

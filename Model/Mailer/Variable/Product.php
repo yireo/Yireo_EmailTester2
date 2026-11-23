@@ -14,6 +14,7 @@ namespace Yireo\EmailTester2\Model\Mailer\Variable;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\PhraseFactory;
 use Yireo\EmailTester2\Model\Mailer\VariableInterface;
@@ -69,6 +70,9 @@ class Product implements VariableInterface
     public function getVariable(): ProductInterface
     {
         $product = $this->getProductById((int)$this->productId);
+        if ($product === false && !empty($this->productId)) {
+            throw new LocalizedException(__('Product with ID %1 does not exist', $this->productId));
+        }
 
         // Load the first product instead
         if ($product === false) {

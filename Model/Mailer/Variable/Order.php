@@ -114,6 +114,9 @@ class Order implements VariablesInterface
         // Load the order by ID
         if (!empty($this->orderId)) {
             $order = $this->getOrderById((int)$this->orderId);
+            if (!$order) {
+                throw new LocalizedException(__('Order with ID %1 does not exist', $this->orderId));
+            }
         }
 
         // Load the first order instead
