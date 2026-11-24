@@ -13,6 +13,7 @@
     <type name="Yireo\EmailTester2\Model\Mailer">
         <arguments>
             <argument name="transportBuilder" xsi:type="object">Yireo\EmailTester2\Model\TransportBuilder</argument>
+            <argument name="logger" xsi:type="object">Yireo\EmailTester2\Logger\VirtualLogger</argument>
         </arguments>
     </type>
 
@@ -31,6 +32,12 @@
     </virtualType>
 
     <type name="Yireo\EmailTester2\Controller\Adminhtml\Index\Send">
+        <arguments>
+            <argument name="logger" xsi:type="object">Yireo\EmailTester2\Logger\VirtualLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="Yireo\EmailTester2\Controller\Adminhtml\Index\Preview">
         <arguments>
             <argument name="logger" xsi:type="object">Yireo\EmailTester2\Logger\VirtualLogger</argument>
         </arguments>

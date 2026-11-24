@@ -20,6 +20,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface as MessageManager;
 use Psr\Log\LoggerInterface;
+use Throwable;
 use Yireo\EmailTester2\Model\Mailer;
 use Yireo\EmailTester2\ViewModel\Form;
 
@@ -120,6 +121,12 @@ class Send extends Action implements HttpPostActionInterface
         } catch (LocalizedException $exception) {
             $this->logSend($data, 'rejected: ' . $exception->getMessage());
             $this->messageManager->addErrorMessage($exception->getMessage());
+        } catch (Throwable $throwable) {
+            $this->logSend($data, 'error');
+            $this->logger->error('Unable to send email: ' . $throwable->getMessage(), ['exception' => $throwable]);
+            $this->messageManager->addErrorMessage(
+                __('Unable to send email, see var/log/yireo_emailtester2.log for details')
+            );
         }
 
         $redirect = $this->redirectFactory->create();

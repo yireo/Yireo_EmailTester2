@@ -45,4 +45,12 @@ class ErrorableTest extends TestCase
         $this->assertSame($this->targetTrait->getErrors(), [$error1, $error2]);
         $this->assertSame($this->targetTrait->getErrorString(), $error1.'; '.$error2);
     }
+
+    public function testHasErrorsReflectsWhetherErrorsWereAdded()
+    {
+        $this->assertFalse($this->targetTrait->hasErrors());
+
+        $this->targetTrait->addError('My error');
+        $this->assertTrue($this->targetTrait->hasErrors());
+    }
 }

@@ -31,7 +31,7 @@ trait Errorable
      */
     public function hasErrors() : bool
     {
-        return (bool) empty($this->errors);
+        return !empty($this->errors);
     }
 
     /**

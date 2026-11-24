@@ -13,7 +13,7 @@ namespace Yireo\EmailTester2\Model\Mailer;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
-use Psr\Log\InvalidArgumentException;
+use InvalidArgumentException;
 
 class Addressee
 {

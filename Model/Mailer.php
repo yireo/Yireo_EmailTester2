@@ -31,6 +31,7 @@ use Magento\Email\Model\Template\Config as TemplateConfig;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Mime\Part\TextPart;
 use Yireo\EmailTester2\Behaviour\Errorable;
 use Yireo\EmailTester2\Model\Mailer\Addressee;
@@ -156,6 +157,7 @@ class Mailer extends DataObject
         TemplateResourceModel $templateResourceModel,
         State $appState,
         private readonly EmailAddressValidator $emailAddressValidator,
+        private readonly LoggerInterface $logger,
         array $data = []
     ) {
         parent::__construct($data);
@@ -219,7 +221,8 @@ class Mailer extends DataObject
             $transport->sendMessage();
             $sent = true;
         } catch (Exception $e) {
-            $this->addError($e->getMessage());
+            $this->logger->error('Unable to send email: ' . $e->getMessage(), ['exception' => $e]);
+            $this->addError('Unable to send email, see var/log/yireo_emailtester2.log for details');
             $sent = false;
         }
 

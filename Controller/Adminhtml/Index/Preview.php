@@ -18,6 +18,8 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Escaper;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\Element\BlockFactory;
+use Psr\Log\LoggerInterface;
+use Throwable;
 use Yireo\EmailTester2\Block\Adminhtml\Preview as PreviewBlock;
 use Yireo\EmailTester2\ViewModel\Form;
 
@@ -43,6 +45,7 @@ class Preview extends Action implements HttpGetActionInterface
      * @param BlockFactory $blockFactory
      * @param Form $formViewModel
      * @param Escaper $escaper
+     * @param LoggerInterface $logger
      */
     public function __construct(
         Context $context,
@@ -50,6 +53,7 @@ class Preview extends Action implements HttpGetActionInterface
         private readonly BlockFactory $blockFactory,
         private readonly Form $formViewModel,
         private readonly Escaper $escaper,
+        private readonly LoggerInterface $logger,
     ) {
         parent::__construct($context);
     }
@@ -85,6 +89,13 @@ class Preview extends Action implements HttpGetActionInterface
             $html = (string)$previewBlock->getText();
         } catch (LocalizedException $exception) {
             $html = '<p>' . $this->escaper->escapeHtml($exception->getMessage()) . '</p>';
+        } catch (Throwable $throwable) {
+            $this->logger->error('Unable to render email preview: ' . $throwable->getMessage(), [
+                'exception' => $throwable,
+            ]);
+            $html = '<p>' . $this->escaper->escapeHtml(
+                __('Unable to render email, see var/log/yireo_emailtester2.log for details')
+            ) . '</p>';
         }
 
         $result->setContents($html . $this->getTitle() . self::META_INFO_STYLE);

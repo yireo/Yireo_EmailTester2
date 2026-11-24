@@ -146,6 +146,19 @@ class PreviewTest extends AbstractBackendController
         $this->assertEmpty($backendSession->getEmailtesterValues());
     }
 
+    /**
+     * @magentoDataFixture Magento/Customer/_files/customer.php
+     * @magentoDataFixture Magento/Sales/_files/invoice.php
+     */
+    public function testUnknownTemplateDoesNotLeakExceptionDetails()
+    {
+        $body = $this->dispatchPreview('does_not_exist_template');
+
+        $this->assertSame(200, $this->getResponse()->getHttpResponseCode());
+        $this->assertStringNotContainsString('Exception', $body);
+        $this->assertStringNotContainsString('#0 ', $body);
+    }
+
     private function dispatchPreview(string $templateId, array $overrides = []): string
     {
         $this->setPreviewParams($templateId, $overrides);
