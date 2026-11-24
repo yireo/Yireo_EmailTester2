@@ -23,7 +23,7 @@ class PreviewTest extends AbstractBackendController
     protected function setUp(): void
     {
         parent::setUp();
-        $this->resource = 'Yireo_EmailTester2::index';
+        $this->resource = 'Yireo_EmailTester2::preview';
         $this->uri = 'backend/emailtester/index/preview';
     }
 

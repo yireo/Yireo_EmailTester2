@@ -27,7 +27,7 @@ class Send extends Action implements HttpPostActionInterface
     /**
      * ACL resource
      */
-    const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
+    const ADMIN_RESOURCE = 'Yireo_EmailTester2::send';
 
     /**
      * @var RedirectFactory

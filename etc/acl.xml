@@ -14,7 +14,10 @@
             <resource id="Magento_Backend::admin">
                 <resource id="Magento_Backend::marketing">
                     <resource id="Magento_Backend::marketing_communications">
-                        <resource id="Yireo_EmailTester2::index" title="Yireo EmailTester" sortOrder="10" />
+                        <resource id="Yireo_EmailTester2::index" title="Yireo EmailTester" sortOrder="10">
+                            <resource id="Yireo_EmailTester2::preview" title="Preview emails (renders real customer and order data)" sortOrder="10" />
+                            <resource id="Yireo_EmailTester2::send" title="Send emails (sends real customer and order data)" sortOrder="20" />
+                        </resource>
                     </resource>
                 </resource>
                 <resource id="Magento_Backend::stores">

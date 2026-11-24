@@ -26,7 +26,7 @@ class Preview extends Action implements HttpGetActionInterface
     /**
      * ACL resource
      */
-    const ADMIN_RESOURCE = 'Yireo_EmailTester2::index';
+    const ADMIN_RESOURCE = 'Yireo_EmailTester2::preview';
 
     /**
      * Styles for the meta-info bar, previously loaded via a layout page

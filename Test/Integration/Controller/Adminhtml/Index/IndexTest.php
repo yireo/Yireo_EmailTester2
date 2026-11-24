@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Test\Integration\Controller\Adminhtml\Index;
 
+use Magento\Framework\Acl\Builder as AclBuilder;
 use Magento\TestFramework\TestCase\AbstractBackendController;
 use Yireo\EmailTester2\Test\Integration\Behaviors\CheckDatabaseStatistics;
 
@@ -49,5 +50,18 @@ class IndexTest extends AbstractBackendController
 
         $this->assertSame('login', $this->getRequest()->getActionName());
         $this->assertStringNotContainsString('Preview Email', (string)$this->getResponse()->getBody());
+    }
+
+    public function testButtonsAreHiddenWithoutAccess()
+    {
+        $this->_objectManager->get(AclBuilder::class)
+            ->getAcl()
+            ->deny(null, 'Yireo_EmailTester2::send');
+
+        $this->dispatch($this->uri);
+        $body = (string)$this->getResponse()->getBody();
+
+        $this->assertStringNotContainsString('Send Email', $body);
+        $this->assertStringContainsString('Preview Email', $body);
     }
 }

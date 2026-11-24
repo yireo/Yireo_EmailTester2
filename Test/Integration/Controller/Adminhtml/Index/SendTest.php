@@ -16,7 +16,7 @@ class SendTest extends AbstractBackendController
     protected function setUp(): void
     {
         parent::setUp();
-        $this->resource = 'Yireo_EmailTester2::index';
+        $this->resource = 'Yireo_EmailTester2::send';
         $this->uri = 'backend/emailtester/index/send';
         $this->httpMethod = HttpRequest::METHOD_POST;
     }

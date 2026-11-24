@@ -9,6 +9,7 @@ use Loki\AdminComponents\Form\Item\ItemFactory;
 use Loki\AdminComponents\Provider\FormProviderInterface;
 use Loki\AdminComponents\Provider\ItemProviderInterface;
 use Loki\AdminComponents\ViewModel\Options\StoreViewOptions;
+use Magento\Framework\AuthorizationInterface;
 use Magento\Framework\DataObject;
 use Yireo\EmailTester2\Helper\Form as FormHelper;
 use Yireo\EmailTester2\ViewModel\Options\EmailTemplateOptions;
@@ -21,14 +22,23 @@ class FormProvider implements FormProviderInterface, ItemProviderInterface
         private EmailTemplateOptions $emailTemplateOptions,
         private FormHelper $formHelper,
         private ItemFactory $itemFactory,
+        private AuthorizationInterface $authorization,
     ) {
     }
 
     public function getForm(): Form
     {
-        return $this->formBuilder->createForm('emailtester2_form')
-            ->addButton($this->formBuilder->createButton('send', 'Send Email', primary: true))
-            ->addButton($this->formBuilder->createButton('preview', 'Preview Email', primary: true))
+        $form = $this->formBuilder->createForm('emailtester2_form');
+
+        if ($this->authorization->isAllowed('Yireo_EmailTester2::send')) {
+            $form->addButton($this->formBuilder->createButton('send', 'Send Email', primary: true));
+        }
+
+        if ($this->authorization->isAllowed('Yireo_EmailTester2::preview')) {
+            $form->addButton($this->formBuilder->createButton('preview', 'Preview Email', primary: true));
+        }
+
+        return $form
             ->addFieldset(
                 $this->formBuilder->createFieldset('base', 'Generic Settings')
                     ->addField(
