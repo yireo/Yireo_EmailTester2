@@ -99,8 +99,8 @@
         }
     ],
     "tests": {
-        "unit": 20,
-        "integration": 16,
+        "unit": 15,
+        "integration": 29,
         "functional": 0
     }
 }
