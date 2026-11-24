@@ -95,6 +95,14 @@ class PreviewTest extends AbstractBackendController
         $header = $this->getResponse()->getHeader('Content-Security-Policy');
         $this->assertNotFalse($header);
         $this->assertStringStartsWith('sandbox', $header->getFieldValue());
+
+        $header = $this->getResponse()->getHeader('X-Content-Type-Options');
+        $this->assertNotFalse($header);
+        $this->assertSame('nosniff', $header->getFieldValue());
+
+        $header = $this->getResponse()->getHeader('Referrer-Policy');
+        $this->assertNotFalse($header);
+        $this->assertSame('no-referrer', $header->getFieldValue());
     }
 
     /**

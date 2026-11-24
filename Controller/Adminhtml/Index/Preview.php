@@ -82,6 +82,8 @@ class Preview extends Action implements HttpGetActionInterface
         $result->setHeader('Content-Type', 'text/html; charset=utf-8');
         $result->setHeader('Content-Security-Policy', 'sandbox');
         $result->setHeader('X-Frame-Options', 'SAMEORIGIN');
+        $result->setHeader('X-Content-Type-Options', 'nosniff');
+        $result->setHeader('Referrer-Policy', 'no-referrer');
 
         try {
             /** @var PreviewBlock $previewBlock */
