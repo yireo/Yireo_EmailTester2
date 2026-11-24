@@ -101,7 +101,7 @@ class SendCommand extends Command
     {
         $data = [];
         $data['email'] = $this->getStringOption($input, 'email', $this->config->getDefaultEmail());
-        $data['sender'] = $this->getStringOption($input, 'sender', $this->config->getDefaultEmail());
+        $data['sender'] = $this->getStringOption($input, 'sender', $this->config->getDefaultSender());
         $data['template'] = $this->getStringOption($input, 'template', $this->config->getDefaultTransactional());
         $data['store_id'] = $this->getNumberOption($input, 'store_id', $this->getDefaultStoreId());
         $data['customer_id'] = $this->getNumberOption($input, 'customer_id', $this->config->getDefaultCustomer());
@@ -116,7 +116,10 @@ class SendCommand extends Command
         }
 
         $this->mailer->setData($data);
-        $this->mailer->send();
+        if (!$this->mailer->send()) {
+            $output->writeln('<error>Mail could not be sent: ' . $this->mailer->getErrorString() . '</error>');
+            return Command::FAILURE;
+        }
 
         $output->writeln('<info>Mail has been sent</info>');
 

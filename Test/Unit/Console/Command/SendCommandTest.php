@@ -8,6 +8,7 @@ use Magento\Framework\App\State;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Yireo\EmailTester2\Config\Config;
@@ -90,6 +91,7 @@ class SendCommandTest extends TestCase
     {
         $config = $this->createStub(Config::class);
         $config->method('getDefaultEmail')->willReturn('default@example.com');
+        $config->method('getDefaultSender')->willReturn('sender@example.com');
         $config->method('getDefaultTransactional')->willReturn('customer_create_account_email_template');
 
         $mailer = $this->createMock(Mailer::class);
@@ -97,7 +99,7 @@ class SendCommandTest extends TestCase
             ->method('setData')
             ->with($this->callback(function (array $data): bool {
                 $this->assertSame('default@example.com', $data['email']);
-                $this->assertSame('default@example.com', $data['sender']);
+                $this->assertSame('sender@example.com', $data['sender']);
                 $this->assertSame('customer_create_account_email_template', $data['template']);
 
                 return true;
@@ -177,12 +179,23 @@ class SendCommandTest extends TestCase
         $this->runCommand($mailer, $this->createStub(Config::class), [], $storeManager);
     }
 
+    public function testFailedSendReturnsFailure(): void
+    {
+        $mailer = $this->createMock(Mailer::class);
+        $mailer->method('send')->willReturn(false);
+        $mailer->method('getErrorString')->willReturn('SMTP is disabled');
+
+        $exitCode = $this->runCommand($mailer, $this->createStub(Config::class), []);
+
+        $this->assertSame(Command::FAILURE, $exitCode);
+    }
+
     private function runCommand(
         Mailer $mailer,
         Config $config,
         array $options,
         ?StoreManagerInterface $storeManager = null
-    ): void {
+    ): int {
         if ($storeManager === null) {
             $store = $this->createStub(StoreInterface::class);
             $store->method('getId')->willReturn(0);
@@ -197,6 +210,6 @@ class SendCommandTest extends TestCase
             $this->createStub(State::class)
         );
 
-        $command->run(new ArrayInput($options), new NullOutput());
+        return $command->run(new ArrayInput($options), new NullOutput());
     }
 }
