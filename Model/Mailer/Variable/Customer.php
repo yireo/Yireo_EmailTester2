@@ -14,8 +14,8 @@ namespace Yireo\EmailTester2\Model\Mailer\Variable;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Helper\View;
-use Magento\Customer\Model\CustomerRegistry;
 use Magento\Customer\Model\Data\CustomerSecure;
+use Magento\Customer\Model\Data\CustomerSecureFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -26,6 +26,8 @@ use Yireo\EmailTester2\Model\Mailer\VariablesInterface;
 
 class Customer implements VariablesInterface
 {
+    public const DUMMY_RP_TOKEN = 'emailtester-dummy-token';
+
     /**
      * @var int
      */
@@ -47,9 +49,9 @@ class Customer implements VariablesInterface
     private $searchCriteriaBuilder;
 
     /**
-     * @var CustomerRegistry
+     * @var CustomerSecureFactory
      */
-    private $customerRegistry;
+    private $customerSecureFactory;
 
     /**
      * @var DataObjectProcessor
@@ -71,7 +73,7 @@ class Customer implements VariablesInterface
      *
      * @param CustomerRepositoryInterface $customerRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param CustomerRegistry $customerRegistry
+     * @param CustomerSecureFactory $customerSecureFactory
      * @param DataObjectProcessor $dataObjectProcessor
      * @param View $customerViewHelper
      * @param PhraseFactory $phraseFactory
@@ -79,14 +81,14 @@ class Customer implements VariablesInterface
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        CustomerRegistry $customerRegistry,
+        CustomerSecureFactory $customerSecureFactory,
         DataObjectProcessor $dataObjectProcessor,
         View $customerViewHelper,
         PhraseFactory $phraseFactory
     ) {
         $this->customerRepository = $customerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->customerRegistry = $customerRegistry;
+        $this->customerSecureFactory = $customerSecureFactory;
         $this->dataObjectProcessor = $dataObjectProcessor;
         $this->customerViewHelper = $customerViewHelper;
         $this->phraseFactory = $phraseFactory;
@@ -135,13 +137,23 @@ class Customer implements VariablesInterface
             throw new NoSuchEntityException($phrase);
         }
 
-        $mergedCustomerData = $this->customerRegistry->retrieveSecureData($customer->getId());
         $customerData = $this->dataObjectProcessor
             ->buildOutputDataArray($customer, CustomerInterface::class);
-        $mergedCustomerData->addData($customerData);
-        $mergedCustomerData->setData('name', $this->customerViewHelper->getCustomerName($customer));
+        unset(
+            $customerData['password_hash'],
+            $customerData['rp_token'],
+            $customerData['rp_token_created_at'],
+            $customerData['failures_num'],
+            $customerData['first_failure'],
+            $customerData['lock_expires']
+        );
 
-        return $mergedCustomerData;
+        $customerSecure = $this->customerSecureFactory->create();
+        $customerSecure->addData($customerData);
+        $customerSecure->setData('name', $this->customerViewHelper->getCustomerName($customer));
+        $customerSecure->setData('rp_token', self::DUMMY_RP_TOKEN);
+
+        return $customerSecure;
     }
 
     /**

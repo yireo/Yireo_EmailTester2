@@ -5,11 +5,14 @@ namespace Yireo\EmailTester2\Test\Integration\Controller\Adminhtml\Index;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Model\CustomerRegistry;
+use Magento\Customer\Model\ResourceModel\Customer as CustomerResource;
 use Magento\Payment\Helper\Data as PaymentHelper;
 use Magento\Sales\Api\Data\OrderInterfaceFactory;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
 use Magento\TestFramework\TestCase\AbstractBackendController;
+use Yireo\EmailTester2\Model\Mailer\Variable\Customer as CustomerVariable;
 use Yireo\EmailTester2\Test\Integration\Stub\StrayPagePaymentHelper;
 
 /**
@@ -103,6 +106,29 @@ class PreviewTest extends AbstractBackendController
 
         $this->assertStringContainsString('Order with ID 999999 does not exist', $body);
         $this->assertStringNotContainsString('100000001', $body);
+    }
+
+    /**
+     * @magentoDataFixture Magento/Customer/_files/customer.php
+     * @magentoDataFixture Magento/Sales/_files/invoice.php
+     */
+    public function testPreviewDoesNotLeakRealPasswordResetToken()
+    {
+        $objectManager = Bootstrap::getObjectManager();
+        $customerId = (int)$objectManager->get(CustomerRepositoryInterface::class)
+            ->get('customer@example.com')
+            ->getId();
+        $customerRegistry = $objectManager->get(CustomerRegistry::class);
+        $customerModel = $customerRegistry->retrieve($customerId);
+        $customerResource = $objectManager->get(CustomerResource::class);
+        $customerResource->changeResetPasswordLinkToken($customerModel, 'real-secret-reset-token');
+        $customerResource->save($customerModel);
+        $customerRegistry->remove($customerId);
+
+        $body = $this->dispatchPreview('customer_password_forgot_email_template');
+
+        $this->assertStringNotContainsString('real-secret-reset-token', $body);
+        $this->assertStringContainsString(CustomerVariable::DUMMY_RP_TOKEN, $body);
     }
 
     private function dispatchPreview(string $templateId, array $overrides = []): string
