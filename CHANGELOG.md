@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.4] - 24 November 2026
+### Security
+- Password reset tokens and password hashes of customers exposed via email variables (account takeover)
+- New ACL resources `Yireo_EmailTester2::preview` and `Yireo_EmailTester2::send` (grant them to restricted roles)
+- Sender restricted to configured store email addresses, every send logged to `var/log/yireo_emailtester2.log`
+- Only known email templates and existing store views accepted
+- Preview no longer writes to the session, adds `nosniff` and `no-referrer` headers
+- Unexpected errors and transport errors are logged instead of displayed
+
+### Fixed
+- CLI `yireo_emailtester2:send` uses the default sender and returns a failure when sending fails
+
+### Removed
+- Unused helpers `Helper\Data` and `Helper\Output` and trait `Behaviour\Datacontainable`
+
 ## [1.8.3] - 23 November 2026
 ### Security
 - Unauthenticated access to email preview and form page in 1.8.0-1.8.2 (backend authentication and ACL bypassed)
