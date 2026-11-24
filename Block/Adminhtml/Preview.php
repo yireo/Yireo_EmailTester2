@@ -13,7 +13,6 @@ namespace Yireo\EmailTester2\Block\Adminhtml;
 
 use Exception;
 use Magento\Backend\Block\Template\Context;
-use Magento\Backend\Model\Session;
 use Magento\Framework\View\Element\Text;
 use Yireo\EmailTester2\Model\Mailer;
 
@@ -22,12 +21,10 @@ class Preview extends Text
     /**
      * @param Mailer $mailer
      * @param Context $context
-     * @param Session $backendSession
      * @param array $data
      */
     public function __construct(
         private readonly Mailer $mailer,
-        private readonly Session $backendSession,
         Context $context,
         array $data = []
     ) {
@@ -40,9 +37,7 @@ class Preview extends Text
      */
     protected function _construct()
     {
-        $data = $this->getRequestData();
-        $this->saveToSession($data);
-        $this->setMailerOutput($data);
+        $this->setMailerOutput($this->getRequestData());
     }
 
     /**
@@ -74,13 +69,5 @@ class Preview extends Text
         $data['mail_to'] = (string)$this->_request->getParam('mail_to');
 
         return $data;
-    }
-
-    /**
-     * @param array $data
-     */
-    private function saveToSession(array $data)
-    {
-        $this->backendSession->setEmailtesterValues($data);
     }
 }

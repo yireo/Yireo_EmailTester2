@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Yireo\EmailTester2\Test\Integration\Controller\Adminhtml\Index;
 
+use Magento\Backend\Model\Session as BackendSession;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\CustomerRegistry;
@@ -129,6 +130,20 @@ class PreviewTest extends AbstractBackendController
 
         $this->assertStringNotContainsString('real-secret-reset-token', $body);
         $this->assertStringContainsString(CustomerVariable::DUMMY_RP_TOKEN, $body);
+    }
+
+    /**
+     * @magentoDataFixture Magento/Customer/_files/customer.php
+     * @magentoDataFixture Magento/Sales/_files/invoice.php
+     */
+    public function testPreviewDoesNotWriteFormValuesToSession()
+    {
+        $backendSession = Bootstrap::getObjectManager()->get(BackendSession::class);
+        $backendSession->unsEmailtesterValues();
+
+        $this->dispatchPreview('sales_email_order_template', ['mail_to' => 'attacker@example.com']);
+
+        $this->assertEmpty($backendSession->getEmailtesterValues());
     }
 
     private function dispatchPreview(string $templateId, array $overrides = []): string

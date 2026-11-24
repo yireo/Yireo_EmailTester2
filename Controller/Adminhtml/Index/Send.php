@@ -103,11 +103,12 @@ class Send extends Action implements HttpPostActionInterface
         }
 
         $data = $this->getRequestData();
-        $this->saveToSession($data);
 
         try {
             $this->mailer->setData($data);
-            if ($this->mailer->send()) {
+            $sent = $this->mailer->send();
+            $this->saveToSession($data);
+            if ($sent) {
                 $this->messageManager->addNoticeMessage(__('Message sent to %1', $data['email']));
             } else {
                 $this->messageManager->addErrorMessage($this->mailer->getErrorString());
