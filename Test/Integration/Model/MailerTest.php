@@ -29,7 +29,7 @@ class MailerTest extends TestCase
     /**
      * @magentoDataFixture Magento/Customer/_files/customer.php
      * @magentoDataFixture Magento/Sales/_files/invoice.php
-     * @magentoConfigFixture default/emailtester2/settings/default_sender tester@example.com
+     * @magentoConfigFixture current_store emailtester2/settings/default_sender tester@example.com
      */
     public function testConfiguredDefaultSenderIsAllowedAsSender()
     {

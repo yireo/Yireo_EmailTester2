@@ -56,7 +56,7 @@ class IndexTest extends AbstractBackendController
     {
         $this->_objectManager->get(AclBuilder::class)
             ->getAcl()
-            ->deny(null, 'Yireo_EmailTester2::send');
+            ->deny($this->_auth->getUser()->getRoles(), 'Yireo_EmailTester2::send');
 
         $this->dispatch($this->uri);
         $body = (string)$this->getResponse()->getBody();
