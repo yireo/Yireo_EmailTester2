@@ -16,6 +16,26 @@
         </arguments>
     </type>
 
+    <virtualType type="Magento\Framework\Logger\Monolog" name="Yireo\EmailTester2\Logger\VirtualLogger">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Yireo\EmailTester2\Logger\VirtualLogHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType type="Magento\Framework\Logger\Handler\Base" name="Yireo\EmailTester2\Logger\VirtualLogHandler">
+        <arguments>
+            <argument name="fileName" xsi:type="string">var/log/yireo_emailtester2.log</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Yireo\EmailTester2\Controller\Adminhtml\Index\Send">
+        <arguments>
+            <argument name="logger" xsi:type="object">Yireo\EmailTester2\Logger\VirtualLogger</argument>
+        </arguments>
+    </type>
+
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">

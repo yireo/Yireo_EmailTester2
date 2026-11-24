@@ -19,6 +19,7 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface as MessageManager;
+use Psr\Log\LoggerInterface;
 use Yireo\EmailTester2\Model\Mailer;
 use Yireo\EmailTester2\ViewModel\Form;
 
@@ -67,6 +68,7 @@ class Send extends Action implements HttpPostActionInterface
      * @param Form $formViewModel
      * @param RequestInterface $request
      * @param Session $backendSession
+     * @param LoggerInterface $logger
      */
     public function __construct(
         Context $context,
@@ -75,7 +77,8 @@ class Send extends Action implements HttpPostActionInterface
         Mailer $mailer,
         Form $formViewModel,
         RequestInterface $request,
-        Session $backendSession
+        Session $backendSession,
+        private readonly LoggerInterface $logger
     ) {
         parent::__construct($context);
         $this->redirectFactory = $redirectFactory;
@@ -108,12 +111,14 @@ class Send extends Action implements HttpPostActionInterface
             $this->mailer->setData($data);
             $sent = $this->mailer->send();
             $this->saveToSession($data);
+            $this->logSend($data, $sent ? 'sent' : 'failed');
             if ($sent) {
                 $this->messageManager->addNoticeMessage(__('Message sent to %1', $data['email']));
             } else {
                 $this->messageManager->addErrorMessage($this->mailer->getErrorString());
             }
         } catch (LocalizedException $exception) {
+            $this->logSend($data, 'rejected: ' . $exception->getMessage());
             $this->messageManager->addErrorMessage($exception->getMessage());
         }
 
@@ -159,6 +164,25 @@ class Send extends Action implements HttpPostActionInterface
         $data['sender'] = (string)$this->request->getParam('mail_from');
 
         return $data;
+    }
+
+    /**
+     * @param array $data
+     * @param string $result
+     */
+    private function logSend(array $data, string $result): void
+    {
+        $this->logger->info('Email send request', [
+            'admin_user' => (string)$this->_auth->getUser()?->getUserName(),
+            'result' => $result,
+            'recipient' => $data['email'],
+            'sender' => $data['sender'],
+            'template' => $data['template'],
+            'store_id' => $data['store_id'],
+            'customer_id' => $data['customer_id'],
+            'order_id' => $data['order_id'],
+            'product_id' => $data['product_id'],
+        ]);
     }
 
     /**

@@ -54,4 +54,30 @@ class SendTest extends AbstractBackendController
             MessageInterface::TYPE_ERROR
         );
     }
+
+    /**
+     * @magentoDataFixture Magento/Customer/_files/customer.php
+     * @magentoDataFixture Magento/Sales/_files/invoice.php
+     */
+    public function testUnlistedSenderIsRejected()
+    {
+        $this->getRequest()->setMethod(HttpRequest::METHOD_POST);
+        $this->getRequest()->setPostValue([
+            'form_key' => $this->_objectManager->get(FormKey::class)->getFormKey(),
+            'template' => 'sales_email_order_template',
+            'store_id' => 1,
+            'mail_from' => 'ceo@attacker.example',
+            'mail_to' => 'recipient@example.com',
+        ]);
+
+        $this->dispatch($this->uri);
+
+        $this->assertRedirect();
+        $this->assertSessionMessages(
+            $this->callback(
+                fn (array $messages) => str_contains(implode(' ', $messages), 'is not one of the email addresses')
+            ),
+            MessageInterface::TYPE_ERROR
+        );
+    }
 }

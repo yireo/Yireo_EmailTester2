@@ -28,6 +28,7 @@ use Magento\Framework\Phrase\RendererInterface;
 use Magento\Framework\Translate\Inline\StateInterface;
 use Magento\Framework\Validator\EmailAddress as EmailAddressValidator;
 use Magento\Email\Model\Template\Config as TemplateConfig;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Exception;
 use Symfony\Component\Mime\Part\TextPart;
@@ -37,6 +38,15 @@ use Yireo\EmailTester2\Model\Mailer\Recipient;
 
 class Mailer extends DataObject
 {
+    private const SENDER_CONFIG_PATHS = [
+        'trans_email/ident_general/email',
+        'trans_email/ident_sales/email',
+        'trans_email/ident_support/email',
+        'trans_email/ident_custom1/email',
+        'trans_email/ident_custom2/email',
+        'emailtester2/settings/default_sender',
+    ];
+
     /**
      * Include the behaviour of handling errors
      */
@@ -309,10 +319,37 @@ class Mailer extends DataObject
         $sender = (string)$this->getData('sender');
         if ($sender) {
             $this->validateEmailAddress($sender);
+            $this->validateSender($sender);
             $addressee->setEmail($sender);
         }
 
         return $addressee;
+    }
+
+    /**
+     * @param string $sender
+     * @throws LocalizedException
+     */
+    private function validateSender(string $sender): void
+    {
+        $allowedSenders = [];
+        foreach (self::SENDER_CONFIG_PATHS as $configPath) {
+            $allowedSender = (string)$this->scopeConfig->getValue(
+                $configPath,
+                ScopeInterface::SCOPE_STORE,
+                $this->getStoreId()
+            );
+
+            if ($allowedSender !== '') {
+                $allowedSenders[] = strtolower($allowedSender);
+            }
+        }
+
+        if (!in_array(strtolower($sender), $allowedSenders, true)) {
+            throw new LocalizedException(
+                __('Sender "%1" is not one of the email addresses configured for this store', $sender)
+            );
+        }
     }
 
     /**
