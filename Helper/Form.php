@@ -12,42 +12,16 @@ declare(strict_types=1);
 namespace Yireo\EmailTester2\Helper;
 
 use Magento\Backend\Model\Session;
-use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\StoreManagerInterface;
 use Yireo\EmailTester2\Config\Config;
 
-class Form extends Data
+class Form
 {
-    /**
-     * @var StoreManagerInterface
-     */
-    private $storeManager;
-
-    /**
-     * @var Session
-     */
-    private $backendSession;
-    /**
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * @param Context $context
-     * @param StoreManagerInterface $storeManager
-     * @param Session $backendSession
-     * @param Config $config
-     */
     public function __construct(
-        Context $context,
-        StoreManagerInterface $storeManager,
-        Session $backendSession,
-        Config $config
+        private readonly StoreManagerInterface $storeManager,
+        private readonly Session $backendSession,
+        private readonly Config $config
     ) {
-        parent::__construct($context);
-        $this->storeManager = $storeManager;
-        $this->backendSession = $backendSession;
-        $this->config = $config;
     }
 
     /**
