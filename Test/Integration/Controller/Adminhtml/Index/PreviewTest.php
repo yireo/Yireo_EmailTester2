@@ -155,6 +155,7 @@ class PreviewTest extends AbstractBackendController
         $body = $this->dispatchPreview('does_not_exist_template');
 
         $this->assertSame(200, $this->getResponse()->getHttpResponseCode());
+        $this->assertStringContainsString('Email template &quot;does_not_exist_template&quot; does not exist', $body);
         $this->assertStringNotContainsString('Exception', $body);
         $this->assertStringNotContainsString('#0 ', $body);
     }

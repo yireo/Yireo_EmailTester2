@@ -51,6 +51,48 @@ class MailerTest extends TestCase
         $mailer->getHtml();
     }
 
+    /**
+     * @magentoDataFixture Magento/Customer/_files/customer.php
+     * @magentoDataFixture Magento/Sales/_files/invoice.php
+     */
+    public function testUnknownTemplateIsRejected()
+    {
+        $mailer = $this->createMailer('');
+        $mailer->setData('template', 'does_not_exist_template');
+
+        $this->expectException(LocalizedException::class);
+        $this->expectExceptionMessage('Email template "does_not_exist_template" does not exist');
+        $mailer->getHtml();
+    }
+
+    /**
+     * @magentoDataFixture Magento/Customer/_files/customer.php
+     * @magentoDataFixture Magento/Sales/_files/invoice.php
+     */
+    public function testUnknownNumericTemplateIsRejected()
+    {
+        $mailer = $this->createMailer('');
+        $mailer->setData('template', '999999');
+
+        $this->expectException(LocalizedException::class);
+        $this->expectExceptionMessage('Email template "999999" does not exist');
+        $mailer->getHtml();
+    }
+
+    /**
+     * @magentoDataFixture Magento/Customer/_files/customer.php
+     * @magentoDataFixture Magento/Sales/_files/invoice.php
+     */
+    public function testUnknownStoreIsRejected()
+    {
+        $mailer = $this->createMailer('');
+        $mailer->setData('store_id', 999999);
+
+        $this->expectException(LocalizedException::class);
+        $this->expectExceptionMessage('Store with ID 999999 does not exist');
+        $mailer->getHtml();
+    }
+
     private function createMailer(string $sender): Mailer
     {
         $objectManager = Bootstrap::getObjectManager();

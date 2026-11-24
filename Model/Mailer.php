@@ -28,12 +28,14 @@ use Magento\Framework\Phrase\RendererInterface;
 use Magento\Framework\Translate\Inline\StateInterface;
 use Magento\Framework\Validator\EmailAddress as EmailAddressValidator;
 use Magento\Email\Model\Template\Config as TemplateConfig;
+use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mime\Part\TextPart;
 use Yireo\EmailTester2\Behaviour\Errorable;
+use Yireo\EmailTester2\Model\Backend\Source\Email as EmailTemplateOptions;
 use Yireo\EmailTester2\Model\Mailer\Addressee;
 use Yireo\EmailTester2\Model\Mailer\Recipient;
 
@@ -158,6 +160,8 @@ class Mailer extends DataObject
         State $appState,
         private readonly EmailAddressValidator $emailAddressValidator,
         private readonly LoggerInterface $logger,
+        private readonly EmailTemplateOptions $emailTemplateOptions,
+        private readonly StoreRepositoryInterface $storeRepository,
         array $data = []
     ) {
         parent::__construct($data);
@@ -375,11 +379,41 @@ class Mailer extends DataObject
     private function prepare()
     {
         $this->setDefaultStoreId();
+        $this->validateStore();
+        $this->validateTemplate();
 
         $this->inlineTranslation->suspend();
         Phrase::setRenderer($this->renderer);
 
         $this->prepareTransportBuilder();
+    }
+
+    /**
+     * @throws LocalizedException
+     */
+    private function validateStore(): void
+    {
+        try {
+            $this->storeRepository->getById($this->getStoreId());
+        } catch (NoSuchEntityException $exception) {
+            throw new LocalizedException(__('Store with ID %1 does not exist', $this->getStoreId()));
+        }
+    }
+
+    /**
+     * @throws LocalizedException
+     */
+    private function validateTemplate(): void
+    {
+        $template = (string)$this->getData('template');
+        foreach ($this->emailTemplateOptions->toOptionArray() as $option) {
+            $value = (string)($option['value'] ?? '');
+            if ($value !== '' && $value === $template) {
+                return;
+            }
+        }
+
+        throw new LocalizedException(__('Email template "%1" does not exist', $template));
     }
 
     /**
