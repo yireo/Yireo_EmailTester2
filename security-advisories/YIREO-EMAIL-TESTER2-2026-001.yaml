@@ -1,0 +1,76 @@
+schema_version: 1.6.0
+id: YIREO-EMAIL-TESTER2-2026-001
+aliases:
+  - GHSA-53xf-vx4x-pr96
+published: '2026-11-23T18:56:17Z'
+modified: '2026-11-23T18:56:17Z'
+summary: 'Unauthenticated access to admin email preview exposes order and customer data'
+details: |-
+  ### Impact
+
+  In `yireo/magento2-emailtester2` 1.8.0 up to and including 1.8.2, the backend controllers `Yireo\EmailTester2\Controller\Adminhtml\Index\Preview` and `...\Index\Index` implement `HttpGetActionInterface` directly instead of extending `Magento\Backend\App\Action`. Magento only applies its backend authentication plugin and the `ADMIN_RESOURCE` ACL check to subclasses of `Magento\Backend\App\AbstractAction`, so both actions can be called **without logging in to the Magento Admin Panel**.
+
+  An unauthenticated visitor who knows the admin front name (for instance `admin`) can request:
+
+  ```
+  GET /<adminFrontName>/emailtester/index/preview?template=sales_email_order_template&order_id=1&customer_id=1&product_id=1&store_id=1
+  ```
+
+  and receives the fully rendered transactional email. Because order and customer IDs are sequential integers, an attacker can enumerate them and read personal data of every customer and order: names, email addresses, billing and shipping addresses, phone numbers, ordered items, totals and payment method, through order, invoice, shipment, credit memo and customer email templates. The form page (`emailtester/index/index`) is exposed as well.
+
+  The issue is read-only: the `Send` action extends `Magento\Backend\App\Action` and is still protected, so no email can be sent by a guest.
+
+  ### Patches
+
+  Fixed in **1.8.3**. `Index` and `Preview` extend `Magento\Backend\App\Action` again, so authentication and the ACL resource `Yireo_EmailTester2::index` are enforced. Integration tests now verify that anonymous requests are forwarded to the login page.
+
+  1.8.3 also includes additional hardening:
+  - the email preview is served with a `Content-Security-Policy: sandbox` header and the subject is escaped (stored XSS by admins with template permissions)
+  - sending a test email requires a POST request with a form key (CSRF)
+  - sender and recipient addresses are validated
+  - unknown order, customer or product IDs no longer silently fall back to other entities, and invoices of other orders are no longer used
+  - exception messages are no longer rendered into emails
+
+  Upgrade with:
+
+  ```
+  composer require yireo/magento2-emailtester2:^1.8.3
+  bin/magento setup:upgrade
+  ```
+
+  ### Workarounds
+
+  If you can not upgrade right away, disable the module (`bin/magento module:disable Yireo_EmailTester2`), or block requests to `/<adminFrontName>/emailtester/` in your web server for anyone not on a trusted network. Restricting the Admin Panel to an IP allowlist or a separate host also prevents exploitation.
+
+  ### References
+
+  - Release: https://github.com/yireo/Yireo_EmailTester2/releases/tag/1.8.3
+  - CHANGELOG: https://github.com/yireo/Yireo_EmailTester2/blob/master/CHANGELOG.md
+severity:
+  -
+    type: CVSS_V3
+    score: 'CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N'
+affected:
+  -
+    package:
+      ecosystem: Packagist
+      name: yireo/magento2-emailtester2
+    ranges:
+      -
+        type: ECOSYSTEM
+        events:
+          -
+            introduced: 1.8.0
+          -
+            fixed: 1.8.3
+references:
+  -
+    type: PACKAGE
+    url: 'https://github.com/yireo/Yireo_EmailTester2'
+  -
+    type: ADVISORY
+    url: 'https://github.com/yireo/Yireo_EmailTester2/security/advisories/GHSA-53xf-vx4x-pr96'
+database_specific:
+  cwe_ids:
+    - CWE-306
+    - CWE-639

@@ -1,0 +1,50 @@
+schema_version: 1.6.0
+id: YIREO-EMAIL-TESTER2-2026-002
+aliases:
+  - GHSA-wg4m-55fv-mh6p
+published: '2026-11-24T15:47:11Z'
+modified: '2026-11-24T15:47:11Z'
+summary: 'Customer password reset tokens exposed to restricted admin users via email preview and send'
+details: |-
+  ### Impact
+  The customer email variable used `CustomerRegistry::retrieveSecureData()`, which contains the decrypted password reset token (`rp_token`) and the password hash of a customer. An admin user who only has access to Yireo EmailTester could preview or send a template like `customer_password_forgot_email_template` for any customer with a pending reset token, obtain a working password reset link and take over the customer account. Custom database templates could also output `password_hash`.
+
+  In addition, the sender of test emails was not restricted, so real customer and order data could be sent from arbitrary addresses through the shop mail infrastructure.
+
+  ### Patches
+  Fixed in 1.8.4:
+  - A dummy reset token is used and secure customer data is no longer passed to templates
+  - New ACL resources `Yireo_EmailTester2::preview` and `Yireo_EmailTester2::send` (grant them to restricted roles after upgrading)
+  - The sender must be one of the configured store email identities or the configured default sender; every send is logged to `var/log/yireo_emailtester2.log`
+  - Templates and store views are validated, the preview no longer writes to the session, and errors are logged instead of displayed
+
+  ### Workarounds
+  Remove the `Yireo_EmailTester2::index` resource from all admin roles that should not be able to read customer data, or disable the module.
+severity:
+  -
+    type: CVSS_V3
+    score: 'CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:N'
+affected:
+  -
+    package:
+      ecosystem: Packagist
+      name: yireo/magento2-emailtester2
+    ranges:
+      -
+        type: ECOSYSTEM
+        events:
+          -
+            introduced: '0'
+          -
+            fixed: 1.8.4
+references:
+  -
+    type: PACKAGE
+    url: 'https://github.com/yireo/Yireo_EmailTester2'
+  -
+    type: ADVISORY
+    url: 'https://github.com/yireo/Yireo_EmailTester2/security/advisories/GHSA-wg4m-55fv-mh6p'
+database_specific:
+  cwe_ids:
+    - CWE-200
+    - CWE-284
